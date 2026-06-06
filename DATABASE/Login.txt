@@ -1,0 +1,7 @@
+Admin
+user: admin
+pass: admin
+
+Dokter
+user: pakar
+pas: pakar

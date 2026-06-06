@@ -1,0 +1,2 @@
+1. Jalankan di localhost
+2. Nonaktifkan koneksi internet jika loading nya lama
