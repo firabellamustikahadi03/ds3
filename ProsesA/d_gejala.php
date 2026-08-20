@@ -1,13 +1,6 @@
-<?php 
-include '../controller/c_Gejala.php';
-
-$hapus = new Gejala;
-
-$id = $_GET['id'];
-if (!empty($id)) {
-	$hapus->HapusGejala($id);
-	header('location: ../admin/gejala.php');
-} else {
-	header('location: ../admin/gejala.php');
-}
-?>
+<?php
+// Guarded during DASS-21 migration: the old Gejala::InsertGejala()/EditGejala()/HapusGejala() signatures
+// no longer match the new ds_gejala schema, and this processor had no auth check of its own — disabled
+// entirely rather than left reachable. Re-enable once Phase 2 rebuilds Admin gejala CRUD for the new schema.
+header('Location: ../Admin/gejala.php');
+exit;
