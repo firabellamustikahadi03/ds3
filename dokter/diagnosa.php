@@ -115,23 +115,11 @@ $data = $p->TampilRPasien($_GET['id_pasien']);
                 <div class="card">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <form method="post" action="hdiagnosa.php">
-                                <input type="hidden" name="id_pasien" value="<?php print $_GET['id_pasien'] ?>">
-                                
-                                <h2>Silahkan pilih apa yang anda rasakan</h2><hr>
-                                <?php
-                                $data = $pt->TampilSemua();
-                                foreach($data as $d){ ?>
-
-                                    <label class="container"><?php print $d['nama'] ?>
-                                    <input type="checkbox" name='gejala[]' value='<?php print $d['id'] ?>' >
-                                    <span class="checkmark"></span>
-                                </label>
-
-                            <?php } ?>
-                            <br><hr>
-                            <input type="submit" value="Diagnosa Penyakit" name="ok" class="btn btn-danger text-white">
-                        </form>
+                            <div class="alert alert-info">
+                                Fitur diagnosa di panel dokter sedang dalam migrasi ke metode DASS-21 dan akan
+                                tersedia kembali pada update berikutnya. Untuk saat ini, silakan gunakan alur
+                                diagnosa di halaman publik (<a href="../diagnosa.php">/diagnosa.php</a>).
+                            </div>
                     </div>
                 </div>
             </div>

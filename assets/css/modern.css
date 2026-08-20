@@ -378,6 +378,36 @@ a { transition: color .2s; }
   transition: width 1.2s cubic-bezier(.4,0,.2,1);
 }
 
+/* ── DASS-21 severity level colors ─────────────── */
+.result-card.level-h {
+  background: linear-gradient(135deg, rgba(67,217,173,.15), rgba(67,217,173,.08));
+  border: 2px solid rgba(67,217,173,.5);
+}
+.result-card.level-o {
+  background: linear-gradient(135deg, rgba(255,209,102,.18), rgba(255,209,102,.08));
+  border: 2px solid rgba(255,209,102,.55);
+}
+.result-card.level-a {
+  background: linear-gradient(135deg, rgba(255,140,66,.15), rgba(255,140,66,.08));
+  border: 2px solid rgba(255,140,66,.5);
+}
+.result-card.level-ca {
+  background: linear-gradient(135deg, rgba(255,101,132,.15), rgba(255,101,132,.08));
+  border: 2px solid rgba(255,101,132,.5);
+}
+.result-card.level-none {
+  background: #F5F4FF;
+  border: 2px dashed #D9D6F5;
+}
+.result-card.level-h h3    { color: #2FAE8C; }
+.result-card.level-o h3    { color: #C99A1D; }
+.result-card.level-a h3    { color: #E06A1D; }
+.result-card.level-ca h3   { color: #E0355A; }
+.confidence-fill.level-h   { background: linear-gradient(90deg, #43D9AD, #2FAE8C); }
+.confidence-fill.level-o   { background: linear-gradient(90deg, #FFD166, #E0B23A); }
+.confidence-fill.level-a   { background: linear-gradient(90deg, #FF8C42, #E0691D); }
+.confidence-fill.level-ca  { background: linear-gradient(90deg, #FF6584, #E0355A); }
+
 /* Symptom list in hasil */
 .symptom-list-item {
   display: flex;

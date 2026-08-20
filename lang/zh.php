@@ -48,4 +48,8 @@ return [
     'dengan_derajat' => '置信度为',
     'gejala_dipilih' => '选择的症状：',
     'keterangan' => '说明',
+    'subskala_depresi' => '抑郁',
+    'subskala_anxiety' => '焦虑',
+    'subskala_stres' => '压力',
+    'tidak_ada_gejala_dipilih' => '此类别中未选择任何症状',
 ];

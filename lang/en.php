@@ -48,4 +48,8 @@ return [
     'dengan_derajat' => 'with confidence level',
     'gejala_dipilih' => 'Selected symptoms:',
     'keterangan' => 'Description',
+    'subskala_depresi' => 'Depression',
+    'subskala_anxiety' => 'Anxiety',
+    'subskala_stres' => 'Stress',
+    'tidak_ada_gejala_dipilih' => 'No symptoms selected in this category',
 ];

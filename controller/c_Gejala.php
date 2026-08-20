@@ -64,13 +64,17 @@ class Gejala
         $this->nilai = $g->nilai;
     }
 
-    function TampilSemuaWeb() {
+    /** Gejala for one DASS-21 subscale, ordered by item number — used by the public diagnosa form. */
+    function TampilBySubskala($subskala) {
         include "koneksi/koneksi.php";
         if (session_status() === PHP_SESSION_NONE) session_start();
         $valid = ['id', 'en', 'tr', 'zh'];
         $lang  = (isset($_SESSION['lang']) && in_array($_SESSION['lang'], $valid)) ? $_SESSION['lang'] : 'id';
         $col   = 'nama_' . $lang;
-        $query = mysqli_query($con, "SELECT id, $col as nama FROM ds_gejala");
+        $subskala = mysqli_real_escape_string($con, $subskala);
+        $query = mysqli_query($con, "SELECT id, $col as nama FROM ds_gejala
+                                      WHERE subskala = '$subskala' AND is_active = 1
+                                      ORDER BY item_dass");
         $i = 0;
         while ($d = mysqli_fetch_array($query)) {
             $data[$i]['id']   = $d['id'];

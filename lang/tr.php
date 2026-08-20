@@ -48,4 +48,8 @@ return [
     'dengan_derajat' => 'güven derecesiyle',
     'gejala_dipilih' => 'Seçilen belirtiler:',
     'keterangan' => 'Açıklama',
+    'subskala_depresi' => 'Depresyon',
+    'subskala_anxiety' => 'Anksiyete',
+    'subskala_stres' => 'Stres',
+    'tidak_ada_gejala_dipilih' => 'Bu kategoride seçilmiş belirti yok',
 ];

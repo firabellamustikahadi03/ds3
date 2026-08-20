@@ -50,16 +50,22 @@ $pt = new Gejala;
       <form method="post" action="hasil.php" id="diagnosaForm" novalidate>
 
         <?php
-        $dotColors = ['#6C63FF','#FF6584','#43D9AD','#FFD166','#9B89FF','#FF8C42','#00C9A7','#F67280'];
-        $data = $pt->TampilSemuaWeb();
-        $ci = 0;
+        $subskalaList = [
+            'D' => ['color' => '#6C63FF', 'labelKey' => 'subskala_depresi', 'fallback' => 'Depresi'],
+            'A' => ['color' => '#FF6584', 'labelKey' => 'subskala_anxiety', 'fallback' => 'Anxiety'],
+            'S' => ['color' => '#43D9AD', 'labelKey' => 'subskala_stres',   'fallback' => 'Stres'],
+        ];
         ?>
 
-        <div class="row g-3">
-          <?php foreach ($data as $d) :
-            $color = $dotColors[$ci % count($dotColors)];
-            $ci++;
-          ?>
+        <?php foreach ($subskalaList as $sk => $meta):
+            $sectionData = $pt->TampilBySubskala($sk);
+            $label = isset($_SESSION['langArray'][$meta['labelKey']])
+                ? htmlspecialchars($_SESSION['langArray'][$meta['labelKey']])
+                : $meta['fallback'];
+        ?>
+        <h5 class="fw-700 mt-4 mb-3" style="color:<?php echo $meta['color']; ?>;"><?php echo $label; ?></h5>
+        <div class="row g-3 mb-2">
+          <?php foreach ($sectionData as $d): ?>
           <div class="col-md-6 col-xl-4">
             <label class="symptom-label" for="gejala_<?php echo (int)$d['id']; ?>">
               <input type="checkbox"
@@ -67,12 +73,13 @@ $pt = new Gejala;
                      value="<?php echo (int)$d['id']; ?>"
                      id="gejala_<?php echo (int)$d['id']; ?>"
                      class="symptom-check">
-              <span class="symptom-dot" style="background:<?php echo $color; ?>;"></span>
+              <span class="symptom-dot" style="background:<?php echo $meta['color']; ?>;"></span>
               <span class="symptom-text"><?php echo htmlspecialchars($d['nama']); ?></span>
             </label>
           </div>
           <?php endforeach; ?>
         </div>
+        <?php endforeach; ?>
 
         <!-- Footer bar -->
         <div class="mt-4 pt-3 border-top d-flex flex-wrap align-items-center justify-content-between gap-3">

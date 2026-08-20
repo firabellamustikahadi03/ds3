@@ -48,4 +48,8 @@ return [
     'dengan_derajat' => 'dengan derajat kepercayaan',
     'gejala_dipilih' => 'Gejala yang dipilih:',
     'keterangan' => 'Keterangan',
+    'subskala_depresi' => 'Depresi',
+    'subskala_anxiety' => 'Anxiety',
+    'subskala_stres' => 'Stres',
+    'tidak_ada_gejala_dipilih' => 'Tidak ada gejala dipilih di kategori ini',
 ];

@@ -12,15 +12,13 @@ $dg = new Diagnosa;
 include "koneksi/koneksi.php";
 
 // ── Computation variables ─────────────────────────────────────
-$hasDiagnosis    = false;
-$errorMinGejala  = false;
-$isDetected      = false;
-$diseaseName     = '';
-$confidenceVal   = 0;
-$confidencePct   = 0;
-$description     = '';
+$hasDiagnosis     = false;
+$errorMinGejala   = false;
+$results          = ['D' => null, 'A' => null, 'S' => null];
 $selectedSymptoms = [];
-$codes            = [];
+
+$subskalaLabelKey = ['D' => 'subskala_depresi', 'A' => 'subskala_anxiety', 'S' => 'subskala_stres'];
+$subskalaFallback = ['D' => 'Depresi', 'A' => 'Anxiety', 'S' => 'Stres'];
 
 if (isset($_POST['gejala'])) {
     if (count($_POST['gejala']) < 2) {
@@ -28,84 +26,26 @@ if (isset($_POST['gejala'])) {
     } else {
         $hasDiagnosis = true;
 
-        // Pull DS values for selected symptoms
-        $inList  = implode(',', array_map('intval', $_POST['gejala']));
-        $sql     = "SELECT GROUP_CONCAT(b.id), a.ds
-                    FROM ds_aturan a
-                    JOIN ds_penyakit b ON a.id_penyakit = b.id
-                    WHERE a.id_gejala IN($inList)
-                    GROUP BY a.id_gejala";
-        $result  = mysqli_query($con, $sql);
-        $gejalaData = [];
-        while ($row = $result->fetch_row()) {
-            $gejalaData[] = $row;
-        }
+        $inList = implode(',', array_map('intval', $_POST['gejala']));
 
-        // Frame of discernment (θ)
-        $sql    = "SELECT GROUP_CONCAT(id) FROM ds_penyakit";
+        // Group the selected gejala ids by subskala
+        $sql    = "SELECT id, subskala FROM ds_gejala WHERE id IN ($inList) AND is_active = 1";
         $result = mysqli_query($con, $sql);
-        $row    = $result->fetch_row();
-        $fod    = $row[0];
-
-        // Dempster-Shafer combination rule
-        $densitas_baru = [];
-        while (!empty($gejalaData)) {
-            $densitas1    = [];
-            $densitas1[0] = array_shift($gejalaData);
-            $densitas1[1] = [$fod, 1 - $densitas1[0][1]];
-            $densitas2    = [];
-            if (empty($densitas_baru)) {
-                $densitas2[0] = array_shift($gejalaData);
-                if ($densitas2[0] === null) break;
-            } else {
-                foreach ($densitas_baru as $k => $r) {
-                    if ($k !== '&theta;') {
-                        $densitas2[] = [$k, $r];
-                    }
-                }
-            }
-            $theta = 1;
-            foreach ($densitas2 as $d) $theta -= $d[1];
-            $densitas2[] = [$fod, $theta];
-            $m            = count($densitas2);
-            $densitas_baru = [];
-            $densitas_baru = $dg->perkaliantabel($m, $densitas1, $densitas2, $densitas_baru);
-            foreach ($densitas_baru as $k => $d) {
-                if ($k !== '&theta;') {
-                    $densitas_baru[$k] = $d / (1 - (isset($densitas_baru['&theta;']) ? $densitas_baru['&theta;'] : 0));
-                }
-            }
+        $bySubskala = ['D' => [], 'A' => [], 'S' => []];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $bySubskala[$row['subskala']][] = (int)$row['id'];
         }
 
-        // Rank results
-        unset($densitas_baru['&theta;']);
-        arsort($densitas_baru);
-        $codes = array_keys($densitas_baru);
+        foreach (['D', 'A', 'S'] as $sk) {
+            $results[$sk] = $dg->hitungSubskala($sk, $bySubskala[$sk]);
+        }
 
-        // Language columns
+        // Language column for symptom names
         $_validLangs = ['id', 'en', 'tr', 'zh'];
         $_lang       = (isset($_SESSION['lang']) && in_array($_SESSION['lang'], $_validLangs)) ? $_SESSION['lang'] : 'id';
         $_namaCol    = 'nama_' . $_lang;
-        $_kettCol    = ($_lang === 'id') ? 'kett' : 'kett_' . $_lang;
 
-        // Disease name
-        if (!empty($codes)) {
-            $sql    = "SELECT GROUP_CONCAT($_namaCol) FROM ds_penyakit WHERE id IN('{$codes[0]}')";
-            $result = mysqli_query($con, $sql);
-            $row    = $result->fetch_row();
-            $diseaseName     = $row[0];
-            $confidenceVal   = $densitas_baru[$codes[0]];
-            $confidencePct   = round($confidenceVal * 100, 2);
-            $isDetected      = ($confidencePct >= 80);
-
-            // Description
-            $sql    = "SELECT $_kettCol as kett FROM ds_penyakit WHERE id IN('{$codes[0]}')";
-            $result = mysqli_query($con, $sql);
-            $obj    = mysqli_fetch_object($result);
-            $description = $obj ? $obj->kett : '';
-        }
-
-        // Selected symptoms list
+        // Selected symptoms list (for display + history text)
         $gejalaDbStr = '';
         $i = 0;
         foreach ($_POST['gejala'] as $item) {
@@ -113,18 +53,53 @@ if (isset($_POST['gejala'])) {
             $result  = mysqli_query($con, $query);
             $obj     = mysqli_fetch_object($result);
             $i++;
-            $namaGejala        = $obj ? $obj->nama : '';
+            $namaGejala         = $obj ? $obj->nama : '';
             $selectedSymptoms[] = $namaGejala;
             $gejalaDbStr       .= $i . '. ' . $namaGejala . '<br>';
         }
 
-        // Persist to DB
-        $tanggal    = date('d-m-Y') . '<br>' . date('h:i:s A');
-        $persentase = $confidencePct . '%';
-        mysqli_query($con,
-            "INSERT INTO diagnosa (tanggal, gejala, penyakit, nilai, persentase)
-             VALUES ('$tanggal', '$gejalaDbStr', '$diseaseName', '$confidenceVal', '$persentase')"
-        );
+        // Persist header row — keeps legacy diagnosa.penyakit/persentase columns
+        // populated with a readable summary so pages that still read them directly
+        // (e.g. an un-migrated riwayat view) show something sensible.
+        // Skip entirely when no subscale produced a result (e.g. all posted gejala
+        // ids were inactive/invalid) to avoid an orphan diagnosa header row with no
+        // corresponding diagnosa_detail rows.
+        $anyResult = $results['D'] || $results['A'] || $results['S'];
+
+        if ($anyResult) {
+            $tanggal       = date('d-m-Y') . '<br>' . date('h:i:s A');
+            $ringkasanNama = [];
+            $ringkasanPct  = [];
+            foreach (['D', 'A', 'S'] as $sk) {
+                if ($results[$sk]) {
+                    $ringkasanNama[] = $subskalaFallback[$sk] . ': ' . $results[$sk]['level_nama'];
+                    $ringkasanPct[]  = $subskalaFallback[$sk] . ': ' . $results[$sk]['persentase'];
+                }
+            }
+            $penyakitStr   = implode(' | ', $ringkasanNama);
+            $persentaseStr = implode(' | ', $ringkasanPct);
+            $nilaiStr      = $results['D']['nilai'] ?? ($results['A']['nilai'] ?? ($results['S']['nilai'] ?? 0));
+
+            mysqli_query($con,
+                "INSERT INTO diagnosa (tanggal, gejala, penyakit, nilai, persentase)
+                 VALUES ('$tanggal', '" . mysqli_real_escape_string($con, $gejalaDbStr) . "', '" . mysqli_real_escape_string($con, $penyakitStr) . "',
+                         '$nilaiStr', '" . mysqli_real_escape_string($con, $persentaseStr) . "')"
+            );
+            $idDiagnosa = mysqli_insert_id($con);
+
+            // Persist per-subscale detail rows
+            foreach (['D', 'A', 'S'] as $sk) {
+                if (!$results[$sk]) continue;
+                $r = $results[$sk];
+                $nilaiEsc = (float)$r['nilai'];
+                mysqli_query($con,
+                    "INSERT INTO diagnosa_detail (id_diagnosa, sumber, subskala, level_kode, level_nama, nilai, persentase)
+                     VALUES ($idDiagnosa, 'diagnosa', '$sk', '{$r['level_kode']}',
+                             '" . mysqli_real_escape_string($con, $r['level_nama']) . "',
+                             $nilaiEsc, '{$r['persentase']}')"
+                );
+            }
+        }
     }
 }
 ?>
@@ -179,73 +154,50 @@ if (isset($_POST['gejala'])) {
             </a>
           </div>
 
-        <?php elseif ($hasDiagnosis && !empty($codes)): ?>
+        <?php elseif ($hasDiagnosis): ?>
 
-          <!-- ── Result card ────────────────────── -->
-          <?php if ($isDetected): ?>
-            <div class="result-card detected">
-              <span class="result-emoji">⚠️</span>
-              <p class="mb-1" style="font-size:1.05rem; color:#888;">
-                <?php echo isset($_SESSION['langArray']['terdeteksi'])
-                    ? htmlspecialchars($_SESSION['langArray']['terdeteksi'])
-                    : 'Terdeteksi penyakit'; ?>
-              </p>
-              <h2 style="color:#FF6584;">
-                <?php echo htmlspecialchars($diseaseName); ?>
-              </h2>
-              <p class="mb-0" style="font-size:.95rem; color:#666;">
-                <?php echo isset($_SESSION['langArray']['dengan_derajat'])
-                    ? htmlspecialchars($_SESSION['langArray']['dengan_derajat'])
-                    : 'dengan derajat kepercayaan'; ?>
-                &nbsp;<strong style="color:#FF6584; font-size:1.15rem;"><?php echo $confidencePct; ?>%</strong>
-              </p>
+          <!-- ── 3 subscale result cards ───────────── -->
+          <div class="row g-3 justify-content-center mb-2">
+            <?php foreach (['D', 'A', 'S'] as $sk):
+                $r = $results[$sk];
+                $subskalaLabel = isset($_SESSION['langArray'][$subskalaLabelKey[$sk]])
+                    ? htmlspecialchars($_SESSION['langArray'][$subskalaLabelKey[$sk]])
+                    : $subskalaFallback[$sk];
+            ?>
+            <div class="col-12">
+              <?php if ($r): ?>
+              <div class="result-card level-<?php echo strtolower($r['level_kode']); ?>" style="padding:1.75rem;">
+                <p class="mb-1" style="font-size:.95rem; color:#888;"><?php echo $subskalaLabel; ?></p>
+                <h3 class="mb-1"><?php echo htmlspecialchars($r['level_nama']); ?></h3>
+                <p class="mb-2" style="font-size:.85rem; color:#666;">
+                  <?php echo isset($_SESSION['langArray']['dengan_derajat'])
+                      ? htmlspecialchars($_SESSION['langArray']['dengan_derajat'])
+                      : 'derajat kepercayaan'; ?>
+                  <strong><?php echo $r['persentase']; ?></strong>
+                </p>
+                <div class="confidence-bar mb-2">
+                  <div class="confidence-fill level-<?php echo strtolower($r['level_kode']); ?>"
+                       data-w="<?php echo (float)str_replace('%', '', $r['persentase']); ?>"></div>
+                </div>
+                <?php if (!empty($r['kett'])): ?>
+                <p class="text-muted-mod mb-0" style="font-size:.85rem; line-height:1.7; text-align:left;">
+                  <?php echo nl2br(htmlspecialchars($r['kett'])); ?>
+                </p>
+                <?php endif; ?>
+              </div>
+              <?php else: ?>
+              <div class="result-card level-none" style="padding:1.75rem;">
+                <p class="mb-1" style="font-size:.95rem; color:#888;"><?php echo $subskalaLabel; ?></p>
+                <p class="mb-0 text-muted-mod">
+                  <?php echo isset($_SESSION['langArray']['tidak_ada_gejala_dipilih'])
+                      ? htmlspecialchars($_SESSION['langArray']['tidak_ada_gejala_dipilih'])
+                      : 'Tidak ada gejala dipilih di kategori ini'; ?>
+                </p>
+              </div>
+              <?php endif; ?>
             </div>
-          <?php else: ?>
-            <div class="result-card healthy">
-              <span class="result-emoji">✅</span>
-              <h2 style="color:#43D9AD;">
-                <?php echo isset($_SESSION['langArray']['tidak_terdeteksi'])
-                    ? htmlspecialchars($_SESSION['langArray']['tidak_terdeteksi'])
-                    : 'Selamat! Anda tidak terdeteksi penyakit.'; ?>
-              </h2>
-              <p class="mb-0" style="font-size:.9rem; color:#888;">
-                Derajat kepercayaan: <strong><?php echo $confidencePct; ?>%</strong>
-              </p>
-            </div>
-          <?php endif; ?>
-
-          <?php if ($isDetected): ?>
-          <!-- Confidence bar -->
-          <div class="card-modern mb-4">
-            <p class="fw-700 mb-2" style="font-size:.9rem;">
-              <?php echo isset($_SESSION['langArray']['dengan_derajat'])
-                  ? htmlspecialchars($_SESSION['langArray']['dengan_derajat'])
-                  : 'Derajat Kepercayaan'; ?>
-            </p>
-            <div class="confidence-bar">
-              <div class="confidence-fill" id="confFill" data-w="<?php echo $confidencePct; ?>"></div>
-            </div>
-            <div class="d-flex justify-content-between mt-2">
-              <small class="text-muted-mod">0%</small>
-              <small class="fw-700 text-primary-mod"><?php echo $confidencePct; ?>%</small>
-              <small class="text-muted-mod">100%</small>
-            </div>
+            <?php endforeach; ?>
           </div>
-
-          <?php if (!empty($description)): ?>
-          <!-- Description -->
-          <div class="card-modern mb-4">
-            <h5 class="fw-700 mb-2">
-              <?php echo isset($_SESSION['langArray']['keterangan'])
-                  ? htmlspecialchars($_SESSION['langArray']['keterangan'])
-                  : 'Keterangan'; ?>
-            </h5>
-            <p class="text-muted-mod mb-0" style="line-height:1.8; font-size:.92rem;">
-              <?php echo nl2br(htmlspecialchars($description)); ?>
-            </p>
-          </div>
-          <?php endif; ?>
-          <?php endif; ?>
 
           <!-- Selected symptoms list -->
           <div class="card-modern mb-4">
@@ -306,11 +258,11 @@ if (isset($_POST['gejala'])) {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-  var fill = document.getElementById('confFill');
-  if (fill) {
+  var fills = document.querySelectorAll('.confidence-fill[data-w]');
+  fills.forEach(function (fill) {
     var w = fill.getAttribute('data-w');
     setTimeout(function () { fill.style.width = w + '%'; }, 150);
-  }
+  });
 });
 </script>
 </body>
