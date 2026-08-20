@@ -1,42 +1,58 @@
+  <!-- Admin footer -->
+  <div class="admin-footer">
+    Aplikasi by <a href="https://www.instagram.com/firbel.el/">Fira Bella Mustikahadi</a>
+    &nbsp;·&nbsp; Institut Teknologi PLN &nbsp;·&nbsp; 2022
+  </div>
 
-        <footer class="footer text-center">
-            Aplikasi by <a href="https://www.instagram.com/firbel.el/">Fira Bella Mustikahadi</a>.
-        </footer>
-    </div>
-</div>
-<script src="../assetsA/assets/libs/jquery/dist/jquery.min.js"></script>
-<!-- Bootstrap tether Core JavaScript -->
-<script src="../assetsA/assets/libs/popper.js/dist/umd/popper.min.js"></script>
-<script src="../assetsA/assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
-<script src="../assetsA/dist/js/app-style-switcher.js"></script>
-<!--Wave Effects -->
-<script src="../assetsA/dist/js/waves.js"></script>
-<!--Menu sidebar -->
-<script src="../assetsA/dist/js/sidebarmenu.js"></script>
-<!--Custom JavaScript -->
-<script src="../assetsA/dist/js/custom.js"></script>
+</div><!-- /.admin-main -->
 
+<!-- jQuery (required for DataTables) -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<!-- Bootstrap 5 -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- DataTables + Bootstrap 5 skin -->
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
 
-<script src="../assetsA/assets/libs/data-table/datatables.min.js"></script>
-<script src="../assetsA/assets/libs/data-table/dataTables.bootstrap.min.js"></script>
-<script src="../assetsA/assets/libs/data-table/dataTables.buttons.min.js"></script>
-<script src="../assetsA/assets/libs/data-table/buttons.bootstrap.min.js"></script>
-<script src="../assetsA/assets/libs/data-table/jszip.min.js"></script>
-<script src="../assetsA/assets/libs/data-table/pdfmake.min.js"></script>
-<script src="../assetsA/assets/libs/data-table/vfs_fonts.js"></script>
-<script src="../assetsA/assets/libs/data-table/buttons.html5.min.js"></script>
-<script src="../assetsA/assets/libs/data-table/buttons.print.min.js"></script>
-<script src="../assetsA/assets/libs/data-table/buttons.colVis.min.js"></script>
-<script src="../assetsA/assets/libs/data-table/datatables-init.js"></script>
 <script>
-  $(function () {
-    $('#example3').DataTable({
-      'ordering'    : false
-    })
-  })
+$(function () {
+  // Initialize any DataTable on the page
+  if ($('#example3').length) {
+    $('#example3').DataTable({ ordering: false });
+  }
+  if ($('#bootstrap-data-table').length) {
+    $('#bootstrap-data-table').DataTable({ ordering: false });
+  }
+  if ($('#example23').length) {
+    $('#example23').DataTable({ ordering: false });
+  }
+});
+
+// Sidebar toggle (mobile)
+var sidebarToggle  = document.getElementById('sidebarToggle');
+var adminSidebar   = document.getElementById('adminSidebar');
+var sidebarOverlay = document.getElementById('sidebarOverlay');
+
+if (sidebarToggle) {
+  sidebarToggle.addEventListener('click', function () {
+    adminSidebar.classList.toggle('show');
+    sidebarOverlay.classList.toggle('show');
+  });
+}
+if (sidebarOverlay) {
+  sidebarOverlay.addEventListener('click', function () {
+    adminSidebar.classList.remove('show');
+    sidebarOverlay.classList.remove('show');
+  });
+}
+
+// Auto-close alerts
+document.querySelectorAll('.closebtn').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    var alert = this.closest('.alert');
+    if (alert) alert.style.display = 'none';
+  });
+});
 </script>
-
-
 </body>
-
 </html>

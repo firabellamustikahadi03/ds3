@@ -1,204 +1,147 @@
 <?php
 session_start();
 include "../koneksi/koneksi.php";
+include '../function.php';
+loadLanguage();
 
-if(!isset($_SESSION['username'])){
+if (!isset($_SESSION['username'])) {
     header('location:../login.php');
+    exit;
 } else {
-    $username = $_SESSION["username"];
-    $id_admin = $_SESSION['id_admin']; 
+    $username   = $_SESSION["username"];
+    $id_admin   = $_SESSION['id_admin'] ?? null;
 }
 require_once('../koneksi/koneksi.php');
-$hasil = mysqli_query($con, "select * from admin where username='$username'");
-$row = mysqli_fetch_array($hasil);
+$_dokterResult = mysqli_query($con, "SELECT * FROM admin WHERE username='" . mysqli_real_escape_string($con, $username) . "'");
+$row = mysqli_fetch_array($_dokterResult);
+
+$_navLang  = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'id';
+$_langMap  = ['id' => '🇮🇩 ID', 'en' => '🇬🇧 EN', 'tr' => '🇹🇷 TR', 'zh' => '🇨🇳 ZH'];
+$_curLabel = isset($_langMap[$_navLang]) ? $_langMap[$_navLang] : '🌐';
+$_curPage  = basename($_SERVER['PHP_SELF']);
+
+function dokterNavActive($page, $keyword) {
+    return (strpos($page, $keyword) !== false) ? 'active' : '';
+}
 ?>
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="<?php echo htmlspecialchars($_navLang); ?>">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <!-- Tell the browser to be responsive to screen width -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="../assetsA/assets/images/Logo-SP.png">
-    <title>Admin | Sistem Pakar</title>
-    <!-- Custom CSS -->
-    <link href="../assetsA/dist/css/style.min.css" rel="stylesheet">
-
-    <link rel="stylesheet" href="../assetsA/assets/libs/datatable/dataTables.bootstrap.min.css">
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-<![endif]-->
-
-<script type="text/javascript">        
-    function tampilkanwaktu(){         //fungsi ini akan dipanggil di bodyOnLoad dieksekusi tiap 1000ms = 1detik    
-    var waktu = new Date();            //membuat object date berdasarkan waktu saat 
-    var sh = waktu.getHours() + "";    //memunculkan nilai jam, //tambahan script + "" supaya variable sh bertipe string sehingga bisa dihitung panjangnya : sh.length    //ambil nilai menit
-    var sm = waktu.getMinutes() + "";  //memunculkan nilai detik    
-    var ss = waktu.getSeconds() + "";  //memunculkan jam:menit:detik dengan menambahkan angka 0 jika angkanya cuma satu digit (0-9)
-    document.getElementById("clock").innerHTML = (sh.length==1?"0"+sh:sh) + ":" + (sm.length==1?"0"+sm:sm) + ":" + (ss.length==1?"0"+ss:ss);
-}
-</script>
-<style>
-.alert {
-  padding: 20px;
-  background-color: #f44336;
-  color: white;
-  opacity: 1;
-  transition: opacity 0.6s;
-  margin-bottom: 15px;
-}
-
-.alert.success {background-color: #36bea6;}
-.alert.warning {background-color: #336699;}
-
-.closebtn {
-  margin-left: 15px;
-  color: white;
-  font-weight: bold;
-  float: right;
-  font-size: 22px;
-  line-height: 20px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.closebtn:hover {
-  color: black;
-}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><?php echo isset($_SESSION['langArray']['data_user']) ? htmlspecialchars($_SESSION['langArray']['data_user']) : 'Dokter | Sistem Pakar'; ?></title>
+  <link rel="icon" type="image/png" sizes="16x16" href="../assetsA/assets/images/Logo-SP.png">
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- MDI Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <!-- DataTables Bootstrap 5 -->
+  <link href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+  <!-- Admin Modern CSS -->
+  <link href="../assets/css/admin-modern.css" rel="stylesheet">
 </head>
-
 <body>
-    <!-- ============================================================== -->
-    <!-- Preloader - style you can find in spinners.css -->
-    <!-- ============================================================== -->
-    <div class="preloader">
-        <div class="lds-ripple">
-            <div class="lds-pos"></div>
-            <div class="lds-pos"></div>
-        </div>
-    </div>
-    <!-- ============================================================== -->
-    <!-- Main wrapper - style you can find in pages.scss -->
-    <!-- ============================================================== -->
-    <div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5" data-sidebartype="full" data-sidebar-position="absolute" data-header-position="absolute" data-boxed-layout="full">
-        <!-- ============================================================== -->
-        <!-- Topbar header - style you can find in pages.scss -->
-        <!-- ============================================================== -->
-        <header class="topbar" data-navbarbg="skin5">
-            <nav class="navbar top-navbar navbar-expand-md navbar-dark">
-                <div class="navbar-header" data-logobg="skin5">
-                    <!-- ============================================================== -->
-                    <!-- Logo -->
-                    <!-- ============================================================== -->
-                    <a class="navbar-brand" href="">
-                        <!-- Logo icon -->
-                        <b class="logo-icon">
-                            <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
-                            <!-- Dark Logo icon -->
-                            <img src="../assetsA/assets/images/Logo-SP.png" width="45px" alt="homepage" class="dark-logo" />
-                            <!-- Light Logo icon -->
-                            <img src="../assetsA/assets/images/Logo-SP.png" width="45px" alt="homepage" class="light-logo" />
-                        </b>
-                        <!--End Logo icon -->
-                        <!-- Logo text -->
-                        <span class="logo-text">
-                         <!-- dark Logo text -->
-                         <img src="../assetsA/assets/images/Logo-texts.png" width="150px" alt="homepage" class="dark-logo" />
-                         <!-- Light Logo text -->    
-                         <img src="../assetsA/assets/images/Logo-texts.png" width="150px" class="light-logo" alt="homepage" />
-                     </span>
-                 </a>
-                 <!-- ============================================================== -->
-                 <!-- End Logo -->
-                 <!-- ============================================================== -->
-                 <!-- This is for the sidebar toggle which is visible on mobile only -->
-                 <a class="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)"><i class="ti-menu ti-close"></i></a>
-             </div>
-             <!-- ============================================================== -->
-             <!-- End Logo -->
-             <!-- ============================================================== -->
-             <div class="navbar-collapse collapse" id="navbarSupportedContent" data-navbarbg="skin5">
-                <!-- ============================================================== -->
-                <!-- toggle and nav items -->
-                <!-- ============================================================== -->
-                <ul class="navbar-nav float-left mr-auto">
-                    <!-- ============================================================== -->
-                    <!-- Search -->
-                    <!-- ============================================================== -->
-                </ul>
-                <!-- ============================================================== -->
-                <!-- Right side toggle and nav items -->
-                <!-- ============================================================== -->
-                <ul class="navbar-nav float-right">
-                    <!-- ============================================================== -->
-                    <!-- User profile and search -->
-                    <!-- ============================================================== -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="../assetsA/assets/images/users/user.png" alt="user" class="rounded-circle" width="31"></a>
-                        <div class="dropdown-menu dropdown-menu-right user-dd animated">
-                            <a class="dropdown-item" href="../index.php"><i class="mdi mdi-view-dashboard"></i> Beranda</a>
-                            <a class="dropdown-item" href="../logout.php"><i class="mdi mdi-logout-variant"></i> Keluar</a>
-                        </div>
-                    </li>
-                    <!-- ============================================================== -->
-                    <!-- User profile and search -->
-                    <!-- ============================================================== -->
-                </ul>
-            </div>
-        </nav>
-    </header>
-    <!-- ============================================================== -->
-    <!-- End Topbar header -->
-    <!-- ============================================================== -->
-    <!-- ============================================================== -->
-    <!-- Left Sidebar - style you can find in sidebar.scss  -->
-    <!-- ============================================================== -->
-    <aside class="left-sidebar" data-sidebarbg="skin6">
-        <!-- Sidebar scroll-->
-        <div class="scroll-sidebar">
-            <!-- Sidebar navigation-->
-            <nav class="sidebar-nav">
-                <ul id="sidebarnav">
-                    <!-- User Profile-->
-                    <li>
-                        <!-- User Profile-->
-                        <div class="user-profile d-flex no-block dropdown m-t-20">
-                            <div class="user-pic"><img src="../assetsA/assets/images/users/user.png" alt="users" class="rounded-circle" width="40" /></div>
-                            <div class="user-content hide-menu m-l-10">
-                                <a href="javascript:void(0)" class="" id="Userdd" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <h5 class="m-b-0 user-name font-medium"><?php echo $row['nama']; ?> <i class="fa fa-angle-down"></i></h5>
-                                    <span class="op-5 user-email"><?php echo $row['email']; ?></span>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="Userdd">
-                                    <a class="dropdown-item" href="../index.php"><i class="mdi mdi-view-dashboard"></i> Beranda</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="../logout.php"><i class="fa fa-power-off m-r-5 m-l-5"></i> Keluar</a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- End User Profile-->
-                    </li>
 
-                    <!-- Data Pasien -->
-                    <li class="sidebar-item"><a class="sidebar-link waves-effect waves-dark sidebar-link" href="pasien.php" aria-expanded="false"><i class="mdi mdi-account-multiple"></i><span class="hide-menu">Diagnosa Pasien</span></a></li>
-                    <!-- Profil -->
-                    <li class="sidebar-item"><a class="sidebar-link waves-effect waves-dark sidebar-link" href="profil.php" aria-expanded="false"><i class="mdi mdi-account-settings-variant"></i><span class="hide-menu">Pengaturan</span></a></li>
-                </ul>
-                
-            </nav>
-            <!-- End Sidebar navigation -->
-        </div>
-        <!-- End Sidebar scroll-->
-    </aside>
-    <!-- ============================================================== -->
-    <!-- End Left Sidebar - style you can find in sidebar.scss  -->
-    <!-- ============================================================== -->
+<!-- Mobile sidebar overlay -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- ── Sidebar ─────────────────────────────── -->
+<aside class="admin-sidebar" id="adminSidebar">
+
+  <!-- Brand -->
+  <a class="sidebar-brand" href="../index.php">
+    🧠&nbsp;<span class="brand-gradient">Sistem Pakar</span>
+  </a>
+
+  <!-- User info -->
+  <div class="sidebar-user">
+    <div class="user-avatar-circle"><?php echo strtoupper(mb_substr($row['nama'] ?? 'D', 0, 1)); ?></div>
+    <div style="min-width:0;">
+      <p class="u-name"><?php echo htmlspecialchars($row['nama'] ?? ''); ?></p>
+      <p class="u-email"><?php echo htmlspecialchars($row['email'] ?? ''); ?></p>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <div class="sidebar-section-label">Menu</div>
+  <nav>
+    <a href="pasien.php"
+       class="sidebar-link <?php echo dokterNavActive($_curPage,'pasien'); ?>">
+      <i class="mdi mdi-account-multiple-outline"></i>
+      <?php echo isset($_SESSION['langArray']['data_user']) ? htmlspecialchars($_SESSION['langArray']['data_user']) : 'Data User'; ?>
+    </a>
+    <a href="profil.php"
+       class="sidebar-link <?php echo dokterNavActive($_curPage,'profil'); ?>">
+      <i class="mdi mdi-account-cog-outline"></i>
+      <?php echo isset($_SESSION['langArray']['pengaturan']) ? htmlspecialchars($_SESSION['langArray']['pengaturan']) : 'Pengaturan'; ?>
+    </a>
+  </nav>
+
+  <!-- Sidebar footer -->
+  <div class="sidebar-footer">
+    <a href="../index.php">
+      <i class="mdi mdi-home-outline"></i>
+      <?php echo isset($_SESSION['langArray']['beranda']) ? htmlspecialchars($_SESSION['langArray']['beranda']) : 'Beranda Publik'; ?>
+    </a>
+    <a href="../logout.php">
+      <i class="mdi mdi-logout"></i>
+      <?php echo isset($_SESSION['langArray']['keluar']) ? htmlspecialchars($_SESSION['langArray']['keluar']) : 'Keluar'; ?>
+    </a>
+  </div>
+</aside>
+
+<!-- ── Main content ──────────────────────────── -->
+<div class="admin-main" id="adminMain">
+
+  <!-- Topbar -->
+  <header class="admin-topbar">
+    <button class="topbar-toggle" id="sidebarToggle" aria-label="Toggle menu">
+      <i class="mdi mdi-menu"></i>
+    </button>
+
+    <div class="topbar-right">
+      <!-- Language selector -->
+      <div class="dropdown">
+        <button class="lang-btn dropdown-toggle" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false">
+          <?php echo $_curLabel; ?>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li><a class="dropdown-item" href="../set_language.php?lang=id">🇮🇩 &nbsp;Indonesia</a></li>
+          <li><a class="dropdown-item" href="../set_language.php?lang=en">🇬🇧 &nbsp;English</a></li>
+          <li><a class="dropdown-item" href="../set_language.php?lang=tr">🇹🇷 &nbsp;Türkçe</a></li>
+          <li><a class="dropdown-item" href="../set_language.php?lang=zh">🇨🇳 &nbsp;中文</a></li>
+        </ul>
+      </div>
+
+      <!-- User dropdown -->
+      <div class="dropdown">
+        <button class="topbar-user-btn dropdown-toggle" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="mdi mdi-account-circle"></i>
+          <?php echo htmlspecialchars($row['nama'] ?? $username); ?>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li><a class="dropdown-item" href="profil.php">
+            <i class="mdi mdi-account-cog-outline me-2"></i>
+            <?php echo isset($_SESSION['langArray']['pengaturan']) ? htmlspecialchars($_SESSION['langArray']['pengaturan']) : 'Pengaturan'; ?>
+          </a></li>
+          <li><a class="dropdown-item" href="../index.php">
+            <i class="mdi mdi-home-outline me-2"></i>
+            <?php echo isset($_SESSION['langArray']['beranda']) ? htmlspecialchars($_SESSION['langArray']['beranda']) : 'Beranda'; ?>
+          </a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item text-danger" href="../logout.php">
+            <i class="mdi mdi-logout me-2"></i>
+            <?php echo isset($_SESSION['langArray']['keluar']) ? htmlspecialchars($_SESSION['langArray']['keluar']) : 'Keluar'; ?>
+          </a></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <!-- Page content rendered between header and footer -->

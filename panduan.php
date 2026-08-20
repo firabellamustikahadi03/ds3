@@ -2,167 +2,144 @@
 include 'controller/c_Riwayat.php';
 $cl = new Riwayat;
 $cl->Count();
+
+session_start();
+include('function.php');
+loadLanguage();
 ?>
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="<?php echo isset($_SESSION['lang'])?htmlspecialchars($_SESSION['lang']):'id'; ?>">
 <head>
-
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="Sistem Pakar Diagnosa Menggunakan Metode Dempster Shafer">
-  <meta name="author" content="My Coding">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Panduan Penggunaan Sistem Pakar Kesehatan Mental ITPLN">
+  <title>Panduan | Sistem Pakar Kesehatan Mental</title>
   <link rel="icon" type="image/png" sizes="16x16" href="assetsA/assets/images/Logo-SP.png">
-
-  <title>Dempster Shafer</title>
-
-  <!-- SEO -->
-  <meta name="keywords" content="Sistem Pakar, Diagnosa Penyakit, Metode Dempster Shafer">
-
-  <!-- Bootstrap core CSS -->
-  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Custom fonts for this template -->
-  <link href="https://fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i" rel="stylesheet">
-
-  <!-- Custom styles for this template -->
-  <link href="assets/css/business-casual.min.css" rel="stylesheet">
-
-  <style type="text/css">
-  #myBtn {
-    display: none;
-    position: fixed;
-    bottom: 20px;
-    right: 30px;
-    z-index: 99;
-    font-size: 18px;
-    border: none;
-    outline: none;
-    background-color: red;
-    color: white;
-    cursor: pointer;
-    padding: 15px;
-    border-radius: 4px;
-  }
-
-  #myBtn:hover {
-    background-color: #555;
-  }
-</style>
-
-<script type="text/javascript">        
-    function tampilkanwaktu(){         //fungsi ini akan dipanggil di bodyOnLoad dieksekusi tiap 1000ms = 1detik    
-    var waktu = new Date();            //membuat object date berdasarkan waktu saat 
-    var sh = waktu.getHours() + "";    //memunculkan nilai jam, //tambahan script + "" supaya variable sh bertipe string sehingga bisa dihitung panjangnya : sh.length    //ambil nilai menit
-    var sm = waktu.getMinutes() + "";  //memunculkan nilai detik    
-    var ss = waktu.getSeconds() + "";  //memunculkan jam:menit:detik dengan menambahkan angka 0 jika angkanya cuma satu digit (0-9)
-    document.getElementById("clock").innerHTML = (sh.length==1?"0"+sh:sh) + ":" + (sm.length==1?"0"+sm:sm) + ":" + (ss.length==1?"0"+ss:ss);
-  }
- 
-</script>
-
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="assets/css/modern.css" rel="stylesheet">
 </head>
-
 <body>
 
-  
+<?php include '_nav.php'; ?>
 
-  <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark py-lg-4" id="mainNav">
-    <div class="container">
-      <a class="navbar-brand text-uppercase text-expanded font-weight-bold d-lg-none" href="#" target="_blank" rel="noopener">Sistem Pakar</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav mx-auto">
-          <li class="nav-item  px-lg-4">
-            <a class="nav-link text-uppercase text-expanded" href="index.php">Beranda
-              <span class="sr-only">(current)</span>
-            </a>
-          </li>
-          <li class="nav-item  px-lg-4">
-            <a class="nav-link text-uppercase text-expanded" href="diagnosa.php">Diagnosa</a>
-          </li>
-          <li class="nav-item active px-lg-4">
-            <a class="nav-link text-uppercase text-expanded" href="panduan.php">Panduan</a>
-          </li>
-          <li class="nav-item px-lg-4">
-            <a class="nav-link text-uppercase text-expanded" href="pasien.php">Data User</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+<!-- ── Page Header ───────────────────────── -->
+<div class="page-header-strip text-center">
+  <div class="container position-relative" style="z-index:2;">
+    <div style="font-size:2.5rem; line-height:1;">📖</div>
+    <h1 class="mt-2">
+      <?php echo isset($_SESSION['langArray']['panduan_diagnosa_penyakit'])
+          ? htmlspecialchars($_SESSION['langArray']['panduan_diagnosa_penyakit'])
+          : 'Panduan Diagnosa Penyakit'; ?>
+    </h1>
+    <p>
+      <?php echo isset($_SESSION['langArray']['panduan_diagnosa_desc'])
+          ? htmlspecialchars($_SESSION['langArray']['panduan_diagnosa_desc'])
+          : 'Cara menggunakan aplikasi sistem pakar kesehatan mental'; ?>
+    </p>
+  </div>
+</div>
 
-  
-  <h1 class="site-heading text-center d-none d-lg-block">
-    <span class="site-heading-upper text-primary mb-3">Cek Kesehatan Mental</span>
-    <span class="site-heading-lower">Mahasiswa ITPLN</span>
-  </h1>
+<!-- ── Guide content ─────────────────────── -->
+<section class="py-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
 
-
-  <section class="page-section about-heading">
-    <div class="container">
-      <img class="img-fluid rounded about-heading-img mb-3 mb-lg-0" src="assets/img/panduan.jpg" alt="">
-      <div class="about-heading-content">
-        <div class="row">
-          <div class="col-xl-9 col-lg-10 mx-auto">
-            <div class="bg-faded rounded p-5">
-              <h2 class="section-heading mb-4">
-                <!-- <span class="section-heading-upper">Strong Coffee, Strong Roots</span> -->
-                <span class="section-heading-lower">Panduan Diagnosa Penyakit</span>
-              </h2>
-              <p style="text-align: justify;">Aplikasi ini merupakan sebuah sistem yang mampu melakukan diagnosa penyakit Kesehatan Mental berdasarkan gejala yang terdapat dalam diri. untuk melakukan diagnosa, terdapat beberapa tatacara dan aturan yang harus dilakukan, adalah sebagai berikut:</p>
-
-              <h3><span class="section-heading-upper">CARA MELAKUKAN DIAGNOSA PENYAKIT</span></h3>
-              <p class="mb-0">Diagnosa penyakit dilakukan dengan cara menginput 2 gejala atau lebih, dikarenakan untuk mendiagnosa sebuah penyakit dibutuhkan minimal 2 buah gejala agar penyakit dapat didiagnosa.</p>
-
-              <br>
-              <h3><span class="section-heading-upper">GEJALA YANG ANDA RASAKAN TIDAK TERDAPAT DI SISTEM</span></h3>
-              <p class="mb-0">Pada saat ini hanya beberapa gejala dan tingkatan penyakit yang dapat didiagnosa oleh sistem, maka dari itu proses diagnosa penyakit hanya bisa dilakukan jika gejala dan penyakit sudah terdaftar pada sistem.</p>
-
-              <br>
-              <h3><span class="section-heading-upper">TUJUAN PEMBUATAN APLIKASI</span></h3>
-              <p class="mb-0">Aplikasi ini dibuat oleh Fira Bella Mustihadi dengan NIM 201831082. Aplikasi bertujuan sebagai syarat kelulusan dari kampus Institut Teknologi PLN, dimana pembuat menggunakan metode <i>Dempster-Shafer</i> sebagai metode untuk melakukan pencarian penyakit, karena diyakini dengan metode ini aka sangat tepat dan mampu memberikan hasil yang baik.</p>
-            </div>
+        <!-- Card 1 – About -->
+        <div class="info-card mb-4">
+          <div class="d-flex align-items-center gap-3 mb-2">
+            <span style="font-size:1.8rem;">🧠</span>
+            <h5 class="fw-700 mb-0">
+              <?php echo isset($_SESSION['langArray']['mengenal_kesehatan_mental'])
+                  ? htmlspecialchars($_SESSION['langArray']['mengenal_kesehatan_mental'])
+                  : 'Mengenal Kesehatan Mental'; ?>
+            </h5>
           </div>
+          <p style="line-height:1.8; color:#555; font-size:.92rem;">
+            <?php echo isset($_SESSION['langArray']['panduan_diagnosa_desc'])
+                ? htmlspecialchars($_SESSION['langArray']['panduan_diagnosa_desc'])
+                : 'Aplikasi ini merupakan sebuah sistem yang mampu melakukan diagnosa penyakit Kesehatan Mental berdasarkan gejala yang terdapat dalam diri. Untuk melakukan diagnosa, terdapat beberapa tatacara dan aturan yang harus dilakukan.'; ?>
+          </p>
         </div>
+
+        <!-- Card 2 – How to diagnose -->
+        <div class="info-card accent mb-4">
+          <div class="d-flex align-items-center gap-3 mb-2">
+            <span style="font-size:1.8rem;">✅</span>
+            <h5 class="fw-700 mb-0">
+              <?php echo isset($_SESSION['langArray']['cara_melakukan_diagnosa_penyakit'])
+                  ? htmlspecialchars($_SESSION['langArray']['cara_melakukan_diagnosa_penyakit'])
+                  : 'Cara Melakukan Diagnosa'; ?>
+            </h5>
+          </div>
+          <p style="line-height:1.8; color:#555; font-size:.92rem;">
+            <?php echo isset($_SESSION['langArray']['cara_melakukan_desc'])
+                ? htmlspecialchars($_SESSION['langArray']['cara_melakukan_desc'])
+                : 'Diagnosa penyakit dilakukan dengan cara menginput 2 gejala atau lebih, dikarenakan untuk mendiagnosa sebuah penyakit dibutuhkan minimal 2 buah gejala agar penyakit dapat didiagnosa.'; ?>
+          </p>
+        </div>
+
+        <!-- Card 3 – Symptoms not in system -->
+        <div class="info-card warning mb-4">
+          <div class="d-flex align-items-center gap-3 mb-2">
+            <span style="font-size:1.8rem;">⚠️</span>
+            <h5 class="fw-700 mb-0">
+              <?php echo isset($_SESSION['langArray']['gejala_yang_anda'])
+                  ? htmlspecialchars($_SESSION['langArray']['gejala_yang_anda'])
+                  : 'Gejala Tidak Terdaftar di Sistem'; ?>
+            </h5>
+          </div>
+          <p style="line-height:1.8; color:#555; font-size:.92rem;">
+            <?php echo isset($_SESSION['langArray']['gejala_yang_anda_desc'])
+                ? htmlspecialchars($_SESSION['langArray']['gejala_yang_anda_desc'])
+                : 'Pada saat ini hanya beberapa gejala dan tingkatan penyakit yang dapat didiagnosa oleh sistem, maka dari itu proses diagnosa penyakit hanya bisa dilakukan jika gejala dan penyakit sudah terdaftar pada sistem.'; ?>
+          </p>
+        </div>
+
+        <!-- Card 4 – Purpose -->
+        <div class="info-card danger mb-5">
+          <div class="d-flex align-items-center gap-3 mb-2">
+            <span style="font-size:1.8rem;">🎓</span>
+            <h5 class="fw-700 mb-0">Tujuan Pembuatan Aplikasi</h5>
+          </div>
+          <p style="line-height:1.8; color:#555; font-size:.92rem;">
+            Aplikasi ini dibuat oleh Fira Bella Mustihadi dengan NIM 201831082.
+            Aplikasi bertujuan sebagai syarat kelulusan dari kampus Institut Teknologi PLN,
+            dimana pembuat menggunakan metode <em>Dempster-Shafer</em> sebagai metode untuk
+            melakukan pencarian penyakit, karena diyakini dengan metode ini akan sangat tepat
+            dan mampu memberikan hasil yang baik.
+          </p>
+        </div>
+
+        <!-- CTA -->
+        <div class="text-center">
+          <a href="diagnosa.php" class="btn-primary-mod">
+            <?php echo isset($_SESSION['langArray']['diagnosa'])
+                ? htmlspecialchars($_SESSION['langArray']['diagnosa'])
+                : 'Mulai Diagnosa'; ?>
+            &nbsp;→
+          </a>
+        </div>
+
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <footer class="footer text-faded text-center py-5">
-    <div class="container">
-      <p style="color: white;">Skripsi : &copy; 2022 <a href="https://www.instagram.com/firbel.el/">Fira Bella Mustikahadi</a></p>
-      <P><a class="nav-link text-uppercase text-expanded" href="login.php">Login</a></P>
-    </div>
-  </footer>
+<!-- ── Footer ────────────────────────────── -->
+<footer class="footer-mod text-center">
+  <div class="container">
+    <p class="footer-brand">Sistem Pakar Kesehatan Mental</p>
+    <p>
+      <small>Skripsi &copy; 2022 &nbsp;
+        <a href="https://www.instagram.com/firbel.el/">Fira Bella Mustikahadi</a>
+        &nbsp;·&nbsp; <a href="login.php">Login Admin</a>
+      </small>
+    </p>
+  </div>
+</footer>
 
-  <!-- Bootstrap core JavaScript -->
-  <script src="assets/vendor/jquery/jquery.min.js"></script>
-  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-  <script type="text/javascript">
-    // When the user scrolls down 20px from the top of the document, show the button
-    window.onscroll = function() {scrollFunction()};
-
-    function scrollFunction() {
-      if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-        document.getElementById("myBtn").style.display = "block";
-      } else {
-        document.getElementById("myBtn").style.display = "none";
-      }
-    }
-
-// When the user clicks on the button, scroll to the top of the document
-function topFunction() {
-  document.body.scrollTop = 0;
-  document.documentElement.scrollTop = 0;
-}
-</script>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>

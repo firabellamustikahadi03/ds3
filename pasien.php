@@ -3,283 +3,149 @@ include 'controller/c_Riwayat.php';
 $cl = new Riwayat;
 $cl->Count();
 
+session_start();
+include('function.php');
+loadLanguage();
+
 include "controller/c_Gejala.php";
-$pt = new Gejala; 
+$pt = new Gejala;
 ?>
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="<?php echo isset($_SESSION['lang'])?htmlspecialchars($_SESSION['lang']):'id'; ?>">
 <head>
-
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="Sistem Pakar Diagnosa Menggunakan Metode Dempster Shafer">
-  <meta name="author" content="My Coding">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Data Pasien – Sistem Pakar Kesehatan Mental ITPLN">
+  <title>Data User | Sistem Pakar Kesehatan Mental</title>
   <link rel="icon" type="image/png" sizes="16x16" href="assetsA/assets/images/Logo-SP.png">
-
-  <title>Dempster Shafer</title>
-
-  <!-- SEO -->
-  <meta name="keywords" content="Sistem Pakar, Diagnosa Penyakit, Metode Dempster Shafer">
-
-  <!-- Bootstrap core CSS -->
-  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Custom fonts for this template -->
-  <link href="https://fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i" rel="stylesheet">
-
-  <!-- Custom styles for this template -->
-  <link href="assets/css/business-casual.min.css" rel="stylesheet">
-  <style>
-  /* The container */
-  .container {
-    position: relative;
-    padding-left: 35px;
-    margin-bottom: 12px;
-    cursor: pointer;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-  }
-
-  /* Hide the browser's default checkbox */
-  .container input {
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
-    height: 0;
-    width: 0;
-  }
-
-  /* Create a custom checkbox */
-  .checkmark {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 25px;
-    width: 25px;
-    background-color: #eee;
-  }
-
-  /* On mouse-over, add a grey background color */
-  .container:hover input ~ .checkmark {
-    background-color: #ccc;
-  }
-
-  /* When the checkbox is checked, add a blue background */
-  .container input:checked ~ .checkmark {
-    background-color: #2196F3;
-  }
-
-  /* Create the checkmark/indicator (hidden when not checked) */
-  .checkmark:after {
-    content: "";
-    position: absolute;
-    display: none;
-  }
-
-  /* Show the checkmark when checked */
-  .container input:checked ~ .checkmark:after {
-    display: block;
-  }
-
-  /* Style the checkmark/indicator */
-  .container .checkmark:after {
-    left: 9px;
-    top: 5px;
-    width: 5px;
-    height: 10px;
-    border: solid white;
-    border-width: 0 3px 3px 0;
-    -webkit-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    transform: rotate(45deg);
-  }
-
-  #myBtn {
-    display: none;
-    position: fixed;
-    bottom: 20px;
-    right: 30px;
-    z-index: 99;
-    font-size: 18px;
-    border: none;
-    outline: none;
-    background-color: red;
-    color: white;
-    cursor: pointer;
-    padding: 15px;
-    border-radius: 4px;
-  }
-
-  #myBtn:hover {
-    background-color: #555;
-  }
-</style>
-
-<script type="text/javascript">        
-    function tampilkanwaktu(){         //fungsi ini akan dipanggil di bodyOnLoad dieksekusi tiap 1000ms = 1detik    
-    var waktu = new Date();            //membuat object date berdasarkan waktu saat 
-    var sh = waktu.getHours() + "";    //memunculkan nilai jam, //tambahan script + "" supaya variable sh bertipe string sehingga bisa dihitung panjangnya : sh.length    //ambil nilai menit
-    var sm = waktu.getMinutes() + "";  //memunculkan nilai detik    
-    var ss = waktu.getSeconds() + "";  //memunculkan jam:menit:detik dengan menambahkan angka 0 jika angkanya cuma satu digit (0-9)
-    document.getElementById("clock").innerHTML = (sh.length==1?"0"+sh:sh) + ":" + (sm.length==1?"0"+sm:sm) + ":" + (ss.length==1?"0"+ss:ss);
-}
-
-</script>
-
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="assets/css/modern.css" rel="stylesheet">
 </head>
-
 <body>
 
-  
+<?php include '_nav.php'; ?>
 
-  
-  <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark py-lg-4" id="mainNav">
-    <div class="container">
-      <a class="navbar-brand text-uppercase text-expanded font-weight-bold d-lg-none" href="#" target="_blank" rel="noopener">Sistem Pakar</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav mx-auto">
-          <li class="nav-item px-lg-4">
-            <a class="nav-link text-uppercase text-expanded" href="index.php">Beranda
-              <span class="sr-only">(current)</span>
+<!-- ── Page Header ───────────────────────── -->
+<div class="page-header-strip text-center">
+  <div class="container position-relative" style="z-index:2;">
+    <div style="font-size:2.5rem; line-height:1;">👤</div>
+    <h1 class="mt-2">
+      <?php echo isset($_SESSION['langArray']['data_user'])
+          ? htmlspecialchars($_SESSION['langArray']['data_user'])
+          : 'Data User'; ?>
+    </h1>
+    <p>
+      <?php echo isset($_SESSION['langArray']['user'])
+          ? htmlspecialchars($_SESSION['langArray']['user'])
+          : 'Daftarkan data diri sebelum memulai diagnosa'; ?>
+    </p>
+  </div>
+</div>
+
+<!-- ── Registration form ─────────────────── -->
+<section class="py-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-6 col-md-8">
+
+        <?php if (isset($_GET['success'])): ?>
+        <div class="card-modern mb-4" style="border-left:5px solid var(--accent); background:rgba(67,217,173,.07);">
+          <div class="d-flex align-items-center gap-3">
+            <span style="font-size:1.8rem;">✅</span>
+            <div>
+              <h6 class="fw-700 mb-0">
+                <?php echo isset($_SESSION['langArray']['tambah_data'])
+                    ? htmlspecialchars($_SESSION['langArray']['tambah_data'])
+                    : 'Data berhasil ditambahkan!'; ?>
+              </h6>
+            </div>
+          </div>
+        </div>
+        <?php endif; ?>
+
+        <div class="card-modern">
+          <div class="text-center mb-4">
+            <span style="font-size:2.5rem;">📝</span>
+            <h4 class="fw-700 mt-2">
+              <?php echo isset($_SESSION['langArray']['tambah_data'])
+                  ? htmlspecialchars($_SESSION['langArray']['tambah_data'])
+                  : 'Tambah Data'; ?>
+            </h4>
+          </div>
+
+          <form method="post" action="ProsesA/t_dokter.php">
+            <input type="hidden" name="tingkat" value="dokter">
+
+            <!-- Jurusan / Prodi -->
+            <div class="mb-3">
+              <label class="form-label-mod" for="nama">
+                <?php echo isset($_SESSION['langArray']['jurusan'])
+                    ? htmlspecialchars($_SESSION['langArray']['jurusan'])
+                    : 'Jurusan'; ?>
+              </label>
+              <input type="text" class="form-mod" name="nama" id="nama"
+                     placeholder="Teknik Informatika" required>
+            </div>
+
+            <!-- Nama / Username -->
+            <div class="mb-3">
+              <label class="form-label-mod" for="username">
+                <?php echo isset($_SESSION['langArray']['nama'])
+                    ? htmlspecialchars($_SESSION['langArray']['nama'])
+                    : 'Nama'; ?>
+              </label>
+              <input type="text" class="form-mod" name="username" id="username"
+                     placeholder="Nama lengkap Anda" required>
+            </div>
+
+            <!-- No. HP -->
+            <div class="mb-4">
+              <label class="form-label-mod" for="nohp">
+                <?php echo isset($_SESSION['langArray']['no_hp'])
+                    ? htmlspecialchars($_SESSION['langArray']['no_hp'])
+                    : 'Nomor Handphone'; ?>
+              </label>
+              <input type="number" class="form-mod" name="nohp" id="nohp"
+                     placeholder="08xxxxxxxxxx">
+            </div>
+
+            <button type="submit" class="btn-primary-mod w-100" style="padding:.85rem;">
+              <?php echo isset($_SESSION['langArray']['tambah_data'])
+                  ? htmlspecialchars($_SESSION['langArray']['tambah_data'])
+                  : 'Simpan Data'; ?>
+            </button>
+          </form>
+        </div>
+
+        <!-- Quick diagnosa link -->
+        <div class="text-center mt-4">
+          <p class="text-muted-mod" style="font-size:.9rem;">
+            Sudah mendaftar?
+            <a href="diagnosa.php" class="fw-700 text-primary-mod text-decoration-none">
+              <?php echo isset($_SESSION['langArray']['diagnosa'])
+                  ? htmlspecialchars($_SESSION['langArray']['diagnosa'])
+                  : 'Mulai Diagnosa'; ?>
+              &nbsp;→
             </a>
-          </li>
-          <li class="nav-item px-lg-4">
-            <a class="nav-link text-uppercase text-expanded" href="diagnosa.php">Diagnosa</a>
-          </li>
-          <li class="nav-item px-lg-4">
-            <a class="nav-link text-uppercase text-expanded" href="panduan.php">Panduan</a>
-          </li>
-          <li class="nav-item  active px-lg-4">
-            <a class="nav-link text-uppercase text-expanded" href="pasien.php">Data User</a>
-          </li>
-        </ul>
+          </p>
+        </div>
+
       </div>
     </div>
-  </nav>
+  </div>
+</section>
 
-  
-  <h1 class="site-heading text-center d-none d-lg-block">
-    <span class="site-heading-upper text-primary mb-3">Cek Kesehatan Mental</span>
-    <span class="site-heading-lower">Mahasiswa ITPLN</span>
-  </h1>
+<!-- ── Footer ────────────────────────────── -->
+<footer class="footer-mod text-center">
+  <div class="container">
+    <p class="footer-brand">Sistem Pakar Kesehatan Mental</p>
+    <p><small>Skripsi &copy; 2022 &nbsp;
+      <a href="https://www.instagram.com/firbel.el/">Fira Bella Mustikahadi</a>
+    </small></p>
+  </div>
+</footer>
 
-
- 
-		
-			
-
-  <section class="page-section about-heading">
-    <br/><br/><br/>
-    <div class="page-wrapper">
-			<!-- ============================================================== -->
-			<!-- Bread crumb and right sidebar toggle -->
-			<!-- ============================================================== -->
-			<div class="page-breadcrumb">
-				<div class="row align-items-center">
-					<div class="col-5">
-						<h4 class="page-title">User</h4>
-					</div>
-				</div>
-			</div>
-		
-      
-
-			<div class="container-fluid">
-			
-      
-      <div class="row">
-					<!-- Column -->
-					<div class="col-lg-8 col-xlg-9 col-md-7">
-						<div class="card">
-							<div class="card-body">
-								<form method="post" class="form-horizontal form-material" action="ProsesA/t_dokter.php">
-									<div class="form-group">
-										<label class="col-md-12">Jurusan</label>
-										<div class="col-md-12">
-											<input type="text" class="form-control form-control-line" name="nama" required="">
-										</div>
-									</div>
-									<div class="form-group">
-										<label class="col-md-12">Nama</label>
-										<div class="col-md-12">
-											<input type="text" class="form-control form-control-line" name="username" required="">
-										</div>
-									</div>
-									<!--<div class="form-group">
-										<label class="col-md-12">Password</label>
-										<div class="col-md-12">
-											<input type="text" class="form-control form-control-line" name="password" required="">
-										</div>
-									</div>
-									<div class="form-group">
-										<label class="col-md-12">Email</label>
-										<div class="col-md-12">
-											<input type="email" class="form-control form-control-line" name="email">
-										</div>
-									</div>-->
-									<div class="form-group">
-										<label class="col-md-12">No HP</label>
-										<div class="col-md-12">
-											<input type="number" class="form-control form-control-line" name="nohp">
-										</div>
-									</div>
-									
-									<input type="hidden" value="dokter" name="tingkat">
-									<div class="form-group">
-										<div class="col-sm-12">
-											<button class="btn btn-success" type="submit">Tambah Data</button>
-										</div>
-									</div>
-								</form>
-							</div>
-						</div>
-					</div>
-					<!-- Column -->
-				</div>
-			</div>
-		</div>
-
-
-	</div>
-  </section>
-
-<footer class="footer text-faded text-center py-5">
-    <div class="container">
-      <p style="color: white;">Skripsi : &copy; 2022 <a href="https://www.instagram.com/firbel.el/">Fira Bella Mustikahadi</a></p>
-    </div>
-  </footer>
-
-<!-- Bootstrap core JavaScript -->
-<script src="assets/vendor/jquery/jquery.min.js"></script>
-<script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-<script type="text/javascript">
-    // When the user scrolls down 20px from the top of the document, show the button
-    window.onscroll = function() {scrollFunction()};
-
-    function scrollFunction() {
-      if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-        document.getElementById("myBtn").style.display = "block";
-      } else {
-        document.getElementById("myBtn").style.display = "none";
-      }
-    }
-
-// When the user clicks on the button, scroll to the top of the document
-function topFunction() {
-  document.body.scrollTop = 0;
-  document.documentElement.scrollTop = 0;
-}
-</script>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>

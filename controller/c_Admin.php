@@ -11,7 +11,7 @@ class Admin
 		$query = mysqli_query($con, "SELECT * FROM admin where id_admin = '$id_admin'");
 		$p = mysqli_fetch_object($query);
 		$this->id_admin = $p->id_admin;
-		$this->tanggal = $p->tanggal;
+		// $this->tanggal = $p->tanggal;
 		$this->nama = $p->nama;
 		$this->username = $p->username;
 		$this->password = $p->password;
@@ -27,7 +27,7 @@ class Admin
 		while($d = mysqli_fetch_array($query))
 		{
 			$data[$i]['id_admin'] = $d['id_admin'];
-			$data[$i]['tanggal'] = $d['tanggal'];
+			// $data[$i]['tanggal'] = $d['tanggal'];
 			$data[$i]['username'] = $d['username'];
 			$data[$i]['nama'] = $d['nama'];
 			$data[$i]['password'] = $d['password'];
@@ -38,12 +38,32 @@ class Admin
 		return $data;
 	}
 
-	function TambahDokter($nama, $username, $password, $email, $nohp, $tingkat, $tanggal)
+	function TambahDokter($nama, $username, $password, $email, $nohp, $tingkat)
 	{
+		// Pastikan koneksi database aman
 		include "../koneksi/koneksi.php";
-		$query = mysqli_query($con, "INSERT INTO admin (nama, username, password, email, nohp, tingkat, tanggal)
-			values('$nama', '$username', '$password', '$email', '$nohp', '$tingkat', '$tanggal')");
+	
+		// Gunakan prepared statements untuk mencegah SQL Injection
+		$stmt = $con->prepare("
+			INSERT INTO admin (nama, username, password, email, nohp, tingkat) 
+			VALUES (?, ?, ?, ?, ?, ?)
+		");
+	
+		// Bind parameter dengan tipe data yang sesuai
+		$stmt->bind_param("ssssss", $nama, $username, $password, $email, $nohp, $tingkat);
+	
+		// Eksekusi query
+		if ($stmt->execute()) {
+			echo "Data berhasil ditambahkan!";
+		} else {
+			echo "Error: " . $stmt->error;
+		}
+	
+		// Tutup statement dan koneksi
+		$stmt->close();
+		$con->close();
 	}
+	
 
 	function UbahDokter($id_admin, $nama, $username, $password, $email, $nohp)
 	{

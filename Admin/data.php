@@ -2,6 +2,7 @@
 
 include "../controller/c_Admin.php";
 $p = new Admin;
+
 ?>
 <!-- ============================================================== -->
 <!-- Page wrapper  -->
@@ -13,11 +14,11 @@ $p = new Admin;
     <div class="page-breadcrumb">
         <div class="row align-items-center">
             <div class="col-5">
-                <h4 class="page-title">Data Diri</h4>
+                <h4 class="page-title"><?php echo isset($_SESSION['langArray']['data_diri']) ? $_SESSION['langArray']['data_diri'] : 'Data Diri'; ?></h4>
                 <div class="d-flex align-items-center">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#">Beranda</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Data Diri</li>
+                        <li class="breadcrumb-item"><a href="#"><?php echo isset($_SESSION['langArray']['beranda']) ? $_SESSION['langArray']['beranda'] : 'Beranda'; ?></a></li>
+                        <li class="breadcrumb-item active" aria-current="page"><?php echo isset($_SESSION['langArray']['data_diri']) ? $_SESSION['langArray']['data_diri'] : 'Data Diri'; ?></li>
                     </ol>
                 </div>
             </div>
@@ -56,19 +57,19 @@ $p = new Admin;
                         <div class="card-body">
                             <form id="myform" method="post" action="../ProsesA/e_profil.php" class="form-horizontal form-material">
                                 <div class="form-group">
-                                    <label class="col-md-12">Nama</label>
+                                    <label class="col-md-12"><?php echo isset($_SESSION['langArray']['nama']) ? $_SESSION['langArray']['nama'] : 'Nama'; ?></label>
                                     <div class="col-md-12">
                                         <input type="text" value="Fira Bella Mustikahadi" class="form-control form-control-line" name="nama">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-12">Email</label>
+                                    <label class="col-md-12"><?php echo isset($_SESSION['langArray']['email']) ? $_SESSION['langArray']['email'] : 'Email'; ?></label>
                                     <div class="col-md-12">
                                         <input type="email" value="firabellamustihadi03@gmail.com" class="form-control form-control-line" name="email">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-12">No HP</label>
+                                    <label class="col-md-12"><?php echo isset($_SESSION['langArray']['ho_hp']) ? $_SESSION['langArray']['no_hp'] : 'Nomor Handphone'; ?></label>
                                     <div class="col-md-12">
                                         <input type="email" value="+62 812-4821-9894" class="form-control form-control-line" name="email">
                                     </div>

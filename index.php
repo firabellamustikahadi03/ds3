@@ -2,186 +2,132 @@
 include 'controller/c_Riwayat.php';
 $cl = new Riwayat;
 $cl->Count();
+
+session_start();
+include('function.php');
+loadLanguage();
 ?>
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="<?php echo isset($_SESSION['lang'])?htmlspecialchars($_SESSION['lang']):'id'; ?>">
 <head>
-
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="Sistem Pakar Diagnosa Menggunakan Metode Dempster Shafer">
-  <meta name="author" content="My Coding">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Sistem Pakar Kesehatan Mental Mahasiswa ITPLN – Dempster-Shafer">
+  <title>Sistem Pakar Kesehatan Mental</title>
   <link rel="icon" type="image/png" sizes="16x16" href="assetsA/assets/images/Logo-SP.png">
-
-  <title>Dempster Shafer</title>
-
-  <!-- SEO -->
-  <meta name="keywords" content="Sistem Pakar, Diagnosa Penyakit, Metode Dempster Shafer">
-
-  <!-- Bootstrap core CSS -->
-  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Custom fonts for this template -->
-  <link href="https://fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i" rel="stylesheet">
-
-  <!-- Custom styles for this template -->
-  <link href="assets/css/business-casual.min.css" rel="stylesheet">
-  <style type="text/css">
-  #myBtn {
-    display: none;
-    position: fixed;
-    bottom: 20px;
-    right: 30px;
-    z-index: 99;
-    font-size: 18px;
-    border: none;
-    outline: none;
-    background-color: red;
-    color: white;
-    cursor: pointer;
-    padding: 15px;
-    border-radius: 4px;
-  }
-
-  #myBtn:hover {
-    background-color: #555;
-  }
-</style>
-
-<script type="text/javascript">        
-    function tampilkanwaktu(){         //fungsi ini akan dipanggil di bodyOnLoad dieksekusi tiap 1000ms = 1detik    
-    var waktu = new Date();            //membuat object date berdasarkan waktu saat 
-    var sh = waktu.getHours() + "";    //memunculkan nilai jam, //tambahan script + "" supaya variable sh bertipe string sehingga bisa dihitung panjangnya : sh.length    //ambil nilai menit
-    var sm = waktu.getMinutes() + "";  //memunculkan nilai detik    
-    var ss = waktu.getSeconds() + "";  //memunculkan jam:menit:detik dengan menambahkan angka 0 jika angkanya cuma satu digit (0-9)
-    document.getElementById("clock").innerHTML = (sh.length==1?"0"+sh:sh) + ":" + (sm.length==1?"0"+sm:sm) + ":" + (ss.length==1?"0"+ss:ss);
-}
-
-</script>
-
-
-
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="assets/css/modern.css" rel="stylesheet">
 </head>
 <body>
 
-  <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark py-lg-4" id="mainNav">
-    <div class="container">
-      <a class="navbar-brand text-uppercase text-expanded font-weight-bold d-lg-none" href="#" target="_blank" rel="noopener">Sistem Pakar</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav mx-auto">
-          <li class="nav-item active px-lg-4">
-            <a class="nav-link text-uppercase text-expanded" href="index.php">Beranda
-              <span class="sr-only">(current)</span>
-            </a>
-          </li>
-          <li class="nav-item px-lg-4">
-            <a class="nav-link text-uppercase text-expanded" href="diagnosa.php">Diagnosa</a>
-          </li>
-          <li class="nav-item px-lg-4">
-            <a class="nav-link text-uppercase text-expanded" href="panduan.php">Panduan</a>
-          </li>
-          <li class="nav-item px-lg-4">
-            <a class="nav-link text-uppercase text-expanded" href="pasien.php">Data User</a>
-          </li>
-        </ul>
+<?php include '_nav.php'; ?>
+
+<!-- ── Hero ──────────────────────────────── -->
+<section class="hero-section text-center">
+  <span class="floating-emoji" style="top:8%;  left:4%;  animation-delay:0s;">🧠</span>
+  <span class="floating-emoji" style="top:15%; right:6%; animation-delay:1.2s;">💚</span>
+  <span class="floating-emoji" style="bottom:22%; left:10%; animation-delay:2.1s;">🌟</span>
+  <span class="floating-emoji" style="bottom:30%; right:4%; animation-delay:.7s;">💆</span>
+  <span class="floating-emoji" style="top:50%; left:45%; animation-delay:1.7s;">✨</span>
+
+  <div class="container position-relative" style="z-index:2;">
+    <span class="pill-label pill-label-white">
+      <?php echo isset($_SESSION['langArray']['mahasiswa']) ? htmlspecialchars($_SESSION['langArray']['mahasiswa']) : 'Mahasiswa ITPLN'; ?>
+    </span>
+    <h1 class="hero-title mt-2">
+      <?php echo isset($_SESSION['langArray']['cek_kesehatan_mental']) ? htmlspecialchars($_SESSION['langArray']['cek_kesehatan_mental']) : 'Cek Kesehatan Mental'; ?>
+    </h1>
+    <p class="hero-subtitle">
+      <?php echo isset($_SESSION['langArray']['kesehatan_mental_desc'])
+          ? htmlspecialchars($_SESSION['langArray']['kesehatan_mental_desc'])
+          : 'Kenali kondisi kesehatan mentalmu dengan sistem pakar berbasis Dempster-Shafer yang akurat dan terpercaya.'; ?>
+    </p>
+    <a href="diagnosa.php" class="btn-hero">
+      <?php echo isset($_SESSION['langArray']['diagnosa']) ? htmlspecialchars($_SESSION['langArray']['diagnosa']) : 'Mulai Diagnosa'; ?>
+      &nbsp;→
+    </a>
+  </div>
+</section>
+
+<!-- ── Feature cards ─────────────────────── -->
+<section class="py-5 mt-3">
+  <div class="container">
+    <span class="pill-label d-block text-center mx-auto" style="width:fit-content;">
+      <?php echo isset($_SESSION['langArray']['mengenal_kesehatan_mental']) ? htmlspecialchars($_SESSION['langArray']['mengenal_kesehatan_mental']) : 'Tentang Aplikasi'; ?>
+    </span>
+    <h2 class="section-title mt-1">
+      <?php echo isset($_SESSION['langArray']['mari_cek']) ? htmlspecialchars($_SESSION['langArray']['mari_cek']) : 'Mari Cek'; ?>
+      <?php echo isset($_SESSION['langArray']['kesehatan_mentalmu']) ? htmlspecialchars($_SESSION['langArray']['kesehatan_mentalmu']) : 'Kesehatan Mentalmu'; ?>
+    </h2>
+    <p class="section-subtitle col-lg-7 mx-auto">
+      <?php echo isset($_SESSION['langArray']['kesehatan_mental_desc'])
+          ? htmlspecialchars($_SESSION['langArray']['kesehatan_mental_desc'])
+          : 'Kesehatan Mental adalah suatu bagian yang berhubungan dengan jiwa, batin, dan watak manusia.'; ?>
+    </p>
+
+    <div class="row g-4">
+      <div class="col-sm-6 col-lg-4">
+        <div class="card-modern feature-card h-100">
+          <span class="feature-icon">🔍</span>
+          <h5 class="fw-700">
+            <?php echo isset($_SESSION['langArray']['diagnosa']) ? htmlspecialchars($_SESSION['langArray']['diagnosa']) : 'Diagnosa Cepat'; ?>
+          </h5>
+          <p>Pilih gejala yang Anda rasakan dan dapatkan hasil diagnosa akurat dalam hitungan detik.</p>
+        </div>
       </div>
-    </div>
-  </nav>
-
-  
-  <h1 class="site-heading text-center d-none d-lg-block">
-    <span class="site-heading-upper text-primary mb-3">Cek Kesehatan Mental</span>
-    <span class="site-heading-lower">Mahasiswa ITPLN</span>
-  </h1>
-
-
-
-  <section class="page-section clearfix">
-    <div class="container">
-      <div class="intro">
-        <img class="intro-img img-fluid mb-3 mb-lg-0 rounded" src="assets/img/home1.jpg" alt="">
-        <div class="intro-text left-0 text-center bg-faded p-5 rounded">
-          <h2 class="section-heading mb-4">
-            <span class="section-heading-upper">Mari Cek</span>
-            <span class="section-heading-lower">Kesehatan Mental Kamu</span>
-          </h2>
-          <div class="intro-button mx-auto">
-            <h2><a class="btn btn-primary btn-xl" href="diagnosa.php" rel="noopener">Diagnosa...</a></h2>
-          </div>
+      <div class="col-sm-6 col-lg-4">
+        <div class="card-modern feature-card h-100">
+          <span class="feature-icon">📊</span>
+          <h5 class="fw-700">Dempster-Shafer</h5>
+          <p>Metode ilmiah Dempster-Shafer untuk kalkulasi derajat kepercayaan diagnosa yang tinggi.</p>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4">
+        <div class="card-modern feature-card h-100">
+          <span class="feature-icon">🌍</span>
+          <h5 class="fw-700">Multibahasa</h5>
+          <p>Tersedia dalam Bahasa Indonesia, English, Türkçe, dan 中文 untuk semua mahasiswa internasional.</p>
         </div>
       </div>
     </div>
-  </section>
 
-  <section class="page-section cta">
-    <div class="container">
-      <div class="row">
-        <div class="col-xl-9 mx-auto">
-          <div class="cta-inner text-center rounded">
-            <h2 class="section-heading mb-4">
-              <span class="section-heading-upper">Mengenal Kesehatan Mental</span>
-            </h2>
-            <p class="mb-0" style="text-align: justify;">
-          Kesehatan Mental adalah suatu bagian yang berhubungan dengan jiwa, batin, dan watak manusia. Kesehatan mental yaitu suatu kondisi dalam keadaan normal, tenteram, dan tenang, sehingga dapat menjalankan aktivitas dan menikmati kehidupan sehari-hari.
-            </p>
-          </div>
-        </div>
-      </div>
+    <div class="text-center mt-5">
+      <a href="diagnosa.php" class="btn-primary-mod">
+        <?php echo isset($_SESSION['langArray']['diagnosa']) ? htmlspecialchars($_SESSION['langArray']['diagnosa']) : 'Diagnosa Sekarang'; ?>
+        &nbsp;→
+      </a>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section class="page-section about-heading">
-    <br/><br/><br/>
-    <div class="container">
-      <div class="about-heading-content">
-        <div class="row">
-          <div class="col-xl-9 col-lg-10 mx-auto">
-            <div class="bg-faded rounded p-5">
-              <h3><center><span class="section-heading-upper">Aplikasi dibuat oleh Fira Bella Mustihadi</span></center></h3>
-            </div>
-          </div>
-        </div>
-      </div>
+<!-- ── About strip ────────────────────────── -->
+<section class="py-5" style="background:linear-gradient(135deg,rgba(108,99,255,.05),rgba(67,217,173,.06));">
+  <div class="container">
+    <div class="card-modern p-5 text-center">
+      <div style="font-size:2.5rem; margin-bottom:1rem;">👩‍💻</div>
+      <h4 class="fw-700">
+        <?php echo isset($_SESSION['langArray']['Aplikasi_dibuat'])
+            ? htmlspecialchars($_SESSION['langArray']['Aplikasi_dibuat'])
+            : 'Aplikasi dibuat oleh Fira Bella Mustikahadi'; ?>
+      </h4>
+      <p class="text-muted-mod mb-0">Institut Teknologi PLN &nbsp;·&nbsp; Metode Dempster-Shafer &nbsp;·&nbsp; 2022</p>
     </div>
-  </section>
+  </div>
+</section>
 
-  <footer class="footer text-faded text-center py-5">
-    <div class="container">
-      <p style="color: white;">Skripsi : &copy; 2022 <a href="https://www.instagram.com/firbel.el/">Fira Bella Mustikahadi</a></p>
-    </div>
-  </footer>
+<!-- ── Footer ────────────────────────────── -->
+<footer class="footer-mod text-center">
+  <div class="container">
+    <div style="font-size:2rem; margin-bottom:.6rem;">🧠</div>
+    <p class="footer-brand">Sistem Pakar Kesehatan Mental</p>
+    <p><small>Skripsi &copy; 2022 &nbsp;
+      <a href="https://www.instagram.com/firbel.el/">Fira Bella Mustikahadi</a>
+      &nbsp;·&nbsp; Institut Teknologi PLN
+    </small></p>
+  </div>
+</footer>
 
-
-
-  <!-- Bootstrap core JavaScript -->
-  <script src="assets/vendor/jquery/jquery.min.js"></script>
-  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-  <script type="text/javascript">
-    // When the user scrolls down 20px from the top of the document, show the button
-    window.onscroll = function() {scrollFunction()};
-
-    function scrollFunction() {
-      if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-        document.getElementById("myBtn").style.display = "block";
-      } else {
-        document.getElementById("myBtn").style.display = "none";
-      }
-    }
-
-// When the user clicks on the button, scroll to the top of the document
-function topFunction() {
-  document.body.scrollTop = 0;
-  document.documentElement.scrollTop = 0;
-}
-</script>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>
