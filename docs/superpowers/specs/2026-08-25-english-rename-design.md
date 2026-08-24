@@ -24,6 +24,9 @@ Dempster-Shafer, tidak ada tampilan UI (teks yang dilihat pasien tetap 4 bahasa 
 | Prefix `ds_` pada tabel inti (gejala, tingkat, dan backup-nya) | **Dipertahankan** — cuma kata setelah prefix yang diterjemahkan (`ds_gejala`→`ds_symptoms`, bukan `symptoms`) |
 | Tabel yang dari awal tidak berprefix (`diagnosa`, `pasien`, `riwayat`, `admin`) | Tetap tanpa prefix setelah rename |
 | Kode level keparahan Turki (`H/O/A/CA`, kolom `m_ho` dst) | Diganti ke Inggris (`Mild/Moderate/Severe/Extreme`) — ini juga mengubah beberapa nilai hardcoded di `c_Diagnosa.php`, bukan cuma nama kolom |
+| Nilai ENUM lama (`H`,`O`,`A`,`CA`) yang sudah tersimpan di baris data | **Wajib di-`UPDATE` eksplisit ke nilai baru SEBELUM `ALTER TABLE` ganti definisi ENUM** — kalau cuma ganti definisi tanpa remap data dulu, MySQL diam-diam mengosongkan/merusak baris yang nilainya tidak cocok ENUM baru |
+| Nama variabel/array-key PHP yang meniru nama kolom (`$r['level_kode']`, `$r['nilai']`, dst di `hitungSubskala()` dan seluruh pemanggilnya) | **Ikut diganti** ke Inggris juga — supaya konsisten, bukan cuma kolom database yang diganti sementara kode PHP masih pakai nama lama |
+| File yang di spec Phase 2 sudah diputuskan **dihapus** (`Admin/tgejala.php`, `Admin/tpenyakit.php`, `Admin/tbasisp.php`, `Admin/ebasisp.php`) | **Di-skip dari rename** — langsung dihapus di proyek ini juga (tidak ada gunanya di-rename dulu baru dihapus lagi 2 minggu kemudian) |
 | Folder dev scratch (`bahan/`, `DATABASE/`, `test perhitungan/`) | Di luar scope — tidak dipakai aplikasi yang jalan, tidak direferensikan file manapun |
 | Urutan eksekusi | 2 lapis terpisah, masing-masing diverifikasi penuh sebelum lanjut: (1) skema database, (2) nama file & folder |
 
@@ -104,6 +107,23 @@ Dempster-Shafer, tidak ada tampilan UI (teks yang dilihat pasien tetap 4 bahasa 
 | `nilai` | `confidence_value` |
 | `persentase` | `confidence_percentage` |
 
+### Array-key PHP yang ikut diganti (bukan kolom database, tapi meniru namanya)
+
+`controller/c_Diagnosa.php::hitungSubskala()` mengembalikan array asosiatif dengan key yang sengaja mirip nama
+kolom lama. Supaya konsisten, key-key ini ikut diganti — dan setiap pemanggil fungsi ini (saat ini `hasil.php`;
+nanti juga `doctor/process_diagnosis.php` begitu Phase 2 dibangun) harus di-update mengikuti:
+
+| Lama | Baru |
+|---|---|
+| `level_kode` | `severity_level` |
+| `level_nama` | `severity_label` |
+| `nilai` | `confidence_value` |
+| `persentase` | `confidence_percentage` |
+| `kett` | `recommendation` |
+
+Nilai yang dikembalikan di key `severity_level` juga ikut berubah dari huruf (`'H'`,`'O'`,`'A'`,`'CA'`) jadi
+kata penuh (`'Mild'`,`'Moderate'`,`'Severe'`,`'Extreme'`) — konsisten dengan perubahan ENUM di database.
+
 ### Kolom — `patients` (dari `pasien`) & `admins` (dari `admin`)
 
 | Lama | Baru |
@@ -148,40 +168,71 @@ File yang namanya sudah Inggris (`index.php`, `login.php`, `logout.php`, `set_la
 
 ### Lapis 1: Skema Database
 
-1. Backup penuh database (`mysqldump`) sebelum mulai — kalau ada yang salah, bisa restore.
-2. `RENAME TABLE` untuk 10 tabel sesuai pemetaan di atas (satu statement, atomik).
-3. `ALTER TABLE ... CHANGE COLUMN` untuk tiap kolom sesuai pemetaan.
-4. Update SEMUA query SQL di codebase (`controller/*.php`, dan file-file yang query langsung tanpa lewat
+1. **Backup penuh database** — `mysqldump -u root spdempstershafer > backup_pre_rename_2026-08-25.sql`,
+   disimpan di luar working directory (bukan di-commit ke git). Ini bukan cuma jaring pengaman abstrak: kalau
+   ada langkah di bawah yang gagal separuh jalan, prosedur pemulihannya konkret adalah **drop database, restore
+   dari file backup ini, mulai ulang dari langkah 1** — bukan cuma "restore" tanpa detail.
+2. `RENAME TABLE` untuk 10 tabel sesuai pemetaan di atas (satu statement gabungan, atomik — bukan 10 statement
+   terpisah, supaya kalau gagal di tengah tidak ada tabel yang ke-rename separuh).
+3. **Remap dulu nilai ENUM lama sebelum ubah definisi kolom** — urutan wajib begini, bukan langsung ALTER:
+   ```sql
+   UPDATE ds_tingkat SET level = CASE level
+     WHEN 'H' THEN 'Mild' WHEN 'O' THEN 'Moderate'
+     WHEN 'A' THEN 'Severe' WHEN 'CA' THEN 'Extreme' END;
+   UPDATE diagnosa_detail SET level_kode = CASE level_kode
+     WHEN 'H' THEN 'Mild' WHEN 'O' THEN 'Moderate'
+     WHEN 'A' THEN 'Severe' WHEN 'CA' THEN 'Extreme' END;
+   ```
+   Baru setelah itu `ALTER TABLE ... MODIFY COLUMN level ENUM('Mild','Moderate','Severe','Extreme')` dst.
+   Verifikasi dengan `SELECT COUNT(*) WHERE level NOT IN (...)` = 0 sebelum lanjut — kalau ada baris yang
+   gagal ke-remap (typo di CASE, atau ternyata ada value lain yang belum kepikiran), STOP, jangan lanjut ALTER.
+4. `ALTER TABLE ... CHANGE COLUMN` untuk sisa kolom (nama, bukan tipe/ENUM) sesuai pemetaan.
+5. Update SEMUA query SQL di codebase (`controller/*.php`, dan file-file yang query langsung tanpa lewat
    controller) yang menyebut nama tabel/kolom lama — dicari sistematis via grep tiap nama lama, dipastikan
    0 sisa referensi sebelum dianggap selesai.
-5. Update value hardcoded `H`/`O`/`A`/`CA` → `Mild`/`Moderate`/`Severe`/`Extreme` di `controller/c_Diagnosa.php`
-   (level map, kode subset) dan di manapun string itu dibandingkan/dipakai.
-6. Jalankan ulang `tests/test_dempster_shafer.php` dan `tests/test_hitung_subskala.php` — harus tetap PASS
-   (nilai hasil hitungan tidak boleh berubah, cuma nama internal yang berubah).
-7. Verifikasi manual end-to-end lewat browser (alur publik `diagnosa.php`/`hasil.php`) sebelum lanjut ke
+6. Ganti array-key PHP di `hitungSubskala()` (`controller/c_Diagnosa.php`) dan semua pemanggilnya sesuai tabel
+   "Array-key PHP" di atas — termasuk `$levelMap` yang isinya `[1=>'H', 2=>'O', ...]` jadi
+   `[1=>'Mild', 2=>'Moderate', ...]`.
+7. Update **komentar/docblock** di `c_Diagnosa.php` yang masih menyebut istilah Turki lama (mis. "1=Hafif,
+   2=Orta, 3=Agir, 4=CokAgir") — biar komentar gak nyesatin karena masih pakai istilah yang kodenya sendiri
+   udah gak pakai lagi.
+8. Jalankan ulang `tests/test_dempster_shafer.php` dan `tests/test_hitung_subskala.php` — kedua file ini juga
+   perlu di-update dulu (assertion yang cek `$r['level_kode'] === 'O'` jadi `$r['severity_level'] === 'Moderate'`,
+   dst) supaya tetap mengetes hal yang sama, bukan sekadar disesuaikan biar hijau. Nilai numerik hasil hitungan
+   (mis. `0.3625`) harus identik dengan sebelum rename — itu yang membuktikan cuma nama yang berubah, logikanya
+   tidak.
+9. Verifikasi manual end-to-end lewat browser (alur publik `diagnosa.php`/`hasil.php`) sebelum lanjut ke
    Lapis 2.
 
 ### Lapis 2: Nama File & Folder
 
-1. Susun daftar lengkap file yang akan di-rename (baca struktur folder aktual).
+1. Susun daftar lengkap file yang akan di-rename (baca struktur folder aktual). **Kecualikan** file yang sudah
+   diputuskan dihapus di spec Phase 2 (`Admin/tgejala.php`, `Admin/tpenyakit.php`, `Admin/tbasisp.php`,
+   `Admin/ebasisp.php`) — file-file itu langsung `git rm`, bukan di-rename.
 2. Untuk tiap file: `git mv` (bukan hapus+buat baru, supaya history git tetap nyambung), lalu grep seluruh
    codebase untuk referensi ke nama lama (`include`, `require`, `<a href>`, `<form action>`,
    `header('Location: ...')`, `.htaccess`) dan update semua.
 3. Verifikasi tiap folder yang sudah di-rename (`admin/`, `doctor/`, `process/`) dengan grep nama lama
    (`Admin/`, `dokter/`, `ProsesA/`) di seluruh codebase — pastikan 0 sisa sebelum lanjut ke folder berikutnya.
-4. Update `.htaccess` kalau ada rule yang menyebut path lama secara eksplisit.
+4. **Baca isi `.htaccess` yang sekarang** dan cek eksplisit apakah ada rule yang menyebut nama file/folder lama
+   secara harfiah (bukan cuma pola generik `.php`) — kalau ada, update; kalau tidak ada, catat "tidak ada yang
+   perlu diubah di .htaccess" di laporan task, bukan dilewatin diam-diam.
 5. Verifikasi manual: klik-klik semua menu di 3 role (publik, admin, dokter) setelah rename selesai, pastikan
    tidak ada link mati.
 
 ## Risiko & Mitigasi
 
-- **Risiko terbesar:** referensi nama file/folder yang kelewat → link mati atau fatal error. Mitigasi: grep
-  verifikasi wajib (bukan opsional) sebelum tiap item dianggap selesai, bukan cuma di akhir.
+- **Risiko tertinggi (data):** rename ENUM tanpa remap data dulu bisa diam-diam merusak baris yang sudah ada
+  (lihat langkah 3, Lapis 1). Mitigasi: urutan wajib UPDATE-dulu-baru-ALTER, plus backup penuh di langkah 1
+  sebagai jaring pengaman terakhir kalau urutan itu tetap gagal karena hal lain yang tak terduga.
+- **Risiko tertinggi (link mati):** referensi nama file/folder yang kelewat → link mati atau fatal error.
+  Mitigasi: grep verifikasi wajib (bukan opsional) sebelum tiap item dianggap selesai, bukan cuma di akhir.
+- **Konsistensi setengah-setengah:** kalau array-key PHP (`level_kode` dst) tidak ikut diganti sementara kolom
+  database sudah, hasil akhirnya rename yang tanggung — sudah diputuskan ikut diganti (lihat tabel keputusan)
+  supaya tidak terjadi ini.
 - **Bookmark/browser history lama** yang mengarah ke URL lama akan mati setelah rename (mis. staf admin yang
   sudah bookmark `Admin/gejala.php`). Ini konsekuensi yang disadari, bukan bug — tidak ada redirect
   kompatibilitas yang dibuat (di luar scope, nambah kompleksitas untuk manfaat kecil di app internal/skripsi).
-- **`.htaccess`** saat ini punya rule generik (rewrite `.php` opsional) — perlu dicek apakah ada rule spesifik
-  yang menyebut nama file lama secara eksplisit.
 
 ## Testing
 
