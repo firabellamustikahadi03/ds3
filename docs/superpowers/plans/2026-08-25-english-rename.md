@@ -64,46 +64,92 @@ old names remaining.
 
 **Files:** none (database operation only)
 
-This MUST happen before Task 3's `ALTER TABLE` on these two columns. Changing an ENUM's allowed values
-without first remapping existing rows silently corrupts any row whose current value isn't in the new list.
+**Revised after a real failure found during execution:** the original version of this task tried to `UPDATE`
+`'H'`/`'O'`/`'A'`/`'CA'` directly to `'Mild'`/`'Moderate'`/`'Severe'`/`'Extreme'` while the column was still
+defined as `ENUM('H','O','A','CA')`. That's impossible — a MySQL ENUM column can only ever hold a value that's
+already a member of its *current* definition, so no `UPDATE` can write a value that isn't in the list yet.
+Depending on `sql_mode`, this either errors outright (if a `UNIQUE` constraint catches the resulting collision,
+as happened on `ds_severity_levels`) or — worse — silently coerces every rejected value to the enum's index-0
+placeholder (empty string), which is exactly the silent corruption this task exists to prevent (this is what
+would have happened on `diagnosis_details.level_kode`, which has no unique constraint to catch it).
 
-- [ ] **Step 1: Remap `ds_severity_levels.level`**
+The correct sequence: widen the column to `VARCHAR` first (accepts any string, including the new English
+words, without touching existing data), remap the values while it's a plain string column, verify, then
+narrow it to the final `ENUM('Mild','Moderate','Severe','Extreme')`. Because this task now also changes the
+column's TYPE (not just its values), it fully completes what Task 3 originally planned to do for these two
+specific columns — Task 3's corresponding `CHANGE COLUMN` lines for `level`/`level_kode` becomes a pure rename
+(the type is already correct by the time Task 3 runs).
+
+- [ ] **Step 1: Widen `ds_severity_levels.level` to accept any string temporarily**
+
+Run:
+```
+"C:\xampp\mysql\bin\mysql.exe" -u root spdempstershafer -e "ALTER TABLE ds_severity_levels MODIFY COLUMN level VARCHAR(20) NOT NULL;"
+```
+
+- [ ] **Step 2: Remap the values**
 
 Run:
 ```
 "C:\xampp\mysql\bin\mysql.exe" -u root spdempstershafer -e "UPDATE ds_severity_levels SET level = CASE level WHEN 'H' THEN 'Mild' WHEN 'O' THEN 'Moderate' WHEN 'A' THEN 'Severe' WHEN 'CA' THEN 'Extreme' END;"
 ```
 
-- [ ] **Step 2: Verify no rows were missed**
+- [ ] **Step 3: Verify no rows were missed**
 
 Run:
 ```
 "C:\xampp\mysql\bin\mysql.exe" -u root spdempstershafer -e "SELECT COUNT(*) FROM ds_severity_levels WHERE level NOT IN ('Mild','Moderate','Severe','Extreme');"
 ```
-Expected: `0`. If not zero, STOP — do not proceed to Task 3 until this is 0 (some row has a value the CASE
+Expected: `0`. If not zero, STOP — do not proceed to Step 4 until this is 0 (some row has a value the CASE
 didn't cover; find it with `SELECT * FROM ds_severity_levels WHERE level NOT IN ('Mild','Moderate','Severe','Extreme');`
-and add a matching `WHEN` before re-running Step 1).
+and add a matching `WHEN` before re-running Step 2 — this is now safe to re-run since the column is a plain
+VARCHAR at this point, no enum-membership constraint to fight).
 
-- [ ] **Step 3: Remap `diagnosis_details.level_kode`**
+- [ ] **Step 4: Narrow back to the final ENUM**
 
 Run:
 ```
+"C:\xampp\mysql\bin\mysql.exe" -u root spdempstershafer -e "ALTER TABLE ds_severity_levels MODIFY COLUMN level ENUM('Mild','Moderate','Severe','Extreme') NOT NULL;"
+```
+
+- [ ] **Step 5: Repeat the same 4-step sequence for `diagnosis_details.level_kode`**
+
+Run in order:
+```
+"C:\xampp\mysql\bin\mysql.exe" -u root spdempstershafer -e "ALTER TABLE diagnosis_details MODIFY COLUMN level_kode VARCHAR(20) NOT NULL;"
 "C:\xampp\mysql\bin\mysql.exe" -u root spdempstershafer -e "UPDATE diagnosis_details SET level_kode = CASE level_kode WHEN 'H' THEN 'Mild' WHEN 'O' THEN 'Moderate' WHEN 'A' THEN 'Severe' WHEN 'CA' THEN 'Extreme' END;"
 ```
-
-- [ ] **Step 4: Verify**
-
-Run:
+Then verify:
 ```
 "C:\xampp\mysql\bin\mysql.exe" -u root spdempstershafer -e "SELECT COUNT(*) FROM diagnosis_details WHERE level_kode NOT IN ('Mild','Moderate','Severe','Extreme');"
 ```
-Expected: `0`. Same STOP-and-investigate rule as Step 2 if not.
+Expected: `0` — same STOP-and-investigate rule as Step 3 if not. Then narrow:
+```
+"C:\xampp\mysql\bin\mysql.exe" -u root spdempstershafer -e "ALTER TABLE diagnosis_details MODIFY COLUMN level_kode ENUM('Mild','Moderate','Severe','Extreme') NOT NULL;"
+```
+
+- [ ] **Step 6: Final verification of both columns' definitions**
+
+Run:
+```
+"C:\xampp\mysql\bin\mysql.exe" -u root spdempstershafer -e "DESCRIBE ds_severity_levels; DESCRIBE diagnosis_details;"
+```
+Expected: `level` shows `enum('Mild','Moderate','Severe','Extreme')` and `level_kode` shows
+`enum('Mild','Moderate','Severe','Extreme')` — column NAMES are still the old `level`/`level_kode` at this
+point (that rename happens in Task 3), only the TYPE/allowed-values changed here.
 
 ---
 
 ### Task 3: Rename columns and change ENUM definitions
 
 **Files:** none (database operation only)
+
+**Note:** Task 2 already changed `ds_severity_levels.level` and `diagnosis_details.level_kode` from
+`ENUM('H','O','A','CA')` to `ENUM('Mild','Moderate','Severe','Extreme')` (it had to, for reasons explained in
+Task 2's revision note — a plain value-remap wasn't possible without a type change). Step 2 below still
+includes those two `CHANGE COLUMN` lines targeting the same `ENUM('Mild','Moderate','Severe','Extreme')` — at
+this point they're pure renames (old column name → new column name, same type), not corruption risks. This is
+expected and correct: don't skip them, they're still needed to fix the column NAMES.
 
 - [ ] **Step 1: `ds_symptoms` (formerly `ds_gejala`)**
 
