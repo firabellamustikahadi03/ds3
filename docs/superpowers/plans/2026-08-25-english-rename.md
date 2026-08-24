@@ -1075,7 +1075,22 @@ Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
 
 ---
 
-### Task 12: Rename `koneksi/` to `connection/`
+### Task 12: ~~Rename `koneksi/` to `connection/`~~ — already done, pulled forward into Layer 1
+
+**This task ran early and is already complete — skip it, nothing left to do here.**
+
+While executing Task 4, the implementer correctly pointed out that `c_Diagnosa.php`'s target code (as written
+in this plan) already assumed the path `connection/connection.php`, which didn't exist yet — this task's
+original position (deep in Layer 2) would have left the app broken for the entire rest of Layer 1. The fix was
+to pull this rename forward and do it immediately after Task 4, before Task 5/6/7 ran, so Layer 1 stayed in a
+working, testable state throughout. That already happened: `koneksi/` → `connection/`, `koneksi.php` →
+`connection.php`, and all 16 then-existing references updated. If you're executing this plan fresh and Task 12
+somehow wasn't pulled forward for you, check first with `ls connection/` and `grep -rn "koneksi" --include="*.php" .`
+— if `connection/connection.php` exists and the grep is clean, this task is done; do the rename now (Steps
+1-4 of the original version below) only if it genuinely wasn't done yet.
+
+<details>
+<summary>Original Task 12 content (for reference / fallback if not already done)</summary>
 
 - [ ] **Step 1: Rename**
 
@@ -1092,32 +1107,24 @@ Run:
 grep -rln "koneksi/koneksi\.php\|\.\./koneksi/koneksi\.php\|koneksi\.php" --include="*.php" .
 ```
 Every `include "koneksi/koneksi.php";` and `include "../koneksi/koneksi.php";` becomes
-`include "connection/connection.php";` / `include "../connection/connection.php";` respectively — this
-pattern appears in nearly every controller file (`c_Symptom.php`, `c_Diagnosa.php`, `c_Pasien.php`,
-`c_Admin.php`, `c_Rekam.php`, `c_Riwayat.php`) and several root/Admin/dokter pages. Note: Task 4 and Task 5
-already updated `c_Diagnosa.php` and `c_Symptom.php` to the new path (they were written that way from the
-start in those tasks) — this task's grep will correctly show 0 remaining references in those two files;
-everything else on the list still needs the literal string replaced.
+`include "connection/connection.php";` / `include "../connection/connection.php";` respectively.
 
 - [ ] **Step 3: Verify zero old references remain**
 
 Run: `grep -rn "koneksi" --include="*.php" .`
-Expected: no matches outside `docs/superpowers/` and the backup `.sql` file.
+Expected: no matches outside `docs/superpowers/`, the backup `.sql` file, and the out-of-scope
+`test perhitungan/` directory (self-contained, has its own local `koneksi.php` copy unrelated to the renamed
+folder).
 
 - [ ] **Step 4: Syntax check and smoke test**
 
 Run `"C:\xampp\php\php.exe" -l` on every file touched. Then load `http://localhost/ds3/index.php` and
-`http://localhost/ds3/diagnosis.php` in a browser — both need a working DB connection to render correctly, so
-if the connection path broke anywhere, one of these two pages will show a blank/broken page.
+`http://localhost/ds3/diagnosis.php` in a browser.
 
-- [ ] **Step 5: Commit**
+</details>
 
-```bash
-git add -A
-git commit -m "refactor: rename koneksi/ to connection/ (Layer 2)
-
-Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
-```
+No separate commit for this task — its changes are folded into Task 9's combined Layer-1 commit, since that's
+when it actually happened chronologically.
 
 ---
 
