@@ -153,19 +153,27 @@ expected and correct: don't skip them, they're still needed to fix the column NA
 
 - [ ] **Step 1: `ds_symptoms` (formerly `ds_gejala`)**
 
+**Correction found during code review:** the original version of this step claimed `nama_id/en/tr/zh` were
+"already-correct" English names and needed no change. That's wrong — only the `_id/_en/_tr/_zh` suffix is
+English; the base word `nama` (Indonesian for "name") is not. These 4 columns need renaming too, added below.
+
 Run:
 ```sql
 ALTER TABLE ds_symptoms
   CHANGE COLUMN kode_gejala symptom_code VARCHAR(10) NOT NULL,
   CHANGE COLUMN subskala subscale ENUM('D','A','S') NOT NULL,
   CHANGE COLUMN item_dass dass_item TINYINT NOT NULL,
+  CHANGE COLUMN nama_id name_id VARCHAR(255) NOT NULL,
+  CHANGE COLUMN nama_en name_en VARCHAR(255) NOT NULL,
+  CHANGE COLUMN nama_tr name_tr VARCHAR(255) NOT NULL,
+  CHANGE COLUMN nama_zh name_zh VARCHAR(255) NOT NULL,
   CHANGE COLUMN m_ho m_mild_moderate DECIMAL(4,2) NOT NULL,
   CHANGE COLUMN m_oa m_moderate_severe DECIMAL(4,2) NOT NULL,
   CHANGE COLUMN m_aca m_severe_extreme DECIMAL(4,2) NOT NULL,
   CHANGE COLUMN tipe_gejala symptom_type TINYINT NOT NULL;
 ```
-(`nama_id/en/tr/zh`, `m_theta`, `is_active`, `created_at`, `id` are unchanged — already-correct names, no
-`CHANGE COLUMN` needed for those.)
+(`m_theta`, `is_active`, `created_at`, `id` are unchanged — already-correct names, no `CHANGE COLUMN` needed
+for those.)
 
 Save this and every block below into one file, e.g. `C:\xampp\htdocs\ds3\_rename_columns.sql`, then run:
 ```
@@ -174,12 +182,18 @@ Save this and every block below into one file, e.g. `C:\xampp\htdocs\ds3\_rename
 
 - [ ] **Step 2: `ds_severity_levels` (formerly `ds_tingkat`)**
 
+Same correction applies here — `nama_id/en/tr/zh` need renaming too, added below.
+
 Append to the same file:
 ```sql
 ALTER TABLE ds_severity_levels
   CHANGE COLUMN subskala subscale ENUM('D','A','S') NOT NULL,
   CHANGE COLUMN level severity_level ENUM('Mild','Moderate','Severe','Extreme') NOT NULL,
   CHANGE COLUMN urutan sort_order TINYINT NOT NULL,
+  CHANGE COLUMN nama_id name_id VARCHAR(100) NOT NULL,
+  CHANGE COLUMN nama_en name_en VARCHAR(100) NOT NULL,
+  CHANGE COLUMN nama_tr name_tr VARCHAR(100) NOT NULL,
+  CHANGE COLUMN nama_zh name_zh VARCHAR(100) NOT NULL,
   CHANGE COLUMN kett recommendation_id MEDIUMTEXT NOT NULL,
   CHANGE COLUMN kett_en recommendation_en MEDIUMTEXT,
   CHANGE COLUMN kett_tr recommendation_tr MEDIUMTEXT,
