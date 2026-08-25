@@ -2,7 +2,7 @@
 
 include "../controller/c_Rekam.php";
 $p = new Rekam;
-$data = $p->TampilRPasien($_GET['patient_id']);
+$data = $p->TampilRPasienDenganRingkasan((int)($_GET['patient_id'] ?? 0));
 ?>
 <!-- ============================================================== -->
 <!-- Page wrapper  -->
@@ -50,10 +50,7 @@ $data = $p->TampilRPasien($_GET['patient_id']);
                                   <tr>
                                     <th style="color: white;" width="5%">ID</th>
                                     <th style="color: white;">Tanggal</th>
-                                    <th style="color: white;">Gejala</th>
-                                    <th style="color: white;">Penyakit</th>
-                                    <th style="color: white;">Nilai</th>
-                                    <th style="color: white;">Persentase</th>
+                                    <th style="color: white;">Hasil (Depresi / Anxiety / Stres)</th>
                                     <th style="color: white;">Aksi</th>
                                 </tr>
                             </thead>
@@ -62,9 +59,6 @@ $data = $p->TampilRPasien($_GET['patient_id']);
                                 if (!isset($data)) {
                                     ?>
                                     <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
@@ -79,12 +73,9 @@ $data = $p->TampilRPasien($_GET['patient_id']);
                                         <tr>
                                             <td><?php print $i; ?></td>
                                             <td><?php print $r['diagnosis_date']; ?></td>
-                                            <td><?php print $r['symptoms_text']; ?></td>
-                                            <td><?php print $r['summary']; ?></td>
-                                            <td><?php print $r['confidence_value']; ?></td>
-                                            <td><?php print $r['confidence_percentage']; ?></td>
+                                            <td><?php print htmlspecialchars($r['ringkasan']); ?></td>
                                             <td>
-
+                                                <a href="diagnosis_detail.php?id=<?php print $r['id']; ?>" class="btn btn-primary btn-xs text-white" title="Detail"><i class="mdi mdi-eye-outline"></i></a>
                                                 <a onclick="if (! confirm('Apakah anda yakin akan menghapus riwayat rekam medis dari daftar ?')) { return false; }" href="../process/delete_record.php?id=<?php print $r['id']; ?>&patient_id=<?php print $_GET['patient_id']; ?>" class="btn btn-danger btn-simple btn-xs text-white" title="Hapus Rekam Medis"><i class="fa fa-times"></i></a>
                                             </td>
                                         </tr>

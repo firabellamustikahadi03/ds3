@@ -1,10 +1,72 @@
 <?php include '_header.php';
 
+include "../controller/c_SeverityLevel.php";
+$sl = new SeverityLevel;
+$sl->TampilSatuData((int)($_GET['id'] ?? 0));
+
+$subscaleLabels = ['D' => 'Depresi', 'A' => 'Anxiety', 'S' => 'Stres'];
 ?>
 <div class="container-fluid">
-  <div class="alert alert-info mt-3">
-    <strong>Sedang dalam migrasi ke DASS-21.</strong><br>
-    Halaman ini akan tersedia kembali dengan struktur data baru pada update berikutnya.
+  <div class="page-breadcrumb">
+    <h4 class="page-title">Edit Tingkat Keparahan</h4>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="severity_levels.php">Tingkat Keparahan</a></li>
+      <li class="breadcrumb-item active">Edit</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <p class="text-muted-mod">
+        Subskala: <strong><?php echo htmlspecialchars($subscaleLabels[$sl->subscale] ?? ''); ?></strong> &middot;
+        Level: <strong><?php echo htmlspecialchars($sl->severity_level ?? ''); ?></strong>
+        (identitas, tidak bisa diubah)
+      </p>
+
+      <form method="post" action="../process/edit_severity_level.php">
+        <input type="hidden" name="id" value="<?php echo (int)($sl->id ?? 0); ?>">
+
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <label class="form-label">Nama (Indonesia)</label>
+            <input type="text" class="form-control" name="name_id" value="<?php echo htmlspecialchars($sl->name_id ?? ''); ?>" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Nama (English)</label>
+            <input type="text" class="form-control" name="name_en" value="<?php echo htmlspecialchars($sl->name_en ?? ''); ?>" required>
+          </div>
+          <div class="col-md-6 mt-3">
+            <label class="form-label">Nama (Türkçe)</label>
+            <input type="text" class="form-control" name="name_tr" value="<?php echo htmlspecialchars($sl->name_tr ?? ''); ?>" required>
+          </div>
+          <div class="col-md-6 mt-3">
+            <label class="form-label">Nama (中文)</label>
+            <input type="text" class="form-control" name="name_zh" value="<?php echo htmlspecialchars($sl->name_zh ?? ''); ?>" required>
+          </div>
+        </div>
+
+        <h6 class="mb-2">Teks Rekomendasi</h6>
+        <div class="mb-3">
+          <label class="form-label">Indonesia</label>
+          <textarea class="form-control" name="recommendation_id" rows="3" required><?php echo htmlspecialchars($sl->recommendation_id ?? ''); ?></textarea>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">English</label>
+          <textarea class="form-control" name="recommendation_en" rows="3" required><?php echo htmlspecialchars($sl->recommendation_en ?? ''); ?></textarea>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Türkçe</label>
+          <textarea class="form-control" name="recommendation_tr" rows="3" required><?php echo htmlspecialchars($sl->recommendation_tr ?? ''); ?></textarea>
+        </div>
+        <div class="mb-4">
+          <label class="form-label">中文</label>
+          <textarea class="form-control" name="recommendation_zh" rows="3" required><?php echo htmlspecialchars($sl->recommendation_zh ?? ''); ?></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary text-white">Simpan</button>
+        <a href="severity_levels.php" class="btn btn-secondary text-white">Batal</a>
+      </form>
+    </div>
   </div>
 </div>
 <?php include '_footer.php'; ?>

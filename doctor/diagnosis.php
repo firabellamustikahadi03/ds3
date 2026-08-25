@@ -1,142 +1,86 @@
-<?php include '_header.php'; 
+<?php include '_header.php';
 
 include "../controller/c_Symptom.php";
 $pt = new Symptom;
 
-include "../controller/c_Rekam.php";
-$p = new Rekam;
-$data = $p->TampilRPasien($_GET['patient_id']);
+$patientId = (int)($_GET['patient_id'] ?? 0);
+
+$subskalaList = [
+    'D' => ['color' => '#6C63FF', 'label' => 'Depresi'],
+    'A' => ['color' => '#FF6584', 'label' => 'Anxiety'],
+    'S' => ['color' => '#43D9AD', 'label' => 'Stres'],
+];
 ?>
-<style>
-/* The container */
-.container {
-    position: relative;
-    padding-left: 35px;
-    margin-bottom: 12px;
-    cursor: pointer;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
-/* Hide the browser's default checkbox */
-.container input {
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
-    height: 0;
-    width: 0;
-}
-
-/* Create a custom checkbox */
-.checkmark {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 25px;
-    width: 25px;
-    background-color: #eee;
-}
-
-/* On mouse-over, add a grey background color */
-.container:hover input ~ .checkmark {
-    background-color: #ccc;
-}
-
-/* When the checkbox is checked, add a blue background */
-.container input:checked ~ .checkmark {
-    background-color: #2196F3;
-}
-
-/* Create the checkmark/indicator (hidden when not checked) */
-.checkmark:after {
-    content: "";
-    position: absolute;
-    display: none;
-}
-
-/* Show the checkmark when checked */
-.container input:checked ~ .checkmark:after {
-    display: block;
-}
-
-/* Style the checkmark/indicator */
-.container .checkmark:after {
-    left: 9px;
-    top: 5px;
-    width: 5px;
-    height: 10px;
-    border: solid white;
-    border-width: 0 3px 3px 0;
-    -webkit-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    transform: rotate(45deg);
-}
-</style>
-<!-- ============================================================== -->
-<!-- Page wrapper  -->
-<!-- ============================================================== -->
 <div class="page-wrapper">
-    <!-- ============================================================== -->
-    <!-- Bread crumb and right sidebar toggle -->
-    <!-- ============================================================== -->
-    <div class="page-breadcrumb">
-        <div class="row align-items-center">
-            <div class="col-5">
-                <h4 class="page-title">Diagnosa</h4>
-                <div class="d-flex align-items-center">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#">Beranda</a></li>
-                        <li class="breadcrumb-item"><a href="patients.php">Pasien</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Diagnosa</li>
-                    </ol>
-                </div>
-            </div>
-            <div class="col-7">
-                <div class="text-right upgrade-btn">
+  <div class="page-breadcrumb">
+    <div class="row align-items-center">
+      <div class="col-5">
+        <h4 class="page-title">Diagnosa DASS-21</h4>
+        <div class="d-flex align-items-center">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Beranda</a></li>
+            <li class="breadcrumb-item"><a href="patients.php">Pasien</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Diagnosa</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
 
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <form method="post" action="process_diagnosis.php" id="doctorDiagnosaForm">
+              <input type="hidden" name="patient_id" value="<?php echo $patientId; ?>">
+
+              <?php foreach ($subskalaList as $sk => $meta):
+                  $sectionData = $pt->TampilBySubskala($sk);
+              ?>
+              <h5 class="fw-700 mt-3 mb-2" style="color:<?php echo $meta['color']; ?>;"><?php echo $meta['label']; ?></h5>
+              <div class="row g-2 mb-2">
+                <?php foreach ($sectionData as $d): ?>
+                <div class="col-md-6 col-xl-4">
+                  <label class="d-flex align-items-center gap-2" style="cursor:pointer;">
+                    <input type="checkbox" name="gejala[]" value="<?php echo (int)$d['id']; ?>" class="symptom-check">
+                    <span><?php echo htmlspecialchars($d['name']); ?></span>
+                  </label>
                 </div>
-            </div>
+                <?php endforeach; ?>
+              </div>
+              <?php endforeach; ?>
+
+              <hr>
+              <div class="d-flex align-items-center justify-content-between">
+                <span><span id="selectedCount">0</span> gejala dipilih (minimal 2)</span>
+                <button type="submit" class="btn btn-danger text-white">Diagnosa</button>
+              </div>
+            </form>
+          </div>
         </div>
+      </div>
     </div>
-    <!-- ============================================================== -->
-    <!-- End Bread crumb and right sidebar toggle -->
-    <!-- ============================================================== -->
-    <!-- ============================================================== -->
-    <!-- Container fluid  -->
-    <!-- ============================================================== -->
-    <div class="container-fluid">
-        <!-- ============================================================== -->
-        <!-- Start Page Content -->
-        <!-- ============================================================== -->
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <div class="alert alert-info">
-                                Fitur diagnosa di panel dokter sedang dalam migrasi ke metode DASS-21 dan akan
-                                tersedia kembali pada update berikutnya. Untuk saat ini, silakan gunakan alur
-                                diagnosa di halaman publik (<a href="../diagnosis.php">/diagnosis.php</a>).
-                            </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- ============================================================== -->
-    <!-- End PAge Content -->
-    <!-- ============================================================== -->
-    <!-- ============================================================== -->
-    <!-- Right sidebar -->
-    <!-- ============================================================== -->
-    <!-- .right-sidebar -->
-    <!-- ============================================================== -->
-    <!-- End Right sidebar -->
-    <!-- ============================================================== -->
+  </div>
 </div>
-<!-- ============================================================== -->
-<!-- End Container fluid  -->
-<!-- ============================================================== -->
+<script>
+(function () {
+  var checks  = document.querySelectorAll('.symptom-check');
+  var counter = document.getElementById('selectedCount');
+  var form    = document.getElementById('doctorDiagnosaForm');
+
+  function updateCount() {
+    counter.textContent = document.querySelectorAll('.symptom-check:checked').length;
+  }
+  checks.forEach(function (c) { c.addEventListener('change', updateCount); });
+
+  form.addEventListener('submit', function (e) {
+    var n = document.querySelectorAll('.symptom-check:checked').length;
+    if (n < 2) {
+      e.preventDefault();
+      alert('Pilih minimal 2 gejala.');
+    }
+  });
+})();
+</script>
 <?php include '_footer.php'; ?>

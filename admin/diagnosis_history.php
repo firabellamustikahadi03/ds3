@@ -2,6 +2,7 @@
 
 include "../controller/c_Riwayat.php";
 $r = new Riwayat;
+$data = $r->TampilSemuaDenganRingkasan();
 ?>
 <!-- ============================================================== -->
 <!-- Page wrapper  -->
@@ -47,22 +48,15 @@ $r = new Riwayat;
                                   <tr>
                                     <th style="color: white;" width="3%">ID</th>
                                     <th style="color: white;" width="14%">Tanggal dan Waktu</th>
-                                    <th style="color: white;">Gejala Penyakit</th>
-                                    <th style="color: white;">Nama Penyakit</th>
-                                    <th style="color: white;" width="9%">Nilai DS</th>
-                                    <th style="color: white;" width="4%">Persentase</th>
+                                    <th style="color: white;">Hasil (Depresi / Anxiety / Stres)</th>
                                     <th style="color: white;" width="4%">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php
-                                $data = $r->TampilSemua();
                                 if (!isset($data)) {
                                     ?>
                                     <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
@@ -77,11 +71,9 @@ $r = new Riwayat;
                                     <tr>
                                         <td><?php print $i; ?></td>
                                         <td><?php print $d['diagnosis_date']; ?></td>
-                                        <td><?php print $d['symptoms_text']; ?></td>
-                                        <td><?php print $d['summary']; ?></td>
-                                        <td><?php print $d['confidence_value']; ?></td>
-                                        <td><?php print $d['confidence_percentage']; ?></td>
+                                        <td><?php print htmlspecialchars($d['ringkasan']); ?></td>
                                         <td>
+                                            <a href="diagnosis_detail.php?id=<?php print $d['id']; ?>&source=diagnosa" class="btn btn-primary btn-xs text-white" title="Detail"><i class="mdi mdi-eye-outline"></i></a>
                                             <a onclick="if (! confirm('Apakah anda yakin akan menghapus riwayat diagnosa dari daftar ?')) { return false; }" href="../process/delete_diagnosis_history.php?id=<?php print $d['id']; ?>" class="btn btn-danger btn-simple btn-xs text-white" title="Hapus Riwayat"><i class="fa fa-times"></i></a>
                                         </td>
                                     </tr>
