@@ -75,7 +75,7 @@ $pt = new Symptom;
           </div>
 
           <form method="post" action="process/add_doctor.php">
-            <input type="hidden" name="tingkat" value="dokter">
+            <input type="hidden" name="role" value="dokter">
 
             <!-- Jurusan / Prodi -->
             <div class="mb-3">
@@ -84,7 +84,7 @@ $pt = new Symptom;
                     ? htmlspecialchars($_SESSION['langArray']['jurusan'])
                     : 'Jurusan'; ?>
               </label>
-              <input type="text" class="form-mod" name="nama" id="nama"
+              <input type="text" class="form-mod" name="name" id="nama"
                      placeholder="Teknik Informatika" required>
             </div>
 
@@ -106,7 +106,7 @@ $pt = new Symptom;
                     ? htmlspecialchars($_SESSION['langArray']['no_hp'])
                     : 'Nomor Handphone'; ?>
               </label>
-              <input type="number" class="form-mod" name="nohp" id="nohp"
+              <input type="number" class="form-mod" name="phone" id="nohp"
                      placeholder="08xxxxxxxxxx">
             </div>
 
