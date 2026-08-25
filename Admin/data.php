@@ -55,7 +55,7 @@ $p = new Admin;
                     ?>
                     <div class="card">
                         <div class="card-body">
-                            <form id="myform" method="post" action="../ProsesA/e_profil.php" class="form-horizontal form-material">
+                            <form id="myform" method="post" action="../process/edit_profile.php" class="form-horizontal form-material">
                                 <div class="form-group">
                                     <label class="col-md-12"><?php echo isset($_SESSION['langArray']['nama']) ? $_SESSION['langArray']['nama'] : 'Nama'; ?></label>
                                     <div class="col-md-12">

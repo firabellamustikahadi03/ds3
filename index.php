@@ -43,7 +43,7 @@ loadLanguage();
           ? htmlspecialchars($_SESSION['langArray']['kesehatan_mental_desc'])
           : 'Kenali kondisi kesehatan mentalmu dengan sistem pakar berbasis Dempster-Shafer yang akurat dan terpercaya.'; ?>
     </p>
-    <a href="diagnosa.php" class="btn-hero">
+    <a href="diagnosis.php" class="btn-hero">
       <?php echo isset($_SESSION['langArray']['diagnosa']) ? htmlspecialchars($_SESSION['langArray']['diagnosa']) : 'Mulai Diagnosa'; ?>
       &nbsp;→
     </a>
@@ -93,7 +93,7 @@ loadLanguage();
     </div>
 
     <div class="text-center mt-5">
-      <a href="diagnosa.php" class="btn-primary-mod">
+      <a href="diagnosis.php" class="btn-primary-mod">
         <?php echo isset($_SESSION['langArray']['diagnosa']) ? htmlspecialchars($_SESSION['langArray']['diagnosa']) : 'Diagnosa Sekarang'; ?>
         &nbsp;→
       </a>

@@ -1,51 +1,51 @@
-<?php 
+<?php
 /**
- * 
+ *
  */
 class Pasien
 {
-	
-	function TampilSemua($id_admin)
+
+	function TampilSemua($admin_id)
 	{
-		include "../koneksi/koneksi.php";
-		$query = mysqli_query($con, "SELECT * FROM pasien WHERE id_admin='$id_admin'");
+		include "../connection/connection.php";
+		$query = mysqli_query($con, "SELECT * FROM patients WHERE admin_id='$admin_id'");
 		$i = 0;
 		while($d = mysqli_fetch_array($query))
 		{
-			$data[$i]['id_pasien'] = $d['id_pasien'];
-			$data[$i]['nama'] = $d['nama'];
-			$data[$i]['tgl_lahir'] = $d['tgl_lahir'];
+			$data[$i]['patient_id'] = $d['id'];
+			$data[$i]['name'] = $d['name'];
+			$data[$i]['date_of_birth'] = $d['date_of_birth'];
 			$i++;
 		}
 		return $data;
 	}
 
-	function Tambah($nama, $tgl_lahir, $id_admin)
+	function Tambah($name, $date_of_birth, $admin_id)
 	{
-		include "../koneksi/koneksi.php";
-		$query = mysqli_query($con, "INSERT INTO pasien (nama, tgl_lahir, id_admin)
-			values('$nama', '$tgl_lahir', '$id_admin')");
+		include "../connection/connection.php";
+		$query = mysqli_query($con, "INSERT INTO patients (name, date_of_birth, admin_id)
+			values('$name', '$date_of_birth', '$admin_id')");
 	}
 
-	function Hapus($id_pasien)
+	function Hapus($patient_id)
 	{
-		include "../koneksi/koneksi.php";
-		$query - mysqli_query($con,"DELETE FROM pasien WHERE id_pasien = '$id_pasien'");
+		include "../connection/connection.php";
+		$query - mysqli_query($con,"DELETE FROM patients WHERE id = '$patient_id'");
 	}
 
-	function Edit($id_pasien, $nama, $tgl_lahir)
+	function Edit($patient_id, $name, $date_of_birth)
 	{
-		include "../koneksi/koneksi.php";
-		$query = mysqli_query($con,"UPDATE pasien set nama = '$nama', tgl_lahir = '$tgl_lahir' WHERE id_pasien = '$id_pasien'");
+		include "../connection/connection.php";
+		$query = mysqli_query($con,"UPDATE patients set name = '$name', date_of_birth = '$date_of_birth' WHERE id = '$patient_id'");
 	}
 
-	function TampilSatuData($id_pasien)
+	function TampilSatuData($patient_id)
 	{
-		include "../koneksi/koneksi.php";
-		$query = mysqli_query($con, "SELECT * FROM pasien WHERE id_pasien = '$id_pasien'");
+		include "../connection/connection.php";
+		$query = mysqli_query($con, "SELECT * FROM patients WHERE id = '$patient_id'");
 		$g = mysqli_fetch_object($query);
-		$this->nama = $g->nama;
-		$this->tgl_lahir = $g->tgl_lahir;
+		$this->name = $g->name;
+		$this->date_of_birth = $g->date_of_birth;
 	}
 }
 error_reporting(0);

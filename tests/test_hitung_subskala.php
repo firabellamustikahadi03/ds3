@@ -2,7 +2,7 @@
 session_start();
 $_SESSION['lang'] = 'id';
 
-require_once __DIR__ . '/../koneksi/koneksi.php';
+require_once __DIR__ . '/../connection/connection.php';
 require_once __DIR__ . '/../controller/c_Diagnosa.php';
 
 $dg = new Diagnosa();
@@ -19,7 +19,7 @@ function assertClose($actual, $expected, $label, &$failures, $tolerance = 0.0001
 
 function fetchIdByKode($con, $kode) {
     $kode = mysqli_real_escape_string($con, $kode);
-    $res  = mysqli_query($con, "SELECT id FROM ds_gejala WHERE kode_gejala = '$kode'");
+    $res  = mysqli_query($con, "SELECT id FROM ds_symptoms WHERE symptom_code = '$kode'");
     $row  = mysqli_fetch_assoc($res);
     return $row ? (int)$row['id'] : null;
 }
@@ -31,20 +31,20 @@ if ($r === null) {
     echo "FAIL: hitungSubskala('D', 3 gejala) returned null\n";
     $failures++;
 } else {
-    $validLevels = ['H', 'O', 'A', 'CA'];
-    if (in_array($r['level_kode'], $validLevels)) {
-        echo "PASS: hitungSubskala('D', ...) returned a valid level ({$r['level_kode']})\n";
+    $validLevels = ['Mild', 'Moderate', 'Severe', 'Extreme'];
+    if (in_array($r['severity_level'], $validLevels)) {
+        echo "PASS: hitungSubskala('D', ...) returned a valid level ({$r['severity_level']})\n";
     } else {
-        echo "FAIL: hitungSubskala('D', ...) returned invalid level_kode {$r['level_kode']}\n";
+        echo "FAIL: hitungSubskala('D', ...) returned invalid level_kode {$r['severity_level']}\n";
         $failures++;
     }
-    if ($r['nilai'] >= 0 && $r['nilai'] <= 1) {
-        echo "PASS: hitungSubskala('D', ...) nilai is within [0,1] ({$r['nilai']})\n";
+    if ($r['confidence_value'] >= 0 && $r['confidence_value'] <= 1) {
+        echo "PASS: hitungSubskala('D', ...) nilai is within [0,1] ({$r['confidence_value']})\n";
     } else {
-        echo "FAIL: hitungSubskala('D', ...) nilai out of range: {$r['nilai']}\n";
+        echo "FAIL: hitungSubskala('D', ...) nilai out of range: {$r['confidence_value']}\n";
         $failures++;
     }
-    if (!empty($r['kett'])) {
+    if (!empty($r['recommendation'])) {
         echo "PASS: hitungSubskala('D', ...) returned non-empty kett\n";
     } else {
         echo "FAIL: hitungSubskala('D', ...) kett is empty\n";
@@ -77,9 +77,9 @@ if ($r3 === null) {
 // combination happens to land on a singleton and never exercises that branch,
 // so this test exists specifically to cover it.
 $d01Id = fetchIdByKode($con, 'G-D01');
-$rowRes = mysqli_query($con, "SELECT m_ho, m_oa, m_aca, m_theta FROM ds_gejala WHERE id = " . (int)$d01Id);
+$rowRes = mysqli_query($con, "SELECT m_mild_moderate, m_moderate_severe, m_severe_extreme, m_theta FROM ds_symptoms WHERE id = " . (int)$d01Id);
 $massRow = mysqli_fetch_assoc($rowRes);
-$evidence = $dg->buildEvidence($massRow['m_ho'], $massRow['m_oa'], $massRow['m_aca'], $massRow['m_theta']);
+$evidence = $dg->buildEvidence($massRow['m_mild_moderate'], $massRow['m_moderate_severe'], $massRow['m_severe_extreme'], $massRow['m_theta']);
 
 // For the current seed data, G-D01 is m_ho=0.35, m_oa=0.30, m_aca=0.20, m_theta=0.15.
 // m_ho dominates, so the top focal set after buildEvidence() is {1,2} (mass 0.35) —
@@ -101,20 +101,20 @@ if ($r4 === null) {
     echo "FAIL: hitungSubskala('D', [G-D01]) returned null\n";
     $failures++;
 } else {
-    $validLevels = ['H', 'O', 'A', 'CA'];
-    if (in_array($r4['level_kode'], $validLevels)) {
-        echo "PASS: hitungSubskala('D', [G-D01]) returned a valid level ({$r4['level_kode']})\n";
+    $validLevels = ['Mild', 'Moderate', 'Severe', 'Extreme'];
+    if (in_array($r4['severity_level'], $validLevels)) {
+        echo "PASS: hitungSubskala('D', [G-D01]) returned a valid level ({$r4['severity_level']})\n";
     } else {
-        echo "FAIL: hitungSubskala('D', [G-D01]) returned invalid level_kode {$r4['level_kode']}\n";
+        echo "FAIL: hitungSubskala('D', [G-D01]) returned invalid level_kode {$r4['severity_level']}\n";
         $failures++;
     }
-    if ($r4['nilai'] >= 0 && $r4['nilai'] <= 1) {
-        echo "PASS: hitungSubskala('D', [G-D01]) nilai is within [0,1] ({$r4['nilai']})\n";
+    if ($r4['confidence_value'] >= 0 && $r4['confidence_value'] <= 1) {
+        echo "PASS: hitungSubskala('D', [G-D01]) nilai is within [0,1] ({$r4['confidence_value']})\n";
     } else {
-        echo "FAIL: hitungSubskala('D', [G-D01]) nilai out of range: {$r4['nilai']}\n";
+        echo "FAIL: hitungSubskala('D', [G-D01]) nilai out of range: {$r4['confidence_value']}\n";
         $failures++;
     }
-    if (!empty($r4['kett'])) {
+    if (!empty($r4['recommendation'])) {
         echo "PASS: hitungSubskala('D', [G-D01]) returned non-empty kett\n";
     } else {
         echo "FAIL: hitungSubskala('D', [G-D01]) kett is empty\n";
@@ -128,12 +128,12 @@ if ($r4 === null) {
     arsort($pig);
     $expectedLevelInt = array_key_first($pig);
     $expectedNilai    = $pig[$expectedLevelInt];
-    $levelMap = [1 => 'H', 2 => 'O', 3 => 'A', 4 => 'CA'];
-    assertClose($r4['nilai'], $expectedNilai, 'hitungSubskala(D, [G-D01]) nilai matches direct pignistic() computation', $failures);
-    if ($r4['level_kode'] === $levelMap[$expectedLevelInt]) {
-        echo "PASS: hitungSubskala('D', [G-D01]) level_kode matches direct pignistic() computation ({$r4['level_kode']})\n";
+    $levelMap = [1 => 'Mild', 2 => 'Moderate', 3 => 'Severe', 4 => 'Extreme'];
+    assertClose($r4['confidence_value'], $expectedNilai, 'hitungSubskala(D, [G-D01]) nilai matches direct pignistic() computation', $failures);
+    if ($r4['severity_level'] === $levelMap[$expectedLevelInt]) {
+        echo "PASS: hitungSubskala('D', [G-D01]) level_kode matches direct pignistic() computation ({$r4['severity_level']})\n";
     } else {
-        echo "FAIL: hitungSubskala('D', [G-D01]) level_kode {$r4['level_kode']} does not match expected {$levelMap[$expectedLevelInt]}\n";
+        echo "FAIL: hitungSubskala('D', [G-D01]) level_kode {$r4['severity_level']} does not match expected {$levelMap[$expectedLevelInt]}\n";
         $failures++;
     }
 }

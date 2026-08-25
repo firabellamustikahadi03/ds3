@@ -1,39 +1,39 @@
-<?php 
+<?php
 /**
- * 
+ *
  */
 class Riwayat
 {
-	
+
 	function TampilSemua()
 	{
-		include "../koneksi/koneksi.php";
-		$query = mysqli_query($con, "SELECT * from diagnosa");
-		
+		include "../connection/connection.php";
+		$query = mysqli_query($con, "SELECT * from diagnoses");
+
 		$i = 0;
 		while($d = mysqli_fetch_array($query))
 		{
-			$data[$i]['id_diagnosa'] = $d['id_diagnosa'];
-			$data[$i]['tanggal'] = $d['tanggal'];
-			$data[$i]['gejala'] = $d['gejala'];
-			$data[$i]['penyakit'] = $d['penyakit'];
-			$data[$i]['nilai'] = $d['nilai'];
-			$data[$i]['persentase'] = $d['persentase'];
+			$data[$i]['id'] = $d['id'];
+			$data[$i]['diagnosis_date'] = $d['diagnosis_date'];
+			$data[$i]['symptoms_text'] = $d['symptoms_text'];
+			$data[$i]['summary'] = $d['summary'];
+			$data[$i]['confidence_value'] = $d['confidence_value'];
+			$data[$i]['confidence_percentage'] = $d['confidence_percentage'];
 			$data[$i]['usernih'] = $d['usernih'];
 			$i++;
 		}
 		return $data;
 	}
 
-	function Hapus($id_diagnosa)
+	function Hapus($id)
 	{
-		include "../koneksi/koneksi.php";
-		$query = mysqli_query($con, "DELETE FROM diagnosa WHERE id_diagnosa = '$id_diagnosa'");
+		include "../connection/connection.php";
+		$query = mysqli_query($con, "DELETE FROM diagnoses WHERE id = '$id'");
 	}
 
 	function Count(){
-		include 'koneksi/koneksi.php';
-		$query = mysqli_query($con, "SELECT COUNT(*) as jum FROM diagnosa");
+		include 'connection/connection.php';
+		$query = mysqli_query($con, "SELECT COUNT(*) as jum FROM diagnoses");
 		$hasil = mysqli_fetch_object($query);
 		$this->jum = $hasil->jum;
 	}

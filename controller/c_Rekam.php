@@ -1,33 +1,33 @@
-<?php 
+<?php
 /**
- * 
+ *
  */
 class Rekam
 {
-	
-	function TampilRPasien($id_pasien)
+
+	function TampilRPasien($patient_id)
 	{
-		include '../koneksi/koneksi.php';
-		$query = mysqli_query($con, "SELECT * FROM riwayat where id_pasien = '$id_pasien'");
+		include '../connection/connection.php';
+		$query = mysqli_query($con, "SELECT * FROM diagnosis_history where patient_id = '$patient_id'");
 		$i = 0;
 		while($d = mysqli_fetch_array($query))
 		{
-			$data[$i]['id_pasien'] = $d['id_pasien'];
-			$data[$i]['id_riwayat'] = $d['id_riwayat'];
-			$data[$i]['tanggal'] = $d['tanggal'];
-			$data[$i]['gejala'] = $d['gejala'];
-			$data[$i]['penyakit'] = $d['penyakit'];
-			$data[$i]['nilai'] = $d['nilai'];
-			$data[$i]['persentase'] = $d['persentase'];
+			$data[$i]['patient_id'] = $d['patient_id'];
+			$data[$i]['id'] = $d['id'];
+			$data[$i]['diagnosis_date'] = $d['diagnosis_date'];
+			$data[$i]['symptoms_text'] = $d['symptoms_text'];
+			$data[$i]['summary'] = $d['summary'];
+			$data[$i]['confidence_value'] = $d['confidence_value'];
+			$data[$i]['confidence_percentage'] = $d['confidence_percentage'];
 			$i++;
 		}
 		return $data;
 	}
 
-	function Hapus($id_riwayat)
+	function Hapus($id)
 	{
-		include '../koneksi/koneksi.php';
-		$query = mysqli_query($con,"DELETE FROM riwayat WHERE id_riwayat = '$id_riwayat'");
+		include '../connection/connection.php';
+		$query = mysqli_query($con,"DELETE FROM diagnosis_history WHERE id = '$id'");
 	}
 }
 error_reporting(0);

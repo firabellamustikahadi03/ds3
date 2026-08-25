@@ -1,20 +1,20 @@
 <?php
 session_start();
-include "koneksi/koneksi.php";
+include "connection/connection.php";
 include('function.php');
 loadLanguage();
 
 if (isset($_SESSION['username'])) {
-    if (@$_SESSION["tingkat"] == "dokter") {
-        header('location:dokter/pasien.php');
+    if (@$_SESSION["role"] == "dokter") {
+        header('location:doctor/patients.php');
         exit;
     }
-    if (@$_SESSION['tingkat'] == "admin") {
-        header('location:Admin/data.php');
+    if (@$_SESSION['role'] == "admin") {
+        header('location:admin/data.php');
         exit;
     }
 }
-require_once('koneksi/koneksi.php');
+require_once('connection/connection.php');
 
 $_navLang  = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'id';
 $_langMap  = ['id' => '🇮🇩 ID', 'en' => '🇬🇧 EN', 'tr' => '🇹🇷 TR', 'zh' => '🇨🇳 ZH'];

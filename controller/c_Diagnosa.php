@@ -1,7 +1,7 @@
 <?php
 /**
  * Dempster-Shafer engine for the DASS-21 model.
- * Frame of discernment per subscale: 1=Hafif, 2=Orta, 3=Agir, 4=CokAgir.
+ * Frame of discernment per subscale: 1=Mild, 2=Moderate, 3=Severe, 4=Extreme.
  * Focal sets are represented as comma-joined, numerically sorted strings, e.g. "1,2".
  */
 class Diagnosa
@@ -33,7 +33,7 @@ class Diagnosa
 
     /**
      * Normalize a combined mass function by dividing out total conflict mass K.
-     * Returns [] if K >= 1 — fully contradictory evidence with no combinable
+     * Returns [] when K >= 1.0 — fully contradictory evidence with no combinable
      * belief left to normalize, rather than attempting to divide by zero.
      */
     function normalizeMass($combined)
@@ -51,16 +51,16 @@ class Diagnosa
     }
 
     /**
-     * Build the initial mass function (evidence) for one DASS-21 gejala row.
+     * Build the initial mass function (evidence) for one DASS-21 symptom row.
      * Zero-mass entries are omitted.
      */
-    function buildEvidence($m_ho, $m_oa, $m_aca, $m_theta)
+    function buildEvidence($m_mild_moderate, $m_moderate_severe, $m_severe_extreme, $m_theta)
     {
         $evidence = [];
-        if ($m_ho > 0)    $evidence['1,2']     = (float)$m_ho;
-        if ($m_oa > 0)    $evidence['2,3']     = (float)$m_oa;
-        if ($m_aca > 0)   $evidence['3,4']     = (float)$m_aca;
-        if ($m_theta > 0) $evidence['1,2,3,4'] = (float)$m_theta;
+        if ($m_mild_moderate > 0)   $evidence['1,2']     = (float)$m_mild_moderate;
+        if ($m_moderate_severe > 0) $evidence['2,3']     = (float)$m_moderate_severe;
+        if ($m_severe_extreme > 0)  $evidence['3,4']     = (float)$m_severe_extreme;
+        if ($m_theta > 0)           $evidence['1,2,3,4'] = (float)$m_theta;
         return $evidence;
     }
 
@@ -83,13 +83,11 @@ class Diagnosa
     }
 
     /**
-     * Legacy name. Converts the old [ [code, mass], ... ] row-pair format to assoc
-     * arrays and delegates to combineMass(). This is NOT a behavioral drop-in for
-     * old row-pair callers: combineMass() uses a different conflict-key convention
-     * ('#CONFLICT#') than the legacy code's '&theta;' sentinel, so callers written
-     * against the old semantics (e.g. hasil.php's old normalization code) will not
-     * work correctly against this. It exists only so the method name still resolves
-     * if referenced somewhere, not so old call sites keep working unmodified.
+     * Legacy name kept as a thin alias in case any old call site still resolves to it.
+     * NOT a behavioral drop-in for the pre-DASS21 row-pair callers: this delegates to
+     * combineMass()'s conflict-key convention ('#CONFLICT#'), not the old '&theta;'
+     * sentinel those callers expected. Exists only so the method name still resolves,
+     * not so old call sites keep working unmodified.
      */
     function perkaliantabel($m, $densitas1, $densitas2, $densitas_baru)
     {
@@ -106,35 +104,35 @@ class Diagnosa
 
     /**
      * Run the full Dempster-Shafer combination for one DASS-21 subscale across
-     * the gejala the patient selected in that subscale.
+     * the symptoms the patient selected in that subscale.
      *
-     * @param string $subskala 'D', 'A', or 'S'
-     * @param int[]  $gejalaIds ids from ds_gejala already filtered to this subskala
-     * @return array|null null when no matching, active gejala found; otherwise
-     *   ['level_kode'=>'H'|'O'|'A'|'CA', 'level_nama'=>string, 'nilai'=>float,
-     *    'persentase'=>string, 'kett'=>string]
+     * @param string $subscale 'D', 'A', or 'S'
+     * @param int[]  $symptomIds ids from ds_symptoms already filtered to this subscale
+     * @return array|null null when no matching, active symptom found; otherwise
+     *   ['severity_level'=>'Mild'|'Moderate'|'Severe'|'Extreme', 'severity_label'=>string,
+     *    'confidence_value'=>float, 'confidence_percentage'=>string, 'recommendation'=>string]
      */
-    function hitungSubskala($subskala, array $gejalaIds)
+    function hitungSubskala($subscale, array $symptomIds)
     {
         if (session_status() === PHP_SESSION_NONE) session_start();
         // __DIR__-relative on purpose: this method is called both from root-level
-        // pages (hasil.php) and from CLI test scripts under tests/, which have
-        // different working directories. A bare "koneksi/koneksi.php" include only
-        // resolves from the first kind of caller.
-        include __DIR__ . '/../koneksi/koneksi.php';
+        // pages (result.php) and from CLI test scripts under tests/, which have
+        // different working directories. A bare "connection/connection.php" include
+        // only resolves from the first kind of caller.
+        include __DIR__ . '/../connection/connection.php';
 
-        if (empty($gejalaIds)) return null;
+        if (empty($symptomIds)) return null;
 
-        $inList = implode(',', array_map('intval', $gejalaIds));
-        $subskalaEsc = mysqli_real_escape_string($con, $subskala);
-        $sql = "SELECT m_ho, m_oa, m_aca, m_theta FROM ds_gejala
-                WHERE id IN ($inList) AND subskala = '$subskalaEsc' AND is_active = 1";
+        $inList = implode(',', array_map('intval', $symptomIds));
+        $subscaleEsc = mysqli_real_escape_string($con, $subscale);
+        $sql = "SELECT m_mild_moderate, m_moderate_severe, m_severe_extreme, m_theta FROM ds_symptoms
+                WHERE id IN ($inList) AND subscale = '$subscaleEsc' AND is_active = 1";
         $result = mysqli_query($con, $sql);
         if (!$result || mysqli_num_rows($result) === 0) return null;
 
         $combined = null;
         while ($row = mysqli_fetch_assoc($result)) {
-            $evidence = $this->buildEvidence($row['m_ho'], $row['m_oa'], $row['m_aca'], $row['m_theta']);
+            $evidence = $this->buildEvidence($row['m_mild_moderate'], $row['m_moderate_severe'], $row['m_severe_extreme'], $row['m_theta']);
             if ($combined === null) {
                 $combined = $evidence;
             } else {
@@ -151,33 +149,33 @@ class Diagnosa
 
         if (count($topElems) === 1) {
             $levelCodeInt = (int)$topElems[0];
-            $nilai        = $topMass;
+            $confidenceValue = $topMass;
         } else {
             $pig = $this->pignistic($combined);
             arsort($pig);
             $levelCodeInt = array_key_first($pig);
-            $nilai        = $pig[$levelCodeInt];
+            $confidenceValue = $pig[$levelCodeInt];
         }
 
-        $levelMap  = [1 => 'H', 2 => 'O', 3 => 'A', 4 => 'CA'];
-        $levelKode = $levelMap[$levelCodeInt];
+        $levelMap = [1 => 'Mild', 2 => 'Moderate', 3 => 'Severe', 4 => 'Extreme'];
+        $severityLevel = $levelMap[$levelCodeInt];
 
         $validLangs = ['id', 'en', 'tr', 'zh'];
         $lang    = (isset($_SESSION['lang']) && in_array($_SESSION['lang'], $validLangs)) ? $_SESSION['lang'] : 'id';
-        $namaCol = 'nama_' . $lang;
-        $kettCol = ($lang === 'id') ? 'kett' : 'kett_' . $lang;
+        $nameCol = 'name_' . $lang;
+        $recommendationCol = 'recommendation_' . $lang;
 
-        $sql = "SELECT $namaCol as nama, IF($kettCol IS NULL OR $kettCol='', kett, $kettCol) as kett
-                FROM ds_tingkat WHERE subskala = '$subskalaEsc' AND level = '$levelKode'";
+        $sql = "SELECT $nameCol as name, IF($recommendationCol IS NULL OR $recommendationCol='', recommendation_id, $recommendationCol) as recommendation
+                FROM ds_severity_levels WHERE subscale = '$subscaleEsc' AND severity_level = '$severityLevel'";
         $result = mysqli_query($con, $sql);
         $obj    = $result ? mysqli_fetch_object($result) : null;
 
         return [
-            'level_kode' => $levelKode,
-            'level_nama' => $obj ? $obj->nama : $levelKode,
-            'nilai'      => $nilai,
-            'persentase' => round($nilai * 100, 2) . '%',
-            'kett'       => $obj ? $obj->kett : '',
+            'severity_level'        => $severityLevel,
+            'severity_label'        => $obj ? $obj->name : $severityLevel,
+            'confidence_value'      => $confidenceValue,
+            'confidence_percentage' => round($confidenceValue * 100, 2) . '%',
+            'recommendation'        => $obj ? $obj->recommendation : '',
         ];
     }
 }

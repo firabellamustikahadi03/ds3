@@ -11,7 +11,7 @@ class Penyakit
     }
 
     function TampilSemua() {
-        include "../koneksi/koneksi.php";
+        include "../connection/connection.php";
         $namaCol = $this->getLangCol('nama');
         $kettCol = $this->getLangCol('kett');
         $query = mysqli_query($con, "SELECT id, $namaCol as nama, IF($kettCol IS NULL OR $kettCol='', kett, $kettCol) as kett FROM ds_penyakit");
@@ -26,7 +26,7 @@ class Penyakit
     }
 
     function InsertPenyakit($nama_id, $nama_en, $nama_tr, $nama_zh, $kett_id, $kett_en, $kett_tr, $kett_zh) {
-        include "../koneksi/koneksi.php";
+        include "../connection/connection.php";
         $nama_id = mysqli_real_escape_string($con, $nama_id);
         $nama_en = mysqli_real_escape_string($con, $nama_en);
         $nama_tr = mysqli_real_escape_string($con, $nama_tr);
@@ -40,12 +40,12 @@ class Penyakit
     }
 
     function HapusPenyakit($id) {
-        include "../koneksi/koneksi.php";
+        include "../connection/connection.php";
         mysqli_query($con, "DELETE FROM ds_penyakit WHERE id = '$id'");
     }
 
     function EditPenyakit($id, $nama_id, $nama_en, $nama_tr, $nama_zh, $kett_id, $kett_en, $kett_tr, $kett_zh) {
-        include "../koneksi/koneksi.php";
+        include "../connection/connection.php";
         $nama_id = mysqli_real_escape_string($con, $nama_id);
         $nama_en = mysqli_real_escape_string($con, $nama_en);
         $nama_tr = mysqli_real_escape_string($con, $nama_tr);
@@ -61,7 +61,7 @@ class Penyakit
     }
 
     function TampilSatuData($id) {
-        include "../koneksi/koneksi.php";
+        include "../connection/connection.php";
         $query = mysqli_query($con, "SELECT * FROM ds_penyakit WHERE id = '$id'");
         $p = mysqli_fetch_object($query);
         $this->id      = $p->id;
@@ -77,7 +77,7 @@ class Penyakit
     }
 
     function TampilAngka() {
-        include "../koneksi/koneksi.php";
+        include "../connection/connection.php";
         $query = mysqli_query($con, "SELECT max(id) as nilai FROM ds_penyakit");
         $g = mysqli_fetch_object($query);
         $this->nilai = $g->nilai;

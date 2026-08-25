@@ -21,26 +21,26 @@ function navActive($page, $match) {
     <div class="collapse navbar-collapse" id="navMain">
       <ul class="navbar-nav mx-auto gap-1">
         <li class="nav-item">
-          <a class="nav-link <?php echo navActive($_navPage,'index')||$_navPage=='beranda.php'?'active':''; ?>"
+          <a class="nav-link <?php echo navActive($_navPage,'index')||$_navPage=='home.php'?'active':''; ?>"
              href="index.php">
             <?php echo isset($_SESSION['langArray']['beranda']) ? $_SESSION['langArray']['beranda'] : 'Beranda'; ?>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link <?php echo navActive($_navPage,'diagnosa'); ?>"
-             href="diagnosa.php">
+          <a class="nav-link <?php echo navActive($_navPage,'diagnosis'); ?>"
+             href="diagnosis.php">
             <?php echo isset($_SESSION['langArray']['diagnosa']) ? $_SESSION['langArray']['diagnosa'] : 'Diagnosa'; ?>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link <?php echo navActive($_navPage,'panduan'); ?>"
-             href="panduan.php">
+          <a class="nav-link <?php echo navActive($_navPage,'guide'); ?>"
+             href="guide.php">
             <?php echo isset($_SESSION['langArray']['panduan']) ? $_SESSION['langArray']['panduan'] : 'Panduan'; ?>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link <?php echo navActive($_navPage,'pasien'); ?>"
-             href="pasien.php">
+          <a class="nav-link <?php echo navActive($_navPage,'patients'); ?>"
+             href="patients.php">
             <?php echo isset($_SESSION['langArray']['data_user']) ? $_SESSION['langArray']['data_user'] : 'Data User'; ?>
           </a>
         </li>
