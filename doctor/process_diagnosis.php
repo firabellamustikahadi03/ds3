@@ -6,16 +6,22 @@ include "../connection/connection.php";
 
 $patientId = (int)($_POST['patient_id'] ?? 0);
 
-$hasDiagnosis     = false;
-$errorMinGejala   = false;
-$results          = ['D' => null, 'A' => null, 'S' => null];
-$selectedSymptoms = [];
+$hasDiagnosis        = false;
+$errorMinGejala      = false;
+$errorInvalidPatient = false;
+$results             = ['D' => null, 'A' => null, 'S' => null];
+$selectedSymptoms    = [];
 
 $subskalaFallback = ['D' => 'Depresi', 'A' => 'Anxiety', 'S' => 'Stres'];
 
 if (isset($_POST['gejala'])) {
     if (count($_POST['gejala']) < 2) {
         $errorMinGejala = true;
+    } elseif (!mysqli_num_rows(mysqli_query($con, "SELECT id FROM patients WHERE id = $patientId"))) {
+        // Guards the diagnosis_history insert below, whose patient_id column has a FK constraint —
+        // without this check, a missing/stale patient_id (e.g. a bookmarked or hand-edited URL) throws
+        // an uncaught mysqli_sql_exception and leaks a stack trace to the browser.
+        $errorInvalidPatient = true;
     } else {
         $hasDiagnosis = true;
 
@@ -103,6 +109,12 @@ if (isset($_POST['gejala'])) {
           <div class="card"><div class="card-body text-center py-5">
             <h5>Pilih minimal 2 gejala.</h5>
             <a href="diagnosis.php?patient_id=<?php echo $patientId; ?>" class="btn btn-primary text-white mt-2">Kembali</a>
+          </div></div>
+
+        <?php elseif ($errorInvalidPatient): ?>
+          <div class="card"><div class="card-body text-center py-5">
+            <h5>Pasien tidak ditemukan.</h5>
+            <a href="patients.php" class="btn btn-primary text-white mt-2">Kembali ke Daftar Pasien</a>
           </div></div>
 
         <?php elseif ($hasDiagnosis): ?>

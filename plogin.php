@@ -28,7 +28,7 @@ if ($cek > 0) {
 	} elseif ($data['role']=="dokter") {
 		$_SESSION['username'] = $username;
 		$_SESSION['role'] = "dokter";
-		//$_SESSION['admin_id'] = $data['id'];
+		$_SESSION['admin_id'] = $data['id'];
 		header('location:doctor/patients.php'); //jika berhasil login, maka masuk ke file yang dituju
 	} else {
 		$_SESSION["error"] = $error;
