@@ -12,7 +12,7 @@ loadLanguage();
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Sistem Pakar Kesehatan Mental Mahasiswa ITPLN – Dempster-Shafer">
+  <meta name="description" content="Sistem Pakar Kesehatan Mental berbasis Dempster-Shafer">
   <title>Sistem Pakar Kesehatan Mental</title>
   <link rel="icon" type="image/png" sizes="16x16" href="assetsA/assets/images/Logo-SP.png">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -33,7 +33,7 @@ loadLanguage();
 
   <div class="container position-relative" style="z-index:2;">
     <span class="pill-label pill-label-white">
-      <?php echo isset($_SESSION['langArray']['mahasiswa']) ? htmlspecialchars($_SESSION['langArray']['mahasiswa']) : 'Mahasiswa ITPLN'; ?>
+      <?php echo isset($_SESSION['langArray']['hero_badge']) ? htmlspecialchars($_SESSION['langArray']['hero_badge']) : 'Sistem Pakar'; ?>
     </span>
     <h1 class="hero-title mt-2">
       <?php echo isset($_SESSION['langArray']['cek_kesehatan_mental']) ? htmlspecialchars($_SESSION['langArray']['cek_kesehatan_mental']) : 'Cek Kesehatan Mental'; ?>
@@ -87,7 +87,7 @@ loadLanguage();
         <div class="card-modern feature-card h-100">
           <span class="feature-icon">🌍</span>
           <h5 class="fw-700">Multibahasa</h5>
-          <p>Tersedia dalam Bahasa Indonesia, English, Türkçe, dan 中文 untuk semua mahasiswa internasional.</p>
+          <p>Tersedia dalam Bahasa Indonesia, English, Türkçe, dan 中文 untuk semua pengguna internasional.</p>
         </div>
       </div>
     </div>

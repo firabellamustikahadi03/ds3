@@ -162,7 +162,7 @@ $_curLabel = isset($_langMap[$_navLang]) ? $_langMap[$_navLang] : '🌐';
 <div class="login-card">
   <div class="login-logo">🧠</div>
   <h1 class="login-title">Sistem Pakar</h1>
-  <p class="login-subtitle">Kesehatan Mental Mahasiswa ITPLN</p>
+  <p class="login-subtitle">Kesehatan Mental</p>
 
   <?php if (isset($_SESSION["error"])): ?>
   <div class="error-msg">

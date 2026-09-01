@@ -8,7 +8,7 @@ return [
     'panduan' => 'Rehber',
     'beranda' => 'Ana Sayfa',
     'Data User' => 'Kullanıcı Verileri',
-    'mahasiswa' => 'Öğrenci',
+    'hero_badge' => 'Uzman Sistem',
     'mari_cek' => 'Ruh Sağlığınızı',
     'kesehatan_mentalmu' => 'Kontrol Edelim',
     'mengenal_kesehatan_mental' => 'Ruh Sağlığını Tanıyın',

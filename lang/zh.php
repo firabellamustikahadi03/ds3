@@ -8,7 +8,7 @@ return [
     'panduan' => '指南',
     'beranda' => '首页',
     'Data User' => '用户数据',
-    'mahasiswa' => '大学生',
+    'hero_badge' => '专家系统',
     'mari_cek' => '检测您的',
     'kesehatan_mentalmu' => '心理健康',
     'mengenal_kesehatan_mental' => '了解心理健康',

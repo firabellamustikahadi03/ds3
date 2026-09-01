@@ -8,7 +8,7 @@ return [
     'panduan' => 'Guide',
     'beranda' => 'Home',
     'Data User' => 'User Data',
-    'mahasiswa' => 'Students',
+    'hero_badge' => 'Expert System',
     'mari_cek' => 'Check Your',
     'kesehatan_mentalmu' => 'Mental Health',
     'mengenal_kesehatan_mental' => 'About Mental Health',
