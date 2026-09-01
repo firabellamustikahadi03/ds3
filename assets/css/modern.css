@@ -279,7 +279,7 @@ a { transition: color .2s; }
 .page-header-strip {
   background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 60%, var(--accent) 100%);
   color: #fff;
-  padding: 3.5rem 0 2.5rem;
+  padding: 5rem 0 3.5rem;
   position: relative;
   overflow: hidden;
 }
