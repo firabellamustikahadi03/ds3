@@ -110,9 +110,8 @@ loadLanguage();
             dengan teori <em>Dempster-Shafer</em> untuk mengolah bukti dari gejala yang dipilih
             menjadi tingkat keparahan yang terukur pada setiap subskala. Dengan pendekatan ini,
             aplikasi diharapkan dapat memudahkan psikolog maupun tenaga kesehatan mental lainnya
-            dalam melakukan deteksi awal terhadap kondisi depresi, kecemasan, dan stres pada
-            mahasiswa — sehingga penanganan lebih lanjut dapat diberikan lebih cepat dan tepat
-            sasaran.
+            dalam melakukan deteksi awal terhadap kondisi depresi, kecemasan, dan stres —
+            sehingga penanganan lebih lanjut dapat diberikan lebih cepat dan tepat sasaran.
           </p>
         </div>
 
