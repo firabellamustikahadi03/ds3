@@ -1,6 +1,9 @@
   <!-- Admin footer -->
   <div class="admin-footer">
-    Aplikasi by <a href="https://www.instagram.com/firbel.el/">Fira Bella Mustikahadi</a>
+    <?php echo isset($_SESSION['langArray']['aplikasi_by'])
+        ? htmlspecialchars($_SESSION['langArray']['aplikasi_by'])
+        : 'Aplikasi by'; ?>
+    <a href="https://www.instagram.com/firbel.el/">Fira Bella Mustikahadi</a>
   </div>
 
 </div><!-- /.admin-main -->

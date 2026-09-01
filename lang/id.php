@@ -23,6 +23,7 @@ return [
     'pilih_min_2_hint' => 'Silakan kembali dan pilih setidaknya 2 gejala.',
     'belum_diagnosa' => 'Belum ada diagnosa dilakukan',
     'silakan_pilih_gejala' => 'Silakan pilih gejala terlebih dahulu.',
+    'aplikasi_by' => 'Aplikasi by',
     'kesehatan_mental_desc' => 'Kesehatan Mental adalah suatu bagian yang berhubungan dengan jiwa, batin, dan watak manusia. Kesehatan mental yaitu suatu kondisi dalam keadaan normal, tenteram, dan tenang, sehingga dapat menjalankan aktivitas dan menikmati kehidupan sehari-hari.',
     'Aplikasi_dibuat' => 'Aplikasi dibuat oleh Fira Bella Mustikahadi',
     'judul_pilih_gejala' => 'Silahkan pilih apa yang Anda rasakan',

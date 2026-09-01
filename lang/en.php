@@ -23,6 +23,7 @@ return [
     'pilih_min_2_hint' => 'Please go back and select at least 2 symptoms.',
     'belum_diagnosa' => 'No diagnosis has been performed yet',
     'silakan_pilih_gejala' => 'Please select symptoms first.',
+    'aplikasi_by' => 'App by',
     'kesehatan_mental_desc' => 'Mental health refers to conditions related to the mind, spirit, and character of a person. Mental health is a condition of being normal, peaceful, and calm, enabling one to carry out activities and enjoy daily life.',
     'Aplikasi_dibuat' => 'Application created by Fira Bella Mustikahadi',
     'judul_pilih_gejala' => 'Please select what you are feeling',

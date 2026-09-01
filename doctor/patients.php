@@ -74,6 +74,8 @@ $p = new Pasien;
                                         <td><?php print $d['name']; ?></td>
                                         <td><?php print $d['date_of_birth']; ?></td>
                                         <td>
+                                            <a href="diagnosis.php?patient_id=<?php print $d['patient_id']; ?>" class="btn btn-danger btn-simple btn-xs text-white" title="Diagnosa Pasien"><i class="mdi mdi-stethoscope"></i></a>
+
                                             <a href="patient_history.php?patient_id=<?php print $d['patient_id']; ?>" class="btn btn-info btn-simple btn-xs text-white" title="Lihat Diagnosa Pasien"><i class="mdi mdi-eye"></i></a>
 
                                             <a href="edit_patient.php?patient_id=<?php print $d['patient_id']; ?>" class="btn btn-info btn-simple btn-xs text-white" title="Edit Data Pasien"><i class="mdi mdi-lead-pencil"></i></a>

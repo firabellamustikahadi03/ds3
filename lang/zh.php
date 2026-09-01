@@ -23,6 +23,7 @@ return [
     'pilih_min_2_hint' => '请返回并至少选择 2 个症状。',
     'belum_diagnosa' => '尚未进行诊断',
     'silakan_pilih_gejala' => '请先选择症状。',
+    'aplikasi_by' => '开发者：',
     'kesehatan_mental_desc' => '心理健康是与人的心灵、精神和性格相关的部分。心理健康是指一种正常、平和、宁静的状态，使人能够开展活动并享受日常生活。',
     'Aplikasi_dibuat' => '应用程序由 Fira Bella Mustikahadi 创建',
     'judul_pilih_gejala' => '请选择您的感受',

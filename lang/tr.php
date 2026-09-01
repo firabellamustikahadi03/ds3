@@ -23,6 +23,7 @@ return [
     'pilih_min_2_hint' => 'Lütfen geri dönün ve en az 2 belirti seçin.',
     'belum_diagnosa' => 'Henüz bir teşhis yapılmadı',
     'silakan_pilih_gejala' => 'Lütfen önce belirtileri seçin.',
+    'aplikasi_by' => 'Geliştirici:',
     'kesehatan_mental_desc' => 'Ruh sağlığı, ruhla, zihinle ve insanın karakteriyle ilgili olan bir kısımdır. Ruh sağlığı, aktiviteleri gerçekleştirebilmeniz ve günlük hayattan keyif alabilmeniz için normal, huzurlu ve sakin olma durumudur.',
     'Aplikasi_dibuat' => 'Fira Bella Mustikahadi tarafından oluşturulan uygulama',
     'judul_pilih_gejala' => 'Lütfen hissettiklerinizi seçin',
