@@ -111,7 +111,6 @@ loadLanguage();
             ? htmlspecialchars($_SESSION['langArray']['Aplikasi_dibuat'])
             : 'Aplikasi dibuat oleh Fira Bella Mustikahadi'; ?>
       </h4>
-      <p class="text-muted-mod mb-0">Institut Teknologi PLN &nbsp;·&nbsp; Metode Dempster-Shafer &nbsp;·&nbsp; 2022</p>
     </div>
   </div>
 </section>
