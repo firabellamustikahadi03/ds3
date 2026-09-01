@@ -12,7 +12,7 @@ loadLanguage();
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Panduan Penggunaan Sistem Pakar Kesehatan Mental ITPLN">
+  <meta name="description" content="Panduan Penggunaan Sistem Pakar Kesehatan Mental">
   <title>Panduan | Sistem Pakar Kesehatan Mental</title>
   <link rel="icon" type="image/png" sizes="16x16" href="assetsA/assets/images/Logo-SP.png">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -57,8 +57,8 @@ loadLanguage();
             </h5>
           </div>
           <p style="line-height:1.8; color:#555; font-size:.92rem;">
-            <?php echo isset($_SESSION['langArray']['panduan_diagnosa_desc'])
-                ? htmlspecialchars($_SESSION['langArray']['panduan_diagnosa_desc'])
+            <?php echo isset($_SESSION['langArray']['mengenal_kesehatan_mental_desc'])
+                ? htmlspecialchars($_SESSION['langArray']['mengenal_kesehatan_mental_desc'])
                 : 'Aplikasi ini merupakan sebuah sistem yang mampu melakukan diagnosa penyakit Kesehatan Mental berdasarkan gejala yang terdapat dalam diri. Untuk melakukan diagnosa, terdapat beberapa tatacara dan aturan yang harus dilakukan.'; ?>
           </p>
         </div>
@@ -101,17 +101,16 @@ loadLanguage();
         <div class="info-card danger mb-5">
           <div class="d-flex align-items-center gap-3 mb-2">
             <span style="font-size:1.8rem;">🎓</span>
-            <h5 class="fw-700 mb-0">Tujuan Pembuatan Aplikasi</h5>
+            <h5 class="fw-700 mb-0">
+              <?php echo isset($_SESSION['langArray']['tujuan_aplikasi'])
+                  ? htmlspecialchars($_SESSION['langArray']['tujuan_aplikasi'])
+                  : 'Tujuan Pembuatan Aplikasi'; ?>
+            </h5>
           </div>
           <p style="line-height:1.8; color:#555; font-size:.92rem;">
-            Aplikasi ini dikembangkan oleh Fira Bella Mustikahadi. Tujuan utama pengembangan
-            aplikasi ini adalah mengimplementasikan metode
-            <em>DASS-21 (Depression Anxiety Stress Scale)</em> secara sistematis, dipadukan
-            dengan teori <em>Dempster-Shafer</em> untuk mengolah bukti dari gejala yang dipilih
-            menjadi tingkat keparahan yang terukur pada setiap subskala. Dengan pendekatan ini,
-            aplikasi diharapkan dapat memudahkan psikolog maupun tenaga kesehatan mental lainnya
-            dalam melakukan deteksi awal terhadap kondisi depresi, kecemasan, dan stres —
-            sehingga penanganan lebih lanjut dapat diberikan lebih cepat dan tepat sasaran.
+            <?php echo isset($_SESSION['langArray']['tujuan_aplikasi_desc'])
+                ? htmlspecialchars($_SESSION['langArray']['tujuan_aplikasi_desc'])
+                : 'Aplikasi ini dikembangkan oleh Fira Bella Mustikahadi. Tujuan utama pengembangan aplikasi ini adalah mengimplementasikan metode DASS-21 (Depression Anxiety Stress Scale) secara sistematis, dipadukan dengan teori Dempster-Shafer untuk mengolah bukti dari gejala yang dipilih menjadi tingkat keparahan yang terukur pada setiap subskala. Dengan pendekatan ini, aplikasi diharapkan dapat memudahkan psikolog maupun tenaga kesehatan mental lainnya dalam melakukan deteksi awal terhadap kondisi depresi, kecemasan, dan stres — sehingga penanganan lebih lanjut dapat diberikan lebih cepat dan tepat sasaran.'; ?>
           </p>
         </div>
 
@@ -137,7 +136,9 @@ loadLanguage();
     <p>
       <small>Skripsi &copy; 2022 &nbsp;
         <a href="https://www.instagram.com/firbel.el/">Fira Bella Mustikahadi</a>
-        &nbsp;·&nbsp; <a href="login.php">Login Admin</a>
+        &nbsp;·&nbsp; <a href="login.php"><?php echo isset($_SESSION['langArray']['login_admin'])
+            ? htmlspecialchars($_SESSION['langArray']['login_admin'])
+            : 'Login Admin'; ?></a>
       </small>
     </p>
   </div>

@@ -108,7 +108,7 @@ if (isset($_POST['gejala'])) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Hasil Diagnosa Kesehatan Mental – Sistem Pakar ITPLN">
+  <meta name="description" content="Hasil Diagnosa Kesehatan Mental – Sistem Pakar">
   <title>Hasil Diagnosa | Sistem Pakar</title>
   <link rel="icon" type="image/png" sizes="16x16" href="assetsA/assets/images/Logo-SP.png">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -146,7 +146,11 @@ if (isset($_POST['gejala'])) {
                   ? htmlspecialchars($_SESSION['langArray']['minimal_pilih'])
                   : 'Pilih minimal 2 gejala'; ?>
             </h4>
-            <p class="text-muted-mod">Silakan kembali dan pilih setidaknya 2 gejala.</p>
+            <p class="text-muted-mod">
+              <?php echo isset($_SESSION['langArray']['pilih_min_2_hint'])
+                  ? htmlspecialchars($_SESSION['langArray']['pilih_min_2_hint'])
+                  : 'Silakan kembali dan pilih setidaknya 2 gejala.'; ?>
+            </p>
             <a href="diagnosis.php" class="btn-primary-mod d-inline-block mt-3">
               ← <?php echo isset($_SESSION['langArray']['diagnosa'])
                   ? htmlspecialchars($_SESSION['langArray']['diagnosa'])
@@ -227,8 +231,16 @@ if (isset($_POST['gejala'])) {
           <!-- No POST – direct access -->
           <div class="card-modern text-center py-5">
             <div style="font-size:3.5rem;">🔍</div>
-            <h4 class="fw-700 mt-3">Belum ada diagnosa dilakukan</h4>
-            <p class="text-muted-mod">Silakan pilih gejala terlebih dahulu.</p>
+            <h4 class="fw-700 mt-3">
+              <?php echo isset($_SESSION['langArray']['belum_diagnosa'])
+                  ? htmlspecialchars($_SESSION['langArray']['belum_diagnosa'])
+                  : 'Belum ada diagnosa dilakukan'; ?>
+            </h4>
+            <p class="text-muted-mod">
+              <?php echo isset($_SESSION['langArray']['silakan_pilih_gejala'])
+                  ? htmlspecialchars($_SESSION['langArray']['silakan_pilih_gejala'])
+                  : 'Silakan pilih gejala terlebih dahulu.'; ?>
+            </p>
             <a href="diagnosis.php" class="btn-primary-mod d-inline-block mt-3">
               <?php echo isset($_SESSION['langArray']['diagnosa'])
                   ? htmlspecialchars($_SESSION['langArray']['diagnosa'])
