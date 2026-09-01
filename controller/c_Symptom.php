@@ -66,6 +66,26 @@ class Symptom
         return $data;
     }
 
+    /**
+     * All active symptoms in official DASS-21 item order (1-21), flat — no subscale grouping.
+     * Used by the public diagnosis form so respondents aren't shown which category each item
+     * belongs to (matches how the DASS-21 instrument is meant to be administered: subscale
+     * membership is used for scoring afterward, not shown to the respondent while answering).
+     */
+    function TampilSemuaAktif() {
+        include __DIR__ . "/../connection/connection.php";
+        $col = $this->getLangCol();
+        $query = mysqli_query($con, "SELECT id, $col as name FROM ds_symptoms
+                                      WHERE is_active = 1 ORDER BY dass_item");
+        $i = 0;
+        while ($d = mysqli_fetch_array($query)) {
+            $data[$i]['id']   = $d['id'];
+            $data[$i]['name'] = $d['name'];
+            $i++;
+        }
+        return $data;
+    }
+
     /** All 21 symptoms grouped/ordered by subscale + item number, with mass values and active status — for the admin list page. */
     function TampilSemuaAdmin() {
         include "../connection/connection.php";

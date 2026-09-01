@@ -50,22 +50,14 @@ $pt = new Symptom;
       <form method="post" action="result.php" id="diagnosaForm" novalidate>
 
         <?php
-        $subskalaList = [
-            'D' => ['color' => '#6C63FF', 'labelKey' => 'subskala_depresi', 'fallback' => 'Depresi'],
-            'A' => ['color' => '#FF6584', 'labelKey' => 'subskala_anxiety', 'fallback' => 'Anxiety'],
-            'S' => ['color' => '#43D9AD', 'labelKey' => 'subskala_stres',   'fallback' => 'Stres'],
-        ];
+        // Flat list, official DASS-21 item order (1-21) — subscale membership is intentionally
+        // not shown here so it doesn't bias which symptoms a respondent picks. It's still used
+        // for scoring afterward (result.php re-derives it per symptom id from the database).
+        $allSymptoms = $pt->TampilSemuaAktif();
         ?>
 
-        <?php foreach ($subskalaList as $sk => $meta):
-            $sectionData = $pt->TampilBySubskala($sk);
-            $label = isset($_SESSION['langArray'][$meta['labelKey']])
-                ? htmlspecialchars($_SESSION['langArray'][$meta['labelKey']])
-                : $meta['fallback'];
-        ?>
-        <h5 class="fw-700 mt-4 mb-3" style="color:<?php echo $meta['color']; ?>;"><?php echo $label; ?></h5>
         <div class="row g-3 mb-2">
-          <?php foreach ($sectionData as $d): ?>
+          <?php foreach ($allSymptoms as $d): ?>
           <div class="col-md-6 col-xl-4">
             <label class="symptom-label" for="gejala_<?php echo (int)$d['id']; ?>">
               <input type="checkbox"
@@ -73,13 +65,11 @@ $pt = new Symptom;
                      value="<?php echo (int)$d['id']; ?>"
                      id="gejala_<?php echo (int)$d['id']; ?>"
                      class="symptom-check">
-              <span class="symptom-dot" style="background:<?php echo $meta['color']; ?>;"></span>
               <span class="symptom-text"><?php echo htmlspecialchars($d['name']); ?></span>
             </label>
           </div>
           <?php endforeach; ?>
         </div>
-        <?php endforeach; ?>
 
         <!-- Footer bar -->
         <div class="mt-4 pt-3 border-top d-flex flex-wrap align-items-center justify-content-between gap-3">
