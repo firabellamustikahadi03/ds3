@@ -122,7 +122,6 @@ loadLanguage();
     <p class="footer-brand">Sistem Pakar Kesehatan Mental</p>
     <p><small>Skripsi &copy; 2022 &nbsp;
       <a href="https://www.instagram.com/firbel.el/">Fira Bella Mustikahadi</a>
-      &nbsp;·&nbsp; Institut Teknologi PLN
     </small></p>
   </div>
 </footer>

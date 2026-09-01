@@ -104,11 +104,15 @@ loadLanguage();
             <h5 class="fw-700 mb-0">Tujuan Pembuatan Aplikasi</h5>
           </div>
           <p style="line-height:1.8; color:#555; font-size:.92rem;">
-            Aplikasi ini dibuat oleh Fira Bella Mustihadi dengan NIM 201831082.
-            Aplikasi bertujuan sebagai syarat kelulusan dari kampus Institut Teknologi PLN,
-            dimana pembuat menggunakan metode <em>Dempster-Shafer</em> sebagai metode untuk
-            melakukan pencarian penyakit, karena diyakini dengan metode ini akan sangat tepat
-            dan mampu memberikan hasil yang baik.
+            Aplikasi ini dikembangkan oleh Fira Bella Mustikahadi (NIM 201831082) sebagai bagian
+            dari tugas akhir di Institut Teknologi PLN. Tujuan utama pengembangan aplikasi ini
+            adalah mengimplementasikan metode <em>DASS-21 (Depression Anxiety Stress Scale)</em>
+            secara sistematis, dipadukan dengan teori <em>Dempster-Shafer</em> untuk mengolah bukti
+            dari gejala yang dipilih menjadi tingkat keparahan yang terukur pada setiap subskala.
+            Dengan pendekatan ini, aplikasi diharapkan dapat memudahkan psikolog maupun tenaga
+            kesehatan mental lainnya dalam melakukan deteksi awal terhadap kondisi depresi,
+            kecemasan, dan stres pada mahasiswa — sehingga penanganan lebih lanjut dapat diberikan
+            lebih cepat dan tepat sasaran.
           </p>
         </div>
 
