@@ -1,7 +1,6 @@
   <!-- Admin footer -->
   <div class="admin-footer">
     Aplikasi by <a href="https://www.instagram.com/firbel.el/">Fira Bella Mustikahadi</a>
-    &nbsp;·&nbsp; Institut Teknologi PLN &nbsp;·&nbsp; 2022
   </div>
 
 </div><!-- /.admin-main -->

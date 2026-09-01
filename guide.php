@@ -134,7 +134,7 @@ loadLanguage();
   <div class="container">
     <p class="footer-brand">Sistem Pakar Kesehatan Mental</p>
     <p>
-      <small>Skripsi &copy; 2022 &nbsp;
+      <small>
         <a href="https://www.instagram.com/firbel.el/">Fira Bella Mustikahadi</a>
         &nbsp;·&nbsp; <a href="login.php"><?php echo isset($_SESSION['langArray']['login_admin'])
             ? htmlspecialchars($_SESSION['langArray']['login_admin'])

@@ -130,7 +130,7 @@ loadLanguage();
   <div class="container">
     <div style="font-size:2rem; margin-bottom:.6rem;">🧠</div>
     <p class="footer-brand">Sistem Pakar Kesehatan Mental</p>
-    <p><small>Skripsi &copy; 2022 &nbsp;
+    <p><small>
       <a href="https://www.instagram.com/firbel.el/">Fira Bella Mustikahadi</a>
     </small></p>
   </div>

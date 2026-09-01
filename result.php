@@ -259,7 +259,7 @@ if (isset($_POST['gejala'])) {
 <footer class="footer-mod text-center">
   <div class="container">
     <p class="footer-brand">Sistem Pakar Kesehatan Mental</p>
-    <p><small>Skripsi &copy; 2022 &nbsp;
+    <p><small>
       <a href="https://www.instagram.com/firbel.el/">Fira Bella Mustikahadi</a>
     </small></p>
   </div>
