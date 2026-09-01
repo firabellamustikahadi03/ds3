@@ -44,7 +44,7 @@ include '_header.php';
                         <center class="m-t-30"> <img src="../assetsA/assets/images/users/user.png" class="rounded-circle" width="150" /><br>
                             <br>
                             <h4 class="card-title m-t-10"><?php echo $row["name"]; ?></h4>
-                            <h6 class="card-subtitle">Admin Sistem Pakar</h6>
+                            <h6 class="card-subtitle"><?php echo isset($_SESSION['langArray']['role_dokter']) ? htmlspecialchars($_SESSION['langArray']['role_dokter']) : 'Dokter'; ?> <?php echo isset($_SESSION['langArray']['hero_badge']) ? htmlspecialchars($_SESSION['langArray']['hero_badge']) : 'Sistem Pakar'; ?></h6>
                         </center>
                     </div>
                     <div>

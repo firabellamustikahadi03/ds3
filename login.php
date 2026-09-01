@@ -25,7 +25,7 @@ $_curLabel = isset($_langMap[$_navLang]) ? $_langMap[$_navLang] : '🌐';
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Login | Sistem Pakar Kesehatan Mental</title>
+  <title><?php echo isset($_SESSION['langArray']['login']) ? htmlspecialchars($_SESSION['langArray']['login']) : 'Login'; ?> | <?php echo isset($_SESSION['langArray']['app_title']) ? htmlspecialchars($_SESSION['langArray']['app_title']) : 'Sistem Pakar Kesehatan Mental'; ?></title>
   <link rel="icon" type="image/png" href="assetsA/assets/images/Logo-SP.png">
   <!-- Bootstrap 5 -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -161,8 +161,8 @@ $_curLabel = isset($_langMap[$_navLang]) ? $_langMap[$_navLang] : '🌐';
 
 <div class="login-card">
   <div class="login-logo">🧠</div>
-  <h1 class="login-title">Sistem Pakar</h1>
-  <p class="login-subtitle">Kesehatan Mental</p>
+  <h1 class="login-title"><?php echo isset($_SESSION['langArray']['hero_badge']) ? htmlspecialchars($_SESSION['langArray']['hero_badge']) : 'Sistem Pakar'; ?></h1>
+  <p class="login-subtitle"><?php echo isset($_SESSION['langArray']['kesehatan_mental_plain']) ? htmlspecialchars($_SESSION['langArray']['kesehatan_mental_plain']) : 'Kesehatan Mental'; ?></p>
 
   <?php if (isset($_SESSION["error"])): ?>
   <div class="error-msg">

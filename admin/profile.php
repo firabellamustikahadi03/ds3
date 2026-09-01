@@ -43,7 +43,7 @@ include '_header.php';
                     <div class="card-body">
                             <br>
                             <h4 class="card-title m-t-10"><?php echo $row["name"]; ?></h4>
-                            <h6 class="card-subtitle">Admin Sistem Pakar</h6>
+                            <h6 class="card-subtitle"><?php echo isset($_SESSION['langArray']['role_admin']) ? htmlspecialchars($_SESSION['langArray']['role_admin']) : 'Admin'; ?> <?php echo isset($_SESSION['langArray']['hero_badge']) ? htmlspecialchars($_SESSION['langArray']['hero_badge']) : 'Sistem Pakar'; ?></h6>
                         </center>
                     </div>
                     <div>

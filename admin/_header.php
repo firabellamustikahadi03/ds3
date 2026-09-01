@@ -53,7 +53,7 @@ function adminNavActive($page, $keyword) {
 
   <!-- Brand -->
   <a class="sidebar-brand" href="../index.php">
-    🧠&nbsp;<span class="brand-gradient">Sistem Pakar</span>
+    🧠&nbsp;<span class="brand-gradient"><?php echo isset($_SESSION['langArray']['hero_badge']) ? htmlspecialchars($_SESSION['langArray']['hero_badge']) : 'Sistem Pakar'; ?></span>
   </a>
 
   <!-- User info -->

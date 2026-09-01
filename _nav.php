@@ -11,7 +11,7 @@ function navActive($page, $match) {
 <nav class="navbar navbar-expand-lg sticky-top" id="mainNav">
   <div class="container">
     <a class="navbar-brand" href="index.php">
-      🧠&nbsp;<span>Sistem Pakar</span>
+      🧠&nbsp;<span><?php echo isset($_SESSION['langArray']['hero_badge']) ? htmlspecialchars($_SESSION['langArray']['hero_badge']) : 'Sistem Pakar'; ?></span>
     </a>
     <button class="navbar-toggler" type="button"
             data-bs-toggle="collapse" data-bs-target="#navMain"

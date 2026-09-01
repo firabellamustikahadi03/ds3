@@ -12,8 +12,8 @@ loadLanguage();
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Sistem Pakar Kesehatan Mental berbasis Dempster-Shafer">
-  <title>Sistem Pakar Kesehatan Mental</title>
+  <meta name="description" content="<?php echo isset($_SESSION['langArray']['app_title']) ? htmlspecialchars($_SESSION['langArray']['app_title']) : 'Sistem Pakar Kesehatan Mental'; ?> berbasis Dempster-Shafer">
+  <title><?php echo isset($_SESSION['langArray']['app_title']) ? htmlspecialchars($_SESSION['langArray']['app_title']) : 'Sistem Pakar Kesehatan Mental'; ?></title>
   <link rel="icon" type="image/png" sizes="16x16" href="assetsA/assets/images/Logo-SP.png">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -129,7 +129,7 @@ loadLanguage();
 <footer class="footer-mod text-center">
   <div class="container">
     <div style="font-size:2rem; margin-bottom:.6rem;">🧠</div>
-    <p class="footer-brand">Sistem Pakar Kesehatan Mental</p>
+    <p class="footer-brand"><?php echo isset($_SESSION['langArray']['app_title']) ? htmlspecialchars($_SESSION['langArray']['app_title']) : 'Sistem Pakar Kesehatan Mental'; ?></p>
     <p><small>
       <a href="https://www.instagram.com/firbel.el/">Fira Bella Mustikahadi</a>
     </small></p>

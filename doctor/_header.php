@@ -29,7 +29,7 @@ function dokterNavActive($page, $keyword) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title><?php echo isset($_SESSION['langArray']['data_user']) ? htmlspecialchars($_SESSION['langArray']['data_user']) : 'Dokter | Sistem Pakar'; ?></title>
+  <title><?php echo isset($_SESSION['langArray']['dokter_title']) ? htmlspecialchars($_SESSION['langArray']['dokter_title']) : 'Dokter | Sistem Pakar'; ?></title>
   <link rel="icon" type="image/png" sizes="16x16" href="../assetsA/assets/images/Logo-SP.png">
   <!-- Bootstrap 5 -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -54,7 +54,7 @@ function dokterNavActive($page, $keyword) {
 
   <!-- Brand -->
   <a class="sidebar-brand" href="../index.php">
-    🧠&nbsp;<span class="brand-gradient">Sistem Pakar</span>
+    🧠&nbsp;<span class="brand-gradient"><?php echo isset($_SESSION['langArray']['hero_badge']) ? htmlspecialchars($_SESSION['langArray']['hero_badge']) : 'Sistem Pakar'; ?></span>
   </a>
 
   <!-- User info -->
