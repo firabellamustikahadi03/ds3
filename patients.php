@@ -36,8 +36,8 @@ $pt = new Symptom;
           : 'Data User'; ?>
     </h1>
     <p>
-      <?php echo isset($_SESSION['langArray']['user'])
-          ? htmlspecialchars($_SESSION['langArray']['user'])
+      <?php echo isset($_SESSION['langArray']['daftarkan_data'])
+          ? htmlspecialchars($_SESSION['langArray']['daftarkan_data'])
           : 'Daftarkan data diri sebelum memulai diagnosa'; ?>
     </p>
   </div>
@@ -55,8 +55,8 @@ $pt = new Symptom;
             <span style="font-size:1.8rem;">✅</span>
             <div>
               <h6 class="fw-700 mb-0">
-                <?php echo isset($_SESSION['langArray']['tambah_data'])
-                    ? htmlspecialchars($_SESSION['langArray']['tambah_data'])
+                <?php echo isset($_SESSION['langArray']['data_berhasil'])
+                    ? htmlspecialchars($_SESSION['langArray']['data_berhasil'])
                     : 'Data berhasil ditambahkan!'; ?>
               </h6>
             </div>
@@ -125,7 +125,9 @@ $pt = new Symptom;
         <!-- Quick diagnosa link -->
         <div class="text-center mt-4">
           <p class="text-muted-mod" style="font-size:.9rem;">
-            Sudah mendaftar?
+            <?php echo isset($_SESSION['langArray']['sudah_mendaftar'])
+                ? htmlspecialchars($_SESSION['langArray']['sudah_mendaftar'])
+                : 'Sudah mendaftar?'; ?>
             <a href="diagnosis.php" class="fw-700 text-primary-mod text-decoration-none">
               <?php echo isset($_SESSION['langArray']['diagnosa'])
                   ? htmlspecialchars($_SESSION['langArray']['diagnosa'])

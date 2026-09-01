@@ -73,21 +73,31 @@ loadLanguage();
           <h5 class="fw-700">
             <?php echo isset($_SESSION['langArray']['diagnosa']) ? htmlspecialchars($_SESSION['langArray']['diagnosa']) : 'Diagnosa Cepat'; ?>
           </h5>
-          <p>Pilih gejala yang Anda rasakan dan dapatkan hasil diagnosa akurat dalam hitungan detik.</p>
+          <p><?php echo isset($_SESSION['langArray']['fitur_diagnosa_desc'])
+              ? htmlspecialchars($_SESSION['langArray']['fitur_diagnosa_desc'])
+              : 'Pilih gejala yang Anda rasakan dan dapatkan hasil diagnosa akurat dalam hitungan detik.'; ?></p>
         </div>
       </div>
       <div class="col-sm-6 col-lg-4">
         <div class="card-modern feature-card h-100">
           <span class="feature-icon">📊</span>
           <h5 class="fw-700">Dempster-Shafer</h5>
-          <p>Metode ilmiah Dempster-Shafer untuk kalkulasi derajat kepercayaan diagnosa yang tinggi.</p>
+          <p><?php echo isset($_SESSION['langArray']['fitur_ds_desc'])
+              ? htmlspecialchars($_SESSION['langArray']['fitur_ds_desc'])
+              : 'Metode ilmiah Dempster-Shafer untuk kalkulasi derajat kepercayaan diagnosa yang tinggi.'; ?></p>
         </div>
       </div>
       <div class="col-sm-6 col-lg-4">
         <div class="card-modern feature-card h-100">
           <span class="feature-icon">🌍</span>
-          <h5 class="fw-700">Multibahasa</h5>
-          <p>Tersedia dalam Bahasa Indonesia, English, Türkçe, dan 中文 untuk semua pengguna internasional.</p>
+          <h5 class="fw-700">
+            <?php echo isset($_SESSION['langArray']['multibahasa'])
+                ? htmlspecialchars($_SESSION['langArray']['multibahasa'])
+                : 'Multibahasa'; ?>
+          </h5>
+          <p><?php echo isset($_SESSION['langArray']['multibahasa_desc'])
+              ? htmlspecialchars($_SESSION['langArray']['multibahasa_desc'])
+              : 'Tersedia dalam Bahasa Indonesia, English, Türkçe, dan 中文 untuk semua pengguna internasional.'; ?></p>
         </div>
       </div>
     </div>
