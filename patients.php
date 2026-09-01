@@ -85,7 +85,9 @@ $pt = new Symptom;
                     : 'Jurusan'; ?>
               </label>
               <input type="text" class="form-mod" name="name" id="nama"
-                     placeholder="Teknik Informatika" required>
+                     placeholder="<?php echo isset($_SESSION['langArray']['jurusan_placeholder'])
+                         ? htmlspecialchars($_SESSION['langArray']['jurusan_placeholder'])
+                         : 'Teknik Informatika'; ?>" required>
             </div>
 
             <!-- Nama / Username -->
@@ -96,7 +98,9 @@ $pt = new Symptom;
                     : 'Nama'; ?>
               </label>
               <input type="text" class="form-mod" name="username" id="username"
-                     placeholder="Nama lengkap Anda" required>
+                     placeholder="<?php echo isset($_SESSION['langArray']['nama_placeholder'])
+                         ? htmlspecialchars($_SESSION['langArray']['nama_placeholder'])
+                         : 'Nama lengkap Anda'; ?>" required>
             </div>
 
             <!-- No. HP -->
