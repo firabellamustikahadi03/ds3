@@ -12,13 +12,6 @@ include '_header.php';
         <div class="row align-items-center">
             <div class="col-5">
                 <h4 class="page-title"><?php echo isset($_SESSION['langArray']['pengaturan_profil']) ? htmlspecialchars($_SESSION['langArray']['pengaturan_profil']) : 'Pengaturan Profil'; ?></h4>
-                <div class="d-flex align-items-center">
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item active" aria-current="page">Profil</li>
-                        </ol>
-                    </nav>
-                </div>
             </div>
             <div class="col-7">
             </div>
