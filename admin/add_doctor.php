@@ -37,40 +37,40 @@
 							<div class="card-body">
 								<form method="post" class="form-horizontal form-material" action="../process/add_doctor.php">
 									<div class="form-group">
-										<label class="col-md-12">Nama</label>
+										<label class="col-md-12"><?php echo isset($_SESSION['langArray']['nama']) ? htmlspecialchars($_SESSION['langArray']['nama']) : 'Nama'; ?></label>
 										<div class="col-md-12">
 											<input type="text" class="form-control form-control-line" name="name" required="">
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-md-12">Username</label>
+										<label class="col-md-12"><?php echo isset($_SESSION['langArray']['username']) ? htmlspecialchars($_SESSION['langArray']['username']) : 'Username'; ?></label>
 										<div class="col-md-12">
 											<input type="text" class="form-control form-control-line" name="username" required="">
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-md-12">Password</label>
+										<label class="col-md-12"><?php echo isset($_SESSION['langArray']['password']) ? htmlspecialchars($_SESSION['langArray']['password']) : 'Password'; ?></label>
 										<div class="col-md-12">
 											<input type="text" class="form-control form-control-line" name="password" required="">
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-md-12">Email</label>
+										<label class="col-md-12"><?php echo isset($_SESSION['langArray']['email']) ? htmlspecialchars($_SESSION['langArray']['email']) : 'Email'; ?></label>
 										<div class="col-md-12">
 											<input type="email" class="form-control form-control-line" name="email">
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-md-12">No HP</label>
+										<label class="col-md-12"><?php echo isset($_SESSION['langArray']['no_hp']) ? htmlspecialchars($_SESSION['langArray']['no_hp']) : 'No HP'; ?></label>
 										<div class="col-md-12">
 											<input type="number" class="form-control form-control-line" name="phone">
 										</div>
 									</div>
-									
+
 									<input type="hidden" value="dokter" name="role">
 									<div class="form-group">
 										<div class="col-sm-12">
-											<button class="btn btn-success" type="submit">Tambah Data</button>
+											<button class="btn btn-success" type="submit"><?php echo isset($_SESSION['langArray']['tambah_data']) ? htmlspecialchars($_SESSION['langArray']['tambah_data']) : 'Tambah Data'; ?></button>
 										</div>
 									</div>
 								</form>

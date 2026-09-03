@@ -54,7 +54,7 @@
 
 									<div class="form-group">
 										<div class="col-sm-12">
-											<button class="btn btn-success" type="submit">Tambah Data</button>
+											<button class="btn btn-success" type="submit"><?php echo isset($_SESSION['langArray']['tambah_data']) ? htmlspecialchars($_SESSION['langArray']['tambah_data']) : 'Tambah Data'; ?></button>
 										</div>
 									</div>
 								</form>

@@ -42,31 +42,31 @@ $g->TampilDataAdmin($_GET['admin_id']);
 								<form method="post" class="form-horizontal form-material" action="../process/edit_doctor.php">
 									<div class="form-group">
 										<input type="hidden" value="<?php print $_GET['admin_id'] ?>" name="admin_id" />
-										<label class="col-md-12">Nama</label>
+										<label class="col-md-12"><?php echo isset($_SESSION['langArray']['nama']) ? htmlspecialchars($_SESSION['langArray']['nama']) : 'Nama'; ?></label>
 										<div class="col-md-12">
 											<input type="text" value="<?php print $g->name; ?>" class="form-control form-control-line" name="name" required="">
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-md-12">Username</label>
+										<label class="col-md-12"><?php echo isset($_SESSION['langArray']['username']) ? htmlspecialchars($_SESSION['langArray']['username']) : 'Username'; ?></label>
 										<div class="col-md-12">
 											<input type="text" value="<?php print $g->username; ?>" class="form-control form-control-line" name="username" required="">
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-md-12">Password</label>
+										<label class="col-md-12"><?php echo isset($_SESSION['langArray']['password']) ? htmlspecialchars($_SESSION['langArray']['password']) : 'Password'; ?></label>
 										<div class="col-md-12">
 											<input type="text" value="<?php print $g->password; ?>" class="form-control form-control-line" name="password" required="">
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-md-12">Email</label>
+										<label class="col-md-12"><?php echo isset($_SESSION['langArray']['email']) ? htmlspecialchars($_SESSION['langArray']['email']) : 'Email'; ?></label>
 										<div class="col-md-12">
 											<input type="email" value="<?php print $g->email; ?>" class="form-control form-control-line" name="email">
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-md-12">No HP</label>
+										<label class="col-md-12"><?php echo isset($_SESSION['langArray']['no_hp']) ? htmlspecialchars($_SESSION['langArray']['no_hp']) : 'No HP'; ?></label>
 										<div class="col-md-12">
 											<input type="number" value="<?php print $g->phone; ?>" class="form-control form-control-line" name="phone">
 										</div>
@@ -74,7 +74,7 @@ $g->TampilDataAdmin($_GET['admin_id']);
 
 									<div class="form-group">
 										<div class="col-sm-12">
-											<button class="btn btn-success" type="submit">Ubah Data</button>
+											<button class="btn btn-success" type="submit"><?php echo isset($_SESSION['langArray']['ubah_data']) ? htmlspecialchars($_SESSION['langArray']['ubah_data']) : 'Ubah Data'; ?></button>
 										</div>
 									</div>
 								</form>

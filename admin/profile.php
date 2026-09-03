@@ -71,43 +71,43 @@ include '_header.php';
                         <div class="card-body">
                             <form id="myform" method="post" action="../process/edit_profile.php" class="form-horizontal form-material">
                                 <div class="form-group">
-                                    <label class="col-md-12">Username</label>
+                                    <label class="col-md-12"><?php echo isset($_SESSION['langArray']['username']) ? htmlspecialchars($_SESSION['langArray']['username']) : 'Username'; ?></label>
                                     <div class="col-md-12">
                                         <input type="text" value="<?php echo $row["username"]; ?>" class="form-control form-control-line" readonly="true" name="username">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-12">Nama</label>
+                                    <label class="col-md-12"><?php echo isset($_SESSION['langArray']['nama']) ? htmlspecialchars($_SESSION['langArray']['nama']) : 'Nama'; ?></label>
                                     <div class="col-md-12">
                                         <input type="text" value="<?php echo $row["name"]; ?>" class="form-control form-control-line" name="name">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-12">Email</label>
+                                    <label class="col-md-12"><?php echo isset($_SESSION['langArray']['email']) ? htmlspecialchars($_SESSION['langArray']['email']) : 'Email'; ?></label>
                                     <div class="col-md-12">
                                         <input type="email" value="<?php echo $row["email"]; ?>" class="form-control form-control-line" name="email">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-12">No Hp</label>
+                                    <label class="col-md-12"><?php echo isset($_SESSION['langArray']['no_hp']) ? htmlspecialchars($_SESSION['langArray']['no_hp']) : 'No Hp'; ?></label>
                                     <div class="col-md-12">
                                         <input type="number" value="<?php echo $row["phone"]; ?>" class="form-control form-control-line" name="phone">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-12">Password</label>
+                                    <label class="col-md-12"><?php echo isset($_SESSION['langArray']['password']) ? htmlspecialchars($_SESSION['langArray']['password']) : 'Password'; ?></label>
                                     <div class="col-md-12">
                                         <input type="password" value="<?php echo $row["password"]; ?>" class="form-control form-control-line form-password" name="password">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-12">
-                                        <input type="checkbox" class="form-checkbox"> Tampilkan password
+                                        <input type="checkbox" class="form-checkbox"> <?php echo isset($_SESSION['langArray']['tampilkan_password']) ? htmlspecialchars($_SESSION['langArray']['tampilkan_password']) : 'Tampilkan password'; ?>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="col-sm-12">
-                                        <button type="button" onclick="myFunction()" class="btn btn-success">Update Profile</button>
+                                        <button type="button" onclick="myFunction()" class="btn btn-success"><?php echo isset($_SESSION['langArray']['update_profile']) ? htmlspecialchars($_SESSION['langArray']['update_profile']) : 'Update Profile'; ?></button>
                                     </div>
                                 </div>
                             </form>

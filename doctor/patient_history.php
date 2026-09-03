@@ -48,9 +48,9 @@ $data = $p->TampilRPasienDenganRingkasan((int)($_GET['patient_id'] ?? 0));
                                 <thead style="background-color: #336699; color: #ffffff;">
                                   <tr>
                                     <th style="color: white;" width="5%">ID</th>
-                                    <th style="color: white;">Tanggal</th>
+                                    <th style="color: white;"><?php echo isset($_SESSION['langArray']['tanggal']) ? htmlspecialchars($_SESSION['langArray']['tanggal']) : 'Tanggal'; ?></th>
                                     <th style="color: white;">Hasil (Depresi / Anxiety / Stres)</th>
-                                    <th style="color: white;">Aksi</th>
+                                    <th style="color: white;"><?php echo isset($_SESSION['langArray']['aksi']) ? htmlspecialchars($_SESSION['langArray']['aksi']) : 'Aksi'; ?></th>
                                 </tr>
                             </thead>
                             <tbody>

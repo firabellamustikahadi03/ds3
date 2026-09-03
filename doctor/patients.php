@@ -48,7 +48,7 @@ $p = new Pasien;
                                     <th style="color: white;" width="5%">ID</th>
                                     <th style="color: white;">Nama Pasien</th>
                                     <th style="color: white;">Tanggal Lahir</th>
-                                    <th style="color: white;">Aksi</th>
+                                    <th style="color: white;"><?php echo isset($_SESSION['langArray']['aksi']) ? htmlspecialchars($_SESSION['langArray']['aksi']) : 'Aksi'; ?></th>
                                 </tr>
                             </thead>
                             <tbody>

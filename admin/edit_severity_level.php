@@ -63,8 +63,8 @@ $subscaleLabels = ['D' => 'Depresi', 'A' => 'Anxiety', 'S' => 'Stres'];
           <textarea class="form-control" name="recommendation_zh" rows="3" required><?php echo htmlspecialchars($sl->recommendation_zh ?? ''); ?></textarea>
         </div>
 
-        <button type="submit" class="btn btn-primary text-white">Simpan</button>
-        <a href="severity_levels.php" class="btn btn-secondary text-white">Batal</a>
+        <button type="submit" class="btn btn-primary text-white"><?php echo isset($_SESSION['langArray']['simpan']) ? htmlspecialchars($_SESSION['langArray']['simpan']) : 'Simpan'; ?></button>
+        <a href="severity_levels.php" class="btn btn-secondary text-white"><?php echo isset($_SESSION['langArray']['batal']) ? htmlspecialchars($_SESSION['langArray']['batal']) : 'Batal'; ?></a>
       </form>
     </div>
   </div>

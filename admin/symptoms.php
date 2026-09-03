@@ -4,7 +4,11 @@ include "../controller/c_Symptom.php";
 $s = new Symptom;
 $data = $s->TampilSemuaAdmin();
 
-$subscaleLabels = ['D' => 'Depresi', 'A' => 'Anxiety', 'S' => 'Stres'];
+$subscaleLabels = [
+    'D' => isset($_SESSION['langArray']['subskala_depresi']) ? $_SESSION['langArray']['subskala_depresi'] : 'Depresi',
+    'A' => isset($_SESSION['langArray']['subskala_anxiety']) ? $_SESSION['langArray']['subskala_anxiety'] : 'Anxiety',
+    'S' => isset($_SESSION['langArray']['subskala_stres']) ? $_SESSION['langArray']['subskala_stres'] : 'Stres',
+];
 $byScale = ['D' => [], 'A' => [], 'S' => []];
 foreach ($data as $row) {
     $byScale[$row['subscale']][] = $row;
@@ -13,8 +17,7 @@ foreach ($data as $row) {
 <div class="container-fluid">
   <div class="page-breadcrumb">
     <h4 class="page-title"><?php echo isset($_SESSION['langArray']['gejala_dass21']) ? htmlspecialchars($_SESSION['langArray']['gejala_dass21']) : 'Gejala DASS-21'; ?></h4>
-    <p class="text-muted-mod">21 gejala tetap (fixed) — hanya teks dan nilai mass yang bisa diedit. Tidak ada
-      tambah/hapus gejala.</p>
+    <p class="text-muted-mod"><?php echo isset($_SESSION['langArray']['symptoms_desc']) ? $_SESSION['langArray']['symptoms_desc'] : '21 gejala tetap (fixed) &mdash; hanya teks dan nilai mass yang bisa diedit. Tidak ada tambah/hapus gejala.'; ?></p>
   </div>
 
   <?php foreach (['D', 'A', 'S'] as $sk): ?>
@@ -26,14 +29,14 @@ foreach ($data as $row) {
           <thead style="background-color:#336699; color:#fff;">
             <tr>
               <th style="color:#fff;" width="5%">#</th>
-              <th style="color:#fff;">Kode</th>
-              <th style="color:#fff;">Nama Gejala</th>
+              <th style="color:#fff;"><?php echo isset($_SESSION['langArray']['th_kode']) ? htmlspecialchars($_SESSION['langArray']['th_kode']) : 'Kode'; ?></th>
+              <th style="color:#fff;"><?php echo isset($_SESSION['langArray']['th_nama_gejala']) ? htmlspecialchars($_SESSION['langArray']['th_nama_gejala']) : 'Nama Gejala'; ?></th>
               <th style="color:#fff;" width="12%">Mild-Moderate</th>
               <th style="color:#fff;" width="12%">Moderate-Severe</th>
               <th style="color:#fff;" width="12%">Severe-Extreme</th>
               <th style="color:#fff;" width="8%">Theta</th>
-              <th style="color:#fff;" width="8%">Status</th>
-              <th style="color:#fff;" width="8%">Aksi</th>
+              <th style="color:#fff;" width="8%"><?php echo isset($_SESSION['langArray']['status']) ? htmlspecialchars($_SESSION['langArray']['status']) : 'Status'; ?></th>
+              <th style="color:#fff;" width="8%"><?php echo isset($_SESSION['langArray']['aksi']) ? htmlspecialchars($_SESSION['langArray']['aksi']) : 'Aksi'; ?></th>
             </tr>
           </thead>
           <tbody>

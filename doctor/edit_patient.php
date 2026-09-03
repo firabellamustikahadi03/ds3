@@ -57,7 +57,7 @@ $p->TampilSatuData($_GET['patient_id']);
 
 									<div class="form-group">
 										<div class="col-sm-12">
-											<button class="btn btn-success" type="submit">Ubah Data</button>
+											<button class="btn btn-success" type="submit"><?php echo isset($_SESSION['langArray']['ubah_data']) ? htmlspecialchars($_SESSION['langArray']['ubah_data']) : 'Ubah Data'; ?></button>
 										</div>
 									</div>
 								</form>

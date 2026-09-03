@@ -67,8 +67,8 @@ $s->TampilSatuData((int)($_GET['id'] ?? 0));
         </div>
         <p id="massTotal" class="fw-700 mb-4">Total: 0.00</p>
 
-        <button type="submit" class="btn btn-primary text-white" id="submitBtn">Simpan</button>
-        <a href="symptoms.php" class="btn btn-secondary text-white">Batal</a>
+        <button type="submit" class="btn btn-primary text-white" id="submitBtn"><?php echo isset($_SESSION['langArray']['simpan']) ? htmlspecialchars($_SESSION['langArray']['simpan']) : 'Simpan'; ?></button>
+        <a href="symptoms.php" class="btn btn-secondary text-white"><?php echo isset($_SESSION['langArray']['batal']) ? htmlspecialchars($_SESSION['langArray']['batal']) : 'Batal'; ?></a>
       </form>
     </div>
   </div>

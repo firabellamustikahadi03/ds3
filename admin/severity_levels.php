@@ -9,8 +9,7 @@ $subscaleLabels = ['D' => 'Depresi', 'A' => 'Anxiety', 'S' => 'Stres'];
 <div class="container-fluid">
   <div class="page-breadcrumb">
     <h4 class="page-title"><?php echo isset($_SESSION['langArray']['tingkat_keparahan']) ? htmlspecialchars($_SESSION['langArray']['tingkat_keparahan']) : 'Tingkat Keparahan'; ?></h4>
-    <p class="text-muted-mod">12 kombinasi subskala &times; level tetap (fixed) — hanya nama dan teks
-      rekomendasi yang bisa diedit.</p>
+    <p class="text-muted-mod"><?php echo isset($_SESSION['langArray']['severity_levels_desc']) ? $_SESSION['langArray']['severity_levels_desc'] : '12 kombinasi subskala &times; level tetap (fixed) &mdash; hanya nama dan teks rekomendasi yang bisa diedit.'; ?></p>
   </div>
 
   <div class="card mt-3">
@@ -20,10 +19,10 @@ $subscaleLabels = ['D' => 'Depresi', 'A' => 'Anxiety', 'S' => 'Stres'];
           <thead style="background-color:#336699; color:#fff;">
             <tr>
               <th style="color:#fff;" width="5%">#</th>
-              <th style="color:#fff;" width="15%">Subskala</th>
+              <th style="color:#fff;" width="15%"><?php echo isset($_SESSION['langArray']['subskala']) ? htmlspecialchars($_SESSION['langArray']['subskala']) : 'Subskala'; ?></th>
               <th style="color:#fff;" width="15%">Level</th>
-              <th style="color:#fff;">Nama</th>
-              <th style="color:#fff;" width="8%">Aksi</th>
+              <th style="color:#fff;"><?php echo isset($_SESSION['langArray']['nama']) ? htmlspecialchars($_SESSION['langArray']['nama']) : 'Nama'; ?></th>
+              <th style="color:#fff;" width="8%"><?php echo isset($_SESSION['langArray']['aksi']) ? htmlspecialchars($_SESSION['langArray']['aksi']) : 'Aksi'; ?></th>
             </tr>
           </thead>
           <tbody>

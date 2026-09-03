@@ -36,12 +36,12 @@ $p = new Admin;
                                 <thead style="background-color: #336699; color: #ffffff;">
                                   <tr>
                                     <th style="color: white;" width="5%">No</th>
-                                    <th style="color: white;">Jurusan</th>
-                                    <th style="color: white;">Nama</th>
+                                    <th style="color: white;"><?php echo isset($_SESSION['langArray']['jurusan']) ? htmlspecialchars($_SESSION['langArray']['jurusan']) : 'Jurusan'; ?></th>
+                                    <th style="color: white;"><?php echo isset($_SESSION['langArray']['nama']) ? htmlspecialchars($_SESSION['langArray']['nama']) : 'Nama'; ?></th>
                                     <!--<th style="color: white;">Password</th>
                                     <th style="color: white;">Email</th>-->
-                                    <th style="color: white;">No Hp</th>
-                                    <th style="color: white;">Aksi</th>
+                                    <th style="color: white;"><?php echo isset($_SESSION['langArray']['no_hp']) ? htmlspecialchars($_SESSION['langArray']['no_hp']) : 'No Hp'; ?></th>
+                                    <th style="color: white;"><?php echo isset($_SESSION['langArray']['aksi']) ? htmlspecialchars($_SESSION['langArray']['aksi']) : 'Aksi'; ?></th>
                                 </tr>
                             </thead>
                             <tbody>

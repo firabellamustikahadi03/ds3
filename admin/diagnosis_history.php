@@ -48,7 +48,7 @@ $data = $r->TampilSemuaDenganRingkasan();
                                     <th style="color: white;" width="3%">ID</th>
                                     <th style="color: white;" width="14%">Tanggal dan Waktu</th>
                                     <th style="color: white;">Hasil (Depresi / Anxiety / Stres)</th>
-                                    <th style="color: white;" width="4%">Aksi</th>
+                                    <th style="color: white;" width="4%"><?php echo isset($_SESSION['langArray']['aksi']) ? htmlspecialchars($_SESSION['langArray']['aksi']) : 'Aksi'; ?></th>
                                 </tr>
                             </thead>
                             <tbody>
