@@ -13,7 +13,7 @@ $p = new Admin;
     <div class="page-breadcrumb">
         <div class="row align-items-center">
             <div class="col-5">
-                <h4 class="page-title">Data User</h4>
+                <h4 class="page-title"><?php echo isset($_SESSION['langArray']['data_user']) ? htmlspecialchars($_SESSION['langArray']['data_user']) : 'Data User'; ?></h4>
             </div>
         </div>
     </div>

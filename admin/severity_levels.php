@@ -8,7 +8,7 @@ $subscaleLabels = ['D' => 'Depresi', 'A' => 'Anxiety', 'S' => 'Stres'];
 ?>
 <div class="container-fluid">
   <div class="page-breadcrumb">
-    <h4 class="page-title">Tingkat Keparahan</h4>
+    <h4 class="page-title"><?php echo isset($_SESSION['langArray']['tingkat_keparahan']) ? htmlspecialchars($_SESSION['langArray']['tingkat_keparahan']) : 'Tingkat Keparahan'; ?></h4>
     <p class="text-muted-mod">12 kombinasi subskala &times; level tetap (fixed) — hanya nama dan teks
       rekomendasi yang bisa diedit.</p>
   </div>

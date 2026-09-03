@@ -20,7 +20,7 @@ $subscaleFallback = ['D' => 'Depresi', 'A' => 'Anxiety', 'S' => 'Stres'];
 ?>
 <div class="container-fluid">
   <div class="page-breadcrumb">
-    <h4 class="page-title">Detail Diagnosa</h4>
+    <h4 class="page-title"><?php echo isset($_SESSION['langArray']['detail_diagnosa']) ? htmlspecialchars($_SESSION['langArray']['detail_diagnosa']) : 'Detail Diagnosa'; ?></h4>
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="diagnosis_history.php">Riwayat Diagnosa</a></li>
       <li class="breadcrumb-item active">Detail</li>

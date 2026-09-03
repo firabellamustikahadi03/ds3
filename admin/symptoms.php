@@ -12,7 +12,7 @@ foreach ($data as $row) {
 ?>
 <div class="container-fluid">
   <div class="page-breadcrumb">
-    <h4 class="page-title">Gejala DASS-21</h4>
+    <h4 class="page-title"><?php echo isset($_SESSION['langArray']['gejala_dass21']) ? htmlspecialchars($_SESSION['langArray']['gejala_dass21']) : 'Gejala DASS-21'; ?></h4>
     <p class="text-muted-mod">21 gejala tetap (fixed) — hanya teks dan nilai mass yang bisa diedit. Tidak ada
       tambah/hapus gejala.</p>
   </div>

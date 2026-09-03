@@ -11,7 +11,7 @@
 			<div class="page-breadcrumb">
 				<div class="row align-items-center">
 					<div class="col-5">
-						<h4 class="page-title">Manajemen Tambah Data Pasien</h4>
+						<h4 class="page-title"><?php echo isset($_SESSION['langArray']['manajemen_tambah_pasien']) ? htmlspecialchars($_SESSION['langArray']['manajemen_tambah_pasien']) : 'Manajemen Tambah Data Pasien'; ?></h4>
 						<div class="d-flex align-items-center">
 							<ol class="breadcrumb">
 								<li class="breadcrumb-item"><a href="#">Beranda</a></li>

@@ -6,7 +6,7 @@ $s->TampilSatuData((int)($_GET['id'] ?? 0));
 ?>
 <div class="container-fluid">
   <div class="page-breadcrumb">
-    <h4 class="page-title">Edit Gejala</h4>
+    <h4 class="page-title"><?php echo isset($_SESSION['langArray']['edit_gejala']) ? htmlspecialchars($_SESSION['langArray']['edit_gejala']) : 'Edit Gejala'; ?></h4>
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="symptoms.php">Gejala DASS-21</a></li>
       <li class="breadcrumb-item active">Edit</li>

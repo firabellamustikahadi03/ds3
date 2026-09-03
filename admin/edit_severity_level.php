@@ -8,7 +8,7 @@ $subscaleLabels = ['D' => 'Depresi', 'A' => 'Anxiety', 'S' => 'Stres'];
 ?>
 <div class="container-fluid">
   <div class="page-breadcrumb">
-    <h4 class="page-title">Edit Tingkat Keparahan</h4>
+    <h4 class="page-title"><?php echo isset($_SESSION['langArray']['edit_tingkat_keparahan']) ? htmlspecialchars($_SESSION['langArray']['edit_tingkat_keparahan']) : 'Edit Tingkat Keparahan'; ?></h4>
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="severity_levels.php">Tingkat Keparahan</a></li>
       <li class="breadcrumb-item active">Edit</li>

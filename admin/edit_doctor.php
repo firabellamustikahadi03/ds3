@@ -14,7 +14,7 @@ $g->TampilDataAdmin($_GET['admin_id']);
 			<div class="page-breadcrumb">
 				<div class="row align-items-center">
 					<div class="col-5">
-						<h4 class="page-title">Manajemen Ubah Data Dokter</h4>
+						<h4 class="page-title"><?php echo isset($_SESSION['langArray']['manajemen_ubah_dokter']) ? htmlspecialchars($_SESSION['langArray']['manajemen_ubah_dokter']) : 'Manajemen Ubah Data Dokter'; ?></h4>
 						<div class="d-flex align-items-center">
 							<ol class="breadcrumb">
 								<li class="breadcrumb-item"><a href="#">Beranda</a></li>

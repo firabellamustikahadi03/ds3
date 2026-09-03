@@ -94,7 +94,7 @@ if (isset($_POST['gejala'])) {
 ?>
 <div class="page-wrapper">
   <div class="page-breadcrumb">
-    <h4 class="page-title">Hasil Diagnosa</h4>
+    <h4 class="page-title"><?php echo isset($_SESSION['langArray']['hasil_diagnosa']) ? htmlspecialchars($_SESSION['langArray']['hasil_diagnosa']) : 'Hasil Diagnosa'; ?></h4>
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="patients.php">Pasien</a></li>
       <li class="breadcrumb-item active">Hasil Diagnosa</li>

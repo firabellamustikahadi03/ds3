@@ -12,7 +12,7 @@ foreach ($data as $row) {
 ?>
 <div class="container-fluid">
   <div class="page-breadcrumb">
-    <h4 class="page-title">Cara Kerja Sistem</h4>
+    <h4 class="page-title"><?php echo isset($_SESSION['langArray']['cara_kerja_sistem']) ? htmlspecialchars($_SESSION['langArray']['cara_kerja_sistem']) : 'Cara Kerja Sistem'; ?></h4>
   </div>
 
   <div class="card mt-3">
