@@ -17,7 +17,6 @@ $data = $r->TampilSemuaDenganRingkasan();
                 <h4 class="page-title"><?php echo isset($_SESSION['langArray']['riwayat_diagnosa']) ? htmlspecialchars($_SESSION['langArray']['riwayat_diagnosa']) : 'Riwayat Diagnosa'; ?></h4>
                 <div class="d-flex align-items-center">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#">Beranda</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Riwayat Diagnosa</li>
                     </ol>
                 </div>

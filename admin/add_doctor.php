@@ -13,7 +13,6 @@
 						<h4 class="page-title"><?php echo isset($_SESSION['langArray']['tambah_dokter']) ? htmlspecialchars($_SESSION['langArray']['tambah_dokter']) : 'Tambah Dokter'; ?></h4>
 						<div class="d-flex align-items-center">
 							<ol class="breadcrumb">
-								<li class="breadcrumb-item"><a href="#">Beranda</a></li>
 								<li class="breadcrumb-item" aria-current="page"><a href="doctors.php">Dokter</a></li>
 								<li class="breadcrumb-item active" aria-current="page">Tambah Dokter</li>
 							</ol>

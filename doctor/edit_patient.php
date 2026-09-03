@@ -17,7 +17,6 @@ $p->TampilSatuData($_GET['patient_id']);
 						<h4 class="page-title"><?php echo isset($_SESSION['langArray']['manajemen_ubah_pasien']) ? htmlspecialchars($_SESSION['langArray']['manajemen_ubah_pasien']) : 'Manajemen Ubah Data Pasien'; ?></h4>
 						<div class="d-flex align-items-center">
 							<ol class="breadcrumb">
-								<li class="breadcrumb-item"><a href="#">Beranda</a></li>
 								<li class="breadcrumb-item" aria-current="page"><a href="patients.php">Pasien</a></li>
 								<li class="breadcrumb-item active" aria-current="page">Ubah Data Pasien</li>
 							</ol>

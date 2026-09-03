@@ -17,7 +17,6 @@ $data = $p->TampilRPasienDenganRingkasan((int)($_GET['patient_id'] ?? 0));
                 <h4 class="page-title"><?php echo isset($_SESSION['langArray']['manajemen_rekam_medis']) ? htmlspecialchars($_SESSION['langArray']['manajemen_rekam_medis']) : 'Manajemen Rekam Medis'; ?></h4>
                 <div class="d-flex align-items-center">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#">Beranda</a></li>
                         <li class="breadcrumb-item"><a href="patients.php">Pasien</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Rekam Medis</li>
                     </ol>

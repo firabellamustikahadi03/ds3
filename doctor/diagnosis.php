@@ -18,7 +18,6 @@ $subskalaList = [
         <h4 class="page-title"><?php echo isset($_SESSION['langArray']['diagnosa_dass21']) ? htmlspecialchars($_SESSION['langArray']['diagnosa_dass21']) : 'Diagnosa DASS-21'; ?></h4>
         <div class="d-flex align-items-center">
           <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#">Beranda</a></li>
             <li class="breadcrumb-item"><a href="patients.php">Pasien</a></li>
             <li class="breadcrumb-item active" aria-current="page">Diagnosa</li>
           </ol>
