@@ -106,4 +106,9 @@ return [
     'tampilkan_password' => '显示密码',
     'severity_levels_desc' => '12种固定的子量表&times;级别组合&mdash;仅名称和建议文本可编辑。',
     'symptoms_desc' => '21个固定症状&mdash;仅文本和质量值可编辑。不能添加或删除症状。',
+    'detail' => '详情',
+    'riwayat_pasien' => '患者病史',
+    'data_tidak_ditemukan' => '未找到数据。',
+    'derajat_kepercayaan' => '置信度:',
+    'tidak_ada_gejala_legacy' => '此类别中未选择任何症状(或者这是Phase 1之前的旧数据,没有按子量表划分的明细)。',
 ];

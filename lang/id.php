@@ -106,4 +106,9 @@ return [
     'tampilkan_password' => 'Tampilkan password',
     'severity_levels_desc' => '12 kombinasi subskala &times; level tetap (fixed) &mdash; hanya nama dan teks rekomendasi yang bisa diedit.',
     'symptoms_desc' => '21 gejala tetap (fixed) &mdash; hanya teks dan nilai mass yang bisa diedit. Tidak ada tambah/hapus gejala.',
+    'detail' => 'Detail',
+    'riwayat_pasien' => 'Riwayat Pasien',
+    'data_tidak_ditemukan' => 'Data tidak ditemukan.',
+    'derajat_kepercayaan' => 'Derajat kepercayaan:',
+    'tidak_ada_gejala_legacy' => 'Tidak ada gejala dipilih di kategori ini (atau data lama sebelum Phase 1 yang tidak punya rincian per subskala).',
 ];

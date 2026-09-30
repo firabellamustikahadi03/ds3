@@ -106,4 +106,9 @@ return [
     'tampilkan_password' => 'Show password',
     'severity_levels_desc' => '12 fixed subscale &times; level combinations &mdash; only the name and recommendation text can be edited.',
     'symptoms_desc' => '21 fixed symptoms &mdash; only the text and mass values can be edited. Symptoms cannot be added or removed.',
+    'detail' => 'Detail',
+    'riwayat_pasien' => 'Patient History',
+    'data_tidak_ditemukan' => 'Data not found.',
+    'derajat_kepercayaan' => 'Confidence level:',
+    'tidak_ada_gejala_legacy' => 'No symptoms selected in this category (or this is legacy data from before Phase 1, which has no per-subscale breakdown).',
 ];

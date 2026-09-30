@@ -106,4 +106,9 @@ return [
     'tampilkan_password' => 'Şifreyi göster',
     'severity_levels_desc' => '12 sabit alt ölçek &times; düzey kombinasyonu &mdash; yalnızca ad ve öneri metni düzenlenebilir.',
     'symptoms_desc' => '21 sabit belirti &mdash; yalnızca metin ve kütle değerleri düzenlenebilir. Belirti eklenip çıkarılamaz.',
+    'detail' => 'Detay',
+    'riwayat_pasien' => 'Hasta Geçmişi',
+    'data_tidak_ditemukan' => 'Veri bulunamadı.',
+    'derajat_kepercayaan' => 'Güven derecesi:',
+    'tidak_ada_gejala_legacy' => 'Bu kategoride seçilmiş belirti yok (veya bu, Phase 1 öncesinden kalma ve alt ölçek bazında ayrıntısı olmayan eski bir veri).',
 ];
