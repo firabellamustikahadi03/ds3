@@ -6,9 +6,14 @@
  * shape result.php uses, so the seeded rows are indistinguishable from real diagnoses
  * except for the '[SEED ...]' tag prepended to `summary` (used for cleanup/filtering).
  *
- * Run: php seed_test.php   (CLI)   or open http://localhost/ds3/seed_test.php (browser)
- * Re-run guard: aborts if seed rows already exist, unless ?force=1 (browser) or
- * `php seed_test.php --force` (CLI) is passed.
+ * Run: php seed_test.php [--lang=id|en|tr|zh] [--force]   (CLI)
+ *   or open http://localhost/ds3/seed_test.php?lang=tr&force=1   (browser)
+ * --lang controls which language the FROZEN historical text (symptom names,
+ * severity labels) is captured in - just like a real diagnosis captures
+ * whatever language was active in the browser at the time. Default: id.
+ * Re-run guard is per-language (separate '[SEED-XX ...]' tag), so seeding
+ * multiple languages side by side doesn't collide - only re-running the
+ * SAME language without --force is blocked.
  */
 
 if (session_status() === PHP_SESSION_NONE) session_start();
@@ -19,6 +24,21 @@ require __DIR__ . '/controller/c_Diagnosa.php';
 $isCli = (php_sapi_name() === 'cli');
 $force = $isCli ? in_array('--force', $argv ?? []) : isset($_GET['force']);
 
+$validLangs = ['id', 'en', 'tr', 'zh'];
+$rawLang = 'id';
+if ($isCli) {
+    foreach ($argv as $a) {
+        if (str_starts_with($a, '--lang=')) $rawLang = substr($a, 7);
+    }
+} else {
+    $rawLang = $_GET['lang'] ?? 'id';
+}
+$lang = in_array($rawLang, $validLangs) ? $rawLang : 'id';
+$_SESSION['lang'] = $lang;
+$langArr = require __DIR__ . "/lang/{$lang}.php";
+$nameCol = 'name_' . $lang;
+$seedTag = '[SEED-' . strtoupper($lang) . ' ';
+
 function out($line, $isCli)
 {
     echo $isCli ? ($line . PHP_EOL) : (htmlspecialchars($line) . "<br>\n");
@@ -28,16 +48,18 @@ if (!$isCli) {
     echo "<pre style='font-family:monospace;'>\n";
 }
 
-// ── Guard: don't silently duplicate seed data on a second run ──────────────
-$existing = mysqli_query($con, "SELECT COUNT(*) AS n FROM diagnoses WHERE summary LIKE '[SEED %'");
+// ── Guard: don't silently duplicate seed data on a second run (per-language tag) ──
+$existingEsc = mysqli_real_escape_string($con, $seedTag);
+$existing = mysqli_query($con, "SELECT COUNT(*) AS n FROM diagnoses WHERE summary LIKE '$existingEsc%'");
 $existingCount = $existing ? (int)mysqli_fetch_assoc($existing)['n'] : 0;
 if ($existingCount > 0 && !$force) {
-    out("Sudah ada $existingCount baris seed sebelumnya di tabel `diagnoses` (summary diawali '[SEED ').", $isCli);
+    out("Sudah ada $existingCount baris seed bahasa '$lang' sebelumnya (summary diawali '$seedTag').", $isCli);
     out("Jalankan lagi dengan --force (CLI) atau ?force=1 (browser) kalau memang mau nambah lagi.", $isCli);
     out("", $isCli);
     out("Untuk membersihkan seed lama sebelum re-run, jalankan SQL ini dulu:", $isCli);
-    out("  DELETE dd FROM diagnosis_details dd JOIN diagnoses d ON dd.diagnosis_id = d.id WHERE d.summary LIKE '[SEED %';", $isCli);
-    out("  DELETE FROM diagnoses WHERE summary LIKE '[SEED %';", $isCli);
+    out("  DELETE ds FROM diagnosis_symptoms ds JOIN diagnoses d ON ds.diagnosis_id = d.id WHERE d.summary LIKE '$seedTag%';", $isCli);
+    out("  DELETE dd FROM diagnosis_details dd JOIN diagnoses d ON dd.diagnosis_id = d.id WHERE d.summary LIKE '$seedTag%';", $isCli);
+    out("  DELETE FROM diagnoses WHERE summary LIKE '$seedTag%';", $isCli);
     if (!$isCli) echo "</pre>\n";
     exit;
 }
@@ -95,8 +117,14 @@ $scenarios = [
 ];
 
 $dg = new Diagnosa;
-$subskalaFallback = ['D' => 'Depresi', 'A' => 'Anxiety', 'S' => 'Stres'];
+$subskalaFallback = [
+    'D' => $langArr['subskala_depresi'] ?? 'Depresi',
+    'A' => $langArr['subskala_anxiety'] ?? 'Anxiety',
+    'S' => $langArr['subskala_stres'] ?? 'Stres',
+];
 $summaryRows = [];
+
+out("Bahasa: $lang (tag: {$seedTag}...)", $isCli);
 
 out(str_pad('Kode', 6) . str_pad('D', 22) . str_pad('A', 22) . str_pad('S', 22) . 'diagnosis_id', $isCli);
 out(str_repeat('-', 90), $isCli);
@@ -124,13 +152,17 @@ foreach ($scenarios as $code => $sc) {
         continue;
     }
 
-    // Build symptoms_text exactly like result.php: numbered list of Indonesian symptom names
+    // Build symptoms_text exactly like result.php: numbered list of symptom names in the
+    // active language. $validSymptomIds (invalid id like S30's 9999 excluded) is also what
+    // gets persisted into diagnosis_symptoms below, so the detail page can re-derive this
+    // same list live in whatever language is active whenever it's opened later.
     $allIds = array_merge($bySubskala['D'], $bySubskala['A'], $bySubskala['S']);
-    $allIds = array_filter($allIds, fn($id) => $id !== (int)($sc['extraInvalidId'] ?? -1));
+    $invalidId = (int)($sc['extraInvalidId'] ?? -1);
+    $validSymptomIds = array_values(array_filter($allIds, fn($id) => $id !== $invalidId));
     $gejalaDbStr = '';
     $i = 0;
-    foreach ($allIds as $id) {
-        $q = mysqli_query($con, "SELECT name_id AS name FROM ds_symptoms WHERE id = " . (int)$id);
+    foreach ($validSymptomIds as $id) {
+        $q = mysqli_query($con, "SELECT $nameCol AS name FROM ds_symptoms WHERE id = " . (int)$id);
         $obj = $q ? mysqli_fetch_object($q) : null;
         if (!$obj) continue;
         $i++;
@@ -148,7 +180,7 @@ foreach ($scenarios as $code => $sc) {
     $penyakitStr   = implode(' | ', $ringkasanNama);
     $persentaseStr = implode(' | ', $ringkasanPct);
     $nilaiStr      = $results['D']['confidence_value'] ?? ($results['A']['confidence_value'] ?? ($results['S']['confidence_value'] ?? 0));
-    $summary       = "[SEED $code] $penyakitStr";
+    $summary       = "{$seedTag}{$code}] $penyakitStr";
     $tanggal       = date('d-m-Y') . '<br>' . date('h:i:s A');
 
     mysqli_query($con,
@@ -170,6 +202,12 @@ foreach ($scenarios as $code => $sc) {
         );
     }
 
+    foreach ($validSymptomIds as $symptomId) {
+        mysqli_query($con,
+            "INSERT INTO diagnosis_symptoms (diagnosis_id, source, symptom_id) VALUES ($diagnosisId, 'diagnosa', " . (int)$symptomId . ")"
+        );
+    }
+
     $fmt = fn($r) => $r ? ($r['severity_level'] . ' ' . $r['confidence_percentage']) : '-';
     out(
         str_pad($code, 6) .
@@ -184,8 +222,9 @@ foreach ($scenarios as $code => $sc) {
 }
 
 out(str_repeat('-', 90), $isCli);
-out('Selesai: ' . count($summaryRows) . ' dari ' . count($scenarios) . ' skenario berhasil di-insert.', $isCli);
-out('Filter buat lihat semua baris seed: SELECT * FROM diagnoses WHERE summary LIKE \'[SEED %\';', $isCli);
+out('Selesai: ' . count($summaryRows) . ' dari ' . count($scenarios) . ' skenario berhasil di-insert (bahasa: ' . $lang . ').', $isCli);
+out("Filter buat lihat semua baris seed bahasa ini: SELECT * FROM diagnoses WHERE summary LIKE '{$seedTag}%';", $isCli);
+out("Filter buat lihat SEMUA seed (semua bahasa): SELECT * FROM diagnoses WHERE summary LIKE '[SEED-%';", $isCli);
 
 if (!$isCli) {
     echo "</pre>\n";

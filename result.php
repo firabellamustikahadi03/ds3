@@ -99,6 +99,15 @@ if (isset($_POST['gejala'])) {
                              $nilaiEsc, '{$r['confidence_percentage']}')"
                 );
             }
+
+            // Persist the actual symptom ids selected, so the detail page can
+            // re-derive the symptom list live in whatever language is active later,
+            // instead of being stuck with symptoms_text frozen in today's language.
+            foreach ($_POST['gejala'] as $symptomId) {
+                mysqli_query($con,
+                    "INSERT INTO diagnosis_symptoms (diagnosis_id, source, symptom_id) VALUES ($idDiagnosa, 'diagnosa', " . (int)$symptomId . ")"
+                );
+            }
         }
     }
 }

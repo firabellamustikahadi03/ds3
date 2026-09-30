@@ -14,6 +14,37 @@ $details = [];
 while ($row = mysqli_fetch_assoc($detailResult)) {
     $details[$row['subscale']] = $row;
 }
+
+// Re-derive the symptom list and severity labels LIVE in the currently active
+// language, instead of reading the text that got frozen at diagnosis time.
+$_validLangs = ['id', 'en', 'tr', 'zh'];
+$_lang    = (isset($_SESSION['lang']) && in_array($_SESSION['lang'], $_validLangs)) ? $_SESSION['lang'] : 'id';
+$_nameCol = 'name_' . $_lang;
+
+$liveSymptoms = [];
+$symQuery = mysqli_query($con, "SELECT s.$_nameCol AS name FROM diagnosis_symptoms ds
+                                 JOIN ds_symptoms s ON s.id = ds.symptom_id
+                                 WHERE ds.diagnosis_id = $id AND ds.source = 'riwayat'
+                                 ORDER BY ds.id");
+while ($row = mysqli_fetch_assoc($symQuery)) $liveSymptoms[] = $row['name'];
+
+if (!empty($liveSymptoms)) {
+    $symptomsTextDisplay = '';
+    foreach ($liveSymptoms as $i => $name) {
+        $symptomsTextDisplay .= ($i + 1) . '. ' . $name . '<br>';
+    }
+} else {
+    $symptomsTextDisplay = $header['symptoms_text'] ?? '';
+}
+
+foreach ($details as $sk => &$d) {
+    $sevQuery = mysqli_query($con, "SELECT $_nameCol AS name FROM ds_severity_levels
+                                     WHERE subscale = '$sk' AND severity_level = '" . mysqli_real_escape_string($con, $d['severity_level']) . "'");
+    $sevObj = $sevQuery ? mysqli_fetch_object($sevQuery) : null;
+    if ($sevObj && $sevObj->name) $d['severity_label'] = $sevObj->name;
+}
+unset($d);
+
 $subscaleFallback = [
     'D' => isset($_SESSION['langArray']['subskala_depresi']) ? $_SESSION['langArray']['subskala_depresi'] : 'Depresi',
     'A' => isset($_SESSION['langArray']['subskala_anxiety']) ? $_SESSION['langArray']['subskala_anxiety'] : 'Anxiety',
@@ -40,7 +71,7 @@ $subscaleFallback = [
         <div class="card mb-3">
           <div class="card-body">
             <p class="text-muted-mod mb-1"><?php echo isset($_SESSION['langArray']['tanggal']) ? htmlspecialchars($_SESSION['langArray']['tanggal']) : 'Tanggal'; ?>: <?php echo $header['diagnosis_date']; ?></p>
-            <p class="text-muted-mod mb-0"><?php echo isset($_SESSION['langArray']['gejala_dipilih']) ? htmlspecialchars($_SESSION['langArray']['gejala_dipilih']) : 'Gejala yang dipilih:'; ?><br><?php echo $header['symptoms_text']; ?></p>
+            <p class="text-muted-mod mb-0"><?php echo isset($_SESSION['langArray']['gejala_dipilih']) ? htmlspecialchars($_SESSION['langArray']['gejala_dipilih']) : 'Gejala yang dipilih:'; ?><br><?php echo $symptomsTextDisplay; ?></p>
           </div>
         </div>
 
