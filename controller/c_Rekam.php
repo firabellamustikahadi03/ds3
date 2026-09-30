@@ -39,6 +39,7 @@ class Rekam
 			$data[$i]['summary']               = $d['summary'];
 			$data[$i]['confidence_value']      = $d['confidence_value'];
 			$data[$i]['confidence_percentage'] = $d['confidence_percentage'];
+			$data[$i]['origin']                = $d['origin'];
 
 			$detailQuery = mysqli_query($con, "SELECT subscale, severity_label FROM diagnosis_details
 			                                    WHERE diagnosis_id = " . (int)$d['id'] . " AND source = 'riwayat'

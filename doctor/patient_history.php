@@ -62,7 +62,14 @@ $data = $p->TampilRPasienDenganRingkasan((int)($_GET['patient_id'] ?? 0));
                                         <tr>
                                             <td><?php print $i; ?></td>
                                             <td><?php print $r['diagnosis_date']; ?></td>
-                                            <td><?php print htmlspecialchars($r['ringkasan']); ?></td>
+                                            <td>
+                                                <?php print htmlspecialchars($r['ringkasan']); ?>
+                                                <?php if (($r['origin'] ?? 'dokter') === 'screening_mandiri'): ?>
+                                                  <span class="badge bg-info text-dark d-block mt-1" style="width:fit-content;">
+                                                    🩺 <?php echo isset($_SESSION['langArray']['first_screening_badge']) ? htmlspecialchars($_SESSION['langArray']['first_screening_badge']) : 'First Screening (Mandiri)'; ?>
+                                                  </span>
+                                                <?php endif; ?>
+                                            </td>
                                             <td>
                                                 <a href="diagnosis_detail.php?id=<?php print $r['id']; ?>" class="btn btn-primary btn-xs text-white" title="Detail"><i class="mdi mdi-eye-outline"></i></a>
                                                 <a onclick="if (! confirm('Apakah anda yakin akan menghapus riwayat rekam medis dari daftar ?')) { return false; }" href="../process/delete_record.php?id=<?php print $r['id']; ?>&patient_id=<?php print $_GET['patient_id']; ?>" class="btn btn-danger btn-simple btn-xs text-white" title="Hapus Rekam Medis"><i class="fa fa-times"></i></a>

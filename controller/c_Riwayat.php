@@ -29,15 +29,22 @@ class Riwayat
 	function TampilSemuaDenganRingkasan()
 	{
 		include "../connection/connection.php";
-		$query = mysqli_query($con, "SELECT * FROM diagnoses ORDER BY id DESC");
+		$query = mysqli_query($con, "SELECT d.*, doc.name AS sent_to_doctor_name
+		                              FROM diagnoses d
+		                              LEFT JOIN admins doc ON doc.id = d.sent_to_doctor_id
+		                              ORDER BY d.id DESC");
 		$i = 0;
 		while ($d = mysqli_fetch_array($query)) {
 			$data[$i]['id']                     = $d['id'];
 			$data[$i]['diagnosis_date']         = $d['diagnosis_date'];
 			$data[$i]['symptoms_text']          = $d['symptoms_text'];
+			$data[$i]['patient_name']           = $d['patient_name'];
+			$data[$i]['patient_age']            = $d['patient_age'];
 			$data[$i]['summary']                = $d['summary'];
 			$data[$i]['confidence_value']       = $d['confidence_value'];
 			$data[$i]['confidence_percentage']  = $d['confidence_percentage'];
+			$data[$i]['sent_to_doctor_id']      = $d['sent_to_doctor_id'];
+			$data[$i]['sent_to_doctor_name']    = $d['sent_to_doctor_name'];
 
 			$detailQuery = mysqli_query($con, "SELECT subscale, severity_label, confidence_percentage
 			                                    FROM diagnosis_details

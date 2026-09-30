@@ -70,7 +70,14 @@ $subscaleFallback = [
 
         <div class="card mb-3">
           <div class="card-body">
-            <p class="text-muted-mod mb-1"><?php echo isset($_SESSION['langArray']['tanggal']) ? htmlspecialchars($_SESSION['langArray']['tanggal']) : 'Tanggal'; ?>: <?php echo $header['diagnosis_date']; ?></p>
+            <p class="text-muted-mod mb-1">
+              <?php echo isset($_SESSION['langArray']['tanggal']) ? htmlspecialchars($_SESSION['langArray']['tanggal']) : 'Tanggal'; ?>: <?php echo $header['diagnosis_date']; ?>
+              <?php if (($header['origin'] ?? 'dokter') === 'screening_mandiri'): ?>
+                <span class="badge bg-info text-dark ms-2">
+                  🩺 <?php echo isset($_SESSION['langArray']['first_screening_badge']) ? htmlspecialchars($_SESSION['langArray']['first_screening_badge']) : 'First Screening (Mandiri)'; ?>
+                </span>
+              <?php endif; ?>
+            </p>
             <p class="text-muted-mod mb-0"><?php echo isset($_SESSION['langArray']['gejala_dipilih']) ? htmlspecialchars($_SESSION['langArray']['gejala_dipilih']) : 'Gejala yang dipilih:'; ?><br><?php echo $symptomsTextDisplay; ?></p>
           </div>
         </div>

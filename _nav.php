@@ -41,7 +41,7 @@ function navActive($page, $match) {
         <li class="nav-item">
           <a class="nav-link <?php echo navActive($_navPage,'patients'); ?>"
              href="patients.php">
-            <?php echo isset($_SESSION['langArray']['data_user']) ? $_SESSION['langArray']['data_user'] : 'Data User'; ?>
+            <?php echo isset($_SESSION['langArray']['nav_mulai_screening']) ? $_SESSION['langArray']['nav_mulai_screening'] : 'Mulai Diagnosa'; ?>
           </a>
         </li>
       </ul>

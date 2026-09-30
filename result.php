@@ -80,9 +80,12 @@ if (isset($_POST['gejala'])) {
             $persentaseStr = implode(' | ', $ringkasanPct);
             $nilaiStr      = $results['D']['confidence_value'] ?? ($results['A']['confidence_value'] ?? ($results['S']['confidence_value'] ?? 0));
 
+            $patientNameEsc = mysqli_real_escape_string($con, $_SESSION['screening_name'] ?? '-');
+            $patientAgeEsc  = mysqli_real_escape_string($con, $_SESSION['screening_age'] ?? '-');
+
             mysqli_query($con,
-                "INSERT INTO diagnoses (diagnosis_date, symptoms_text, summary, confidence_value, confidence_percentage)
-                 VALUES ('$tanggal', '" . mysqli_real_escape_string($con, $gejalaDbStr) . "', '" . mysqli_real_escape_string($con, $penyakitStr) . "',
+                "INSERT INTO diagnoses (diagnosis_date, symptoms_text, patient_name, patient_age, summary, confidence_value, confidence_percentage)
+                 VALUES ('$tanggal', '" . mysqli_real_escape_string($con, $gejalaDbStr) . "', '$patientNameEsc', '$patientAgeEsc', '" . mysqli_real_escape_string($con, $penyakitStr) . "',
                          '$nilaiStr', '" . mysqli_real_escape_string($con, $persentaseStr) . "')"
             );
             $idDiagnosa = mysqli_insert_id($con);

@@ -43,98 +43,74 @@ $pt = new Symptom;
   </div>
 </div>
 
-<!-- ── Registration form ─────────────────── -->
+<!-- ── Screening intake form ─────────────── -->
 <section class="py-5">
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-lg-6 col-md-8">
 
-        <?php if (isset($_GET['success'])): ?>
-        <div class="card-modern mb-4" style="border-left:5px solid var(--accent); background:rgba(67,217,173,.07);">
-          <div class="d-flex align-items-center gap-3">
-            <span style="font-size:1.8rem;">✅</span>
-            <div>
-              <h6 class="fw-700 mb-0">
-                <?php echo isset($_SESSION['langArray']['data_berhasil'])
-                    ? htmlspecialchars($_SESSION['langArray']['data_berhasil'])
-                    : 'Data berhasil ditambahkan!'; ?>
-              </h6>
-            </div>
-          </div>
-        </div>
-        <?php endif; ?>
-
         <div class="card-modern">
           <div class="text-center mb-4">
             <span style="font-size:2.5rem;">📝</span>
             <h4 class="fw-700 mt-2">
-              <?php echo isset($_SESSION['langArray']['tambah_data'])
-                  ? htmlspecialchars($_SESSION['langArray']['tambah_data'])
-                  : 'Tambah Data'; ?>
+              <?php echo isset($_SESSION['langArray']['mulai_screening'])
+                  ? htmlspecialchars($_SESSION['langArray']['mulai_screening'])
+                  : 'Isi Data & Mulai'; ?>
             </h4>
           </div>
 
-          <form method="post" action="process/add_doctor.php">
-            <input type="hidden" name="role" value="dokter">
+          <form method="post" action="process/save_screening_intake.php">
 
-            <!-- Jurusan / Prodi -->
-            <div class="mb-3">
+            <!-- Nama -->
+            <div class="mb-2">
               <label class="form-label-mod" for="nama">
-                <?php echo isset($_SESSION['langArray']['jurusan'])
-                    ? htmlspecialchars($_SESSION['langArray']['jurusan'])
-                    : 'Jurusan'; ?>
-              </label>
-              <input type="text" class="form-mod" name="name" id="nama"
-                     placeholder="<?php echo isset($_SESSION['langArray']['jurusan_placeholder'])
-                         ? htmlspecialchars($_SESSION['langArray']['jurusan_placeholder'])
-                         : 'Teknik Informatika'; ?>" required>
-            </div>
-
-            <!-- Nama / Username -->
-            <div class="mb-3">
-              <label class="form-label-mod" for="username">
                 <?php echo isset($_SESSION['langArray']['nama'])
                     ? htmlspecialchars($_SESSION['langArray']['nama'])
                     : 'Nama'; ?>
               </label>
-              <input type="text" class="form-mod" name="username" id="username"
+              <input type="text" class="form-mod" name="patient_name" id="nama"
                      placeholder="<?php echo isset($_SESSION['langArray']['nama_placeholder'])
                          ? htmlspecialchars($_SESSION['langArray']['nama_placeholder'])
-                         : 'Nama lengkap Anda'; ?>" required>
+                         : 'Nama lengkap Anda'; ?>">
+            </div>
+            <div class="mb-3 form-check">
+              <input type="checkbox" class="form-check-input" id="skipNama" name="skip_name"
+                     onchange="document.getElementById('nama').disabled = this.checked; if (this.checked) document.getElementById('nama').value = '';">
+              <label class="form-check-label" for="skipNama" style="font-size:.9rem;">
+                <?php echo isset($_SESSION['langArray']['skip_nama'])
+                    ? htmlspecialchars($_SESSION['langArray']['skip_nama'])
+                    : 'Saya tidak ingin menyebutkan nama'; ?>
+              </label>
             </div>
 
-            <!-- No. HP -->
-            <div class="mb-4">
-              <label class="form-label-mod" for="nohp">
-                <?php echo isset($_SESSION['langArray']['no_hp'])
-                    ? htmlspecialchars($_SESSION['langArray']['no_hp'])
-                    : 'Nomor Handphone'; ?>
+            <!-- Usia -->
+            <div class="mb-2">
+              <label class="form-label-mod" for="usia">
+                <?php echo isset($_SESSION['langArray']['usia'])
+                    ? htmlspecialchars($_SESSION['langArray']['usia'])
+                    : 'Usia'; ?>
               </label>
-              <input type="number" class="form-mod" name="phone" id="nohp"
-                     placeholder="08xxxxxxxxxx">
+              <input type="number" min="1" max="120" class="form-mod" name="patient_age" id="usia"
+                     placeholder="<?php echo isset($_SESSION['langArray']['usia_placeholder'])
+                         ? htmlspecialchars($_SESSION['langArray']['usia_placeholder'])
+                         : 'Usia Anda'; ?>">
+            </div>
+            <div class="mb-4 form-check">
+              <input type="checkbox" class="form-check-input" id="skipUsia" name="skip_age"
+                     onchange="document.getElementById('usia').disabled = this.checked; if (this.checked) document.getElementById('usia').value = '';">
+              <label class="form-check-label" for="skipUsia" style="font-size:.9rem;">
+                <?php echo isset($_SESSION['langArray']['skip_usia'])
+                    ? htmlspecialchars($_SESSION['langArray']['skip_usia'])
+                    : 'Saya tidak ingin menyebutkan usia'; ?>
+              </label>
             </div>
 
             <button type="submit" class="btn-primary-mod w-100" style="padding:.85rem;">
-              <?php echo isset($_SESSION['langArray']['tambah_data'])
-                  ? htmlspecialchars($_SESSION['langArray']['tambah_data'])
-                  : 'Simpan Data'; ?>
+              <?php echo isset($_SESSION['langArray']['mulai_screening'])
+                  ? htmlspecialchars($_SESSION['langArray']['mulai_screening'])
+                  : 'Isi Data & Mulai'; ?>
             </button>
           </form>
-        </div>
-
-        <!-- Quick diagnosa link -->
-        <div class="text-center mt-4">
-          <p class="text-muted-mod" style="font-size:.9rem;">
-            <?php echo isset($_SESSION['langArray']['sudah_mendaftar'])
-                ? htmlspecialchars($_SESSION['langArray']['sudah_mendaftar'])
-                : 'Sudah mendaftar?'; ?>
-            <a href="diagnosis.php" class="fw-700 text-primary-mod text-decoration-none">
-              <?php echo isset($_SESSION['langArray']['diagnosa'])
-                  ? htmlspecialchars($_SESSION['langArray']['diagnosa'])
-                  : 'Mulai Diagnosa'; ?>
-              &nbsp;→
-            </a>
-          </p>
         </div>
 
       </div>

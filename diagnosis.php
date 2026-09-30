@@ -4,6 +4,10 @@ $cl = new Riwayat;
 $cl->Count();
 
 session_start();
+if (!isset($_SESSION['screening_intake_done'])) {
+    header('Location: patients.php');
+    exit;
+}
 include('function.php');
 loadLanguage();
 
