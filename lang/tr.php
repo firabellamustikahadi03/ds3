@@ -128,4 +128,11 @@ return [
     'first_screening_badge' => 'İlk Tarama (Kendi Bildirimi)',
     'th_tanggal_waktu' => 'Tarih ve Saat',
     'th_hasil_das' => 'Sonuç (Depresyon / Anksiyete / Stres)',
+    'gejala_dipilih_minimal' => 'belirti seçildi (en az 2)',
+    'pilih_minimal_2_gejala' => 'Lütfen en az 2 belirti seçin.',
+    'kembali' => 'Geri',
+    'pasien_tidak_ditemukan' => 'Hasta bulunamadı.',
+    'kembali_ke_daftar_pasien' => 'Hasta Listesine Dön',
+    'kembali_ke_riwayat_pasien' => 'Hasta Geçmişine Dön',
+    'mulai_diagnosa' => 'Teşhise Başla',
 ];

@@ -128,4 +128,11 @@ return [
     'first_screening_badge' => '初步筛查(自我报告)',
     'th_tanggal_waktu' => '日期和时间',
     'th_hasil_das' => '结果(抑郁/焦虑/压力)',
+    'gejala_dipilih_minimal' => '已选择症状(最少2个)',
+    'pilih_minimal_2_gejala' => '请至少选择2个症状。',
+    'kembali' => '返回',
+    'pasien_tidak_ditemukan' => '未找到患者。',
+    'kembali_ke_daftar_pasien' => '返回患者列表',
+    'kembali_ke_riwayat_pasien' => '返回患者病史',
+    'mulai_diagnosa' => '开始诊断',
 ];

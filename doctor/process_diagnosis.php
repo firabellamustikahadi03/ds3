@@ -12,7 +12,11 @@ $errorInvalidPatient = false;
 $results             = ['D' => null, 'A' => null, 'S' => null];
 $selectedSymptoms    = [];
 
-$subskalaFallback = ['D' => 'Depresi', 'A' => 'Anxiety', 'S' => 'Stres'];
+$subskalaFallback = [
+    'D' => isset($_SESSION['langArray']['subskala_depresi']) ? $_SESSION['langArray']['subskala_depresi'] : 'Depresi',
+    'A' => isset($_SESSION['langArray']['subskala_anxiety']) ? $_SESSION['langArray']['subskala_anxiety'] : 'Anxiety',
+    'S' => isset($_SESSION['langArray']['subskala_stres']) ? $_SESSION['langArray']['subskala_stres'] : 'Stres',
+];
 
 if (isset($_POST['gejala'])) {
     if (count($_POST['gejala']) < 2) {
@@ -116,14 +120,14 @@ if (isset($_POST['gejala'])) {
 
         <?php if ($errorMinGejala): ?>
           <div class="card"><div class="card-body text-center py-5">
-            <h5>Pilih minimal 2 gejala.</h5>
-            <a href="diagnosis.php?patient_id=<?php echo $patientId; ?>" class="btn btn-primary text-white mt-2">Kembali</a>
+            <h5><?php echo isset($_SESSION['langArray']['pilih_minimal_2_gejala']) ? htmlspecialchars($_SESSION['langArray']['pilih_minimal_2_gejala']) : 'Pilih minimal 2 gejala.'; ?></h5>
+            <a href="diagnosis.php?patient_id=<?php echo $patientId; ?>" class="btn btn-primary text-white mt-2"><?php echo isset($_SESSION['langArray']['kembali']) ? htmlspecialchars($_SESSION['langArray']['kembali']) : 'Kembali'; ?></a>
           </div></div>
 
         <?php elseif ($errorInvalidPatient): ?>
           <div class="card"><div class="card-body text-center py-5">
-            <h5>Pasien tidak ditemukan.</h5>
-            <a href="patients.php" class="btn btn-primary text-white mt-2">Kembali ke Daftar Pasien</a>
+            <h5><?php echo isset($_SESSION['langArray']['pasien_tidak_ditemukan']) ? htmlspecialchars($_SESSION['langArray']['pasien_tidak_ditemukan']) : 'Pasien tidak ditemukan.'; ?></h5>
+            <a href="patients.php" class="btn btn-primary text-white mt-2"><?php echo isset($_SESSION['langArray']['kembali_ke_daftar_pasien']) ? htmlspecialchars($_SESSION['langArray']['kembali_ke_daftar_pasien']) : 'Kembali ke Daftar Pasien'; ?></a>
           </div></div>
 
         <?php elseif ($hasDiagnosis): ?>
@@ -135,12 +139,12 @@ if (isset($_POST['gejala'])) {
               <p class="text-muted-mod mb-1"><?php echo $subskalaFallback[$sk]; ?></p>
               <?php if ($r): ?>
                 <h4 class="mb-1"><?php echo htmlspecialchars($r['severity_label']); ?></h4>
-                <p class="mb-2">Derajat kepercayaan: <strong><?php echo $r['confidence_percentage']; ?></strong></p>
+                <p class="mb-2"><?php echo isset($_SESSION['langArray']['derajat_kepercayaan']) ? htmlspecialchars($_SESSION['langArray']['derajat_kepercayaan']) : 'Derajat kepercayaan:'; ?> <strong><?php echo $r['confidence_percentage']; ?></strong></p>
                 <?php if (!empty($r['recommendation'])): ?>
                   <p class="text-muted-mod mb-0"><?php echo nl2br(htmlspecialchars($r['recommendation'])); ?></p>
                 <?php endif; ?>
               <?php else: ?>
-                <p class="mb-0 text-muted-mod">Tidak ada gejala dipilih di kategori ini.</p>
+                <p class="mb-0 text-muted-mod"><?php echo isset($_SESSION['langArray']['tidak_ada_gejala_dipilih']) ? htmlspecialchars($_SESSION['langArray']['tidak_ada_gejala_dipilih']) : 'Tidak ada gejala dipilih di kategori ini.'; ?></p>
               <?php endif; ?>
             </div>
           </div>
@@ -148,7 +152,7 @@ if (isset($_POST['gejala'])) {
 
           <div class="card mb-3">
             <div class="card-body">
-              <h6 class="mb-2">Gejala yang Dipilih</h6>
+              <h6 class="mb-2"><?php echo isset($_SESSION['langArray']['gejala_dipilih']) ? htmlspecialchars(rtrim($_SESSION['langArray']['gejala_dipilih'], ':')) : 'Gejala yang Dipilih'; ?></h6>
               <ol class="mb-0">
                 <?php foreach ($selectedSymptoms as $s): ?>
                   <li><?php echo htmlspecialchars($s); ?></li>
@@ -158,13 +162,13 @@ if (isset($_POST['gejala'])) {
           </div>
 
           <div class="text-center mb-4">
-            <a href="patient_history.php?patient_id=<?php echo $patientId; ?>" class="btn btn-primary text-white">Kembali ke Riwayat Pasien</a>
+            <a href="patient_history.php?patient_id=<?php echo $patientId; ?>" class="btn btn-primary text-white"><?php echo isset($_SESSION['langArray']['kembali_ke_riwayat_pasien']) ? htmlspecialchars($_SESSION['langArray']['kembali_ke_riwayat_pasien']) : 'Kembali ke Riwayat Pasien'; ?></a>
           </div>
 
         <?php else: ?>
           <div class="card"><div class="card-body text-center py-5">
-            <h5>Belum ada diagnosa dilakukan.</h5>
-            <a href="diagnosis.php?patient_id=<?php echo $patientId; ?>" class="btn btn-primary text-white mt-2">Mulai Diagnosa</a>
+            <h5><?php echo isset($_SESSION['langArray']['belum_diagnosa']) ? htmlspecialchars($_SESSION['langArray']['belum_diagnosa']) : 'Belum ada diagnosa dilakukan.'; ?></h5>
+            <a href="diagnosis.php?patient_id=<?php echo $patientId; ?>" class="btn btn-primary text-white mt-2"><?php echo isset($_SESSION['langArray']['mulai_diagnosa']) ? htmlspecialchars($_SESSION['langArray']['mulai_diagnosa']) : 'Mulai Diagnosa'; ?></a>
           </div></div>
         <?php endif; ?>
 

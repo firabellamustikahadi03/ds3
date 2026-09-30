@@ -6,9 +6,9 @@ $pt = new Symptom;
 $patientId = (int)($_GET['patient_id'] ?? 0);
 
 $subskalaList = [
-    'D' => ['color' => '#6C63FF', 'label' => 'Depresi'],
-    'A' => ['color' => '#FF6584', 'label' => 'Anxiety'],
-    'S' => ['color' => '#43D9AD', 'label' => 'Stres'],
+    'D' => ['color' => '#6C63FF', 'label' => isset($_SESSION['langArray']['subskala_depresi']) ? $_SESSION['langArray']['subskala_depresi'] : 'Depresi'],
+    'A' => ['color' => '#FF6584', 'label' => isset($_SESSION['langArray']['subskala_anxiety']) ? $_SESSION['langArray']['subskala_anxiety'] : 'Anxiety'],
+    'S' => ['color' => '#43D9AD', 'label' => isset($_SESSION['langArray']['subskala_stres']) ? $_SESSION['langArray']['subskala_stres'] : 'Stres'],
 ];
 ?>
 <div class="page-wrapper">
@@ -46,8 +46,8 @@ $subskalaList = [
 
               <hr>
               <div class="d-flex align-items-center justify-content-between">
-                <span><span id="selectedCount">0</span> gejala dipilih (minimal 2)</span>
-                <button type="submit" class="btn btn-danger text-white">Diagnosa</button>
+                <span><span id="selectedCount">0</span> <?php echo isset($_SESSION['langArray']['gejala_dipilih_minimal']) ? htmlspecialchars($_SESSION['langArray']['gejala_dipilih_minimal']) : 'gejala dipilih (minimal 2)'; ?></span>
+                <button type="submit" class="btn btn-danger text-white"><?php echo isset($_SESSION['langArray']['diagnosa']) ? htmlspecialchars($_SESSION['langArray']['diagnosa']) : 'Diagnosa'; ?></button>
               </div>
             </form>
           </div>
@@ -71,7 +71,7 @@ $subskalaList = [
     var n = document.querySelectorAll('.symptom-check:checked').length;
     if (n < 2) {
       e.preventDefault();
-      alert('Pilih minimal 2 gejala.');
+      alert(<?php echo json_encode(isset($_SESSION['langArray']['pilih_minimal_2_gejala']) ? $_SESSION['langArray']['pilih_minimal_2_gejala'] : 'Pilih minimal 2 gejala.'); ?>);
     }
   });
 })();

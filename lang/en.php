@@ -128,4 +128,11 @@ return [
     'first_screening_badge' => 'First Screening (Self-reported)',
     'th_tanggal_waktu' => 'Date and Time',
     'th_hasil_das' => 'Result (Depression / Anxiety / Stress)',
+    'gejala_dipilih_minimal' => 'symptoms selected (minimum 2)',
+    'pilih_minimal_2_gejala' => 'Please select at least 2 symptoms.',
+    'kembali' => 'Back',
+    'pasien_tidak_ditemukan' => 'Patient not found.',
+    'kembali_ke_daftar_pasien' => 'Back to Patient List',
+    'kembali_ke_riwayat_pasien' => 'Back to Patient History',
+    'mulai_diagnosa' => 'Start Diagnosis',
 ];

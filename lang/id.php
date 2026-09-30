@@ -128,4 +128,11 @@ return [
     'first_screening_badge' => 'First Screening (Mandiri)',
     'th_tanggal_waktu' => 'Tanggal dan Waktu',
     'th_hasil_das' => 'Hasil (Depresi / Anxiety / Stres)',
+    'gejala_dipilih_minimal' => 'gejala dipilih (minimal 2)',
+    'pilih_minimal_2_gejala' => 'Pilih minimal 2 gejala.',
+    'kembali' => 'Kembali',
+    'pasien_tidak_ditemukan' => 'Pasien tidak ditemukan.',
+    'kembali_ke_daftar_pasien' => 'Kembali ke Daftar Pasien',
+    'kembali_ke_riwayat_pasien' => 'Kembali ke Riwayat Pasien',
+    'mulai_diagnosa' => 'Mulai Diagnosa',
 ];
