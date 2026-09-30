@@ -11,11 +11,7 @@ $p = new Admin;
     <!-- Bread crumb and right sidebar toggle -->
     <!-- ============================================================== -->
     <div class="page-breadcrumb">
-        <div class="row align-items-center">
-            <div class="col-5">
-                <h4 class="page-title"><?php echo isset($_SESSION['langArray']['data_user']) ? htmlspecialchars($_SESSION['langArray']['data_user']) : 'Data User'; ?></h4>
-            </div>
-        </div>
+        <h4 class="page-title"><?php echo isset($_SESSION['langArray']['data_user']) ? htmlspecialchars($_SESSION['langArray']['data_user']) : 'Data User'; ?></h4>
     </div>
     <!-- ============================================================== -->
     <!-- End Bread crumb and right sidebar toggle -->

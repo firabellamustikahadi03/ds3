@@ -105,8 +105,8 @@ if (isset($_POST['gejala'])) {
   <div class="page-breadcrumb">
     <h4 class="page-title"><?php echo isset($_SESSION['langArray']['hasil_diagnosa']) ? htmlspecialchars($_SESSION['langArray']['hasil_diagnosa']) : 'Hasil Diagnosa'; ?></h4>
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="patients.php">Pasien</a></li>
-      <li class="breadcrumb-item active">Hasil Diagnosa</li>
+      <li class="breadcrumb-item"><a href="patients.php"><?php echo isset($_SESSION['langArray']['pasien']) ? htmlspecialchars($_SESSION['langArray']['pasien']) : 'Pasien'; ?></a></li>
+      <li class="breadcrumb-item active"><?php echo isset($_SESSION['langArray']['hasil_diagnosa']) ? htmlspecialchars($_SESSION['langArray']['hasil_diagnosa']) : 'Hasil Diagnosa'; ?></li>
     </ol>
   </div>
 

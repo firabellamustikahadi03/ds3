@@ -8,8 +8,8 @@ $s->TampilSatuData((int)($_GET['id'] ?? 0));
   <div class="page-breadcrumb">
     <h4 class="page-title"><?php echo isset($_SESSION['langArray']['edit_gejala']) ? htmlspecialchars($_SESSION['langArray']['edit_gejala']) : 'Edit Gejala'; ?></h4>
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="symptoms.php">Gejala DASS-21</a></li>
-      <li class="breadcrumb-item active">Edit</li>
+      <li class="breadcrumb-item"><a href="symptoms.php"><?php echo isset($_SESSION['langArray']['gejala_dass21']) ? htmlspecialchars($_SESSION['langArray']['gejala_dass21']) : 'Gejala DASS-21'; ?></a></li>
+      <li class="breadcrumb-item active"><?php echo isset($_SESSION['langArray']['edit']) ? htmlspecialchars($_SESSION['langArray']['edit']) : 'Edit'; ?></li>
     </ol>
   </div>
 

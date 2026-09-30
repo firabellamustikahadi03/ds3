@@ -111,4 +111,9 @@ return [
     'data_tidak_ditemukan' => '未找到数据。',
     'derajat_kepercayaan' => '置信度:',
     'tidak_ada_gejala_legacy' => '此类别中未选择任何症状(或者这是Phase 1之前的旧数据,没有按子量表划分的明细)。',
+    'pasien' => '患者',
+    'dokter' => '医生',
+    'edit' => '编辑',
+    'rekam_medis' => '病历',
+    'tambah_pasien' => '添加患者',
 ];

@@ -12,17 +12,11 @@ $g->TampilDataAdmin($_GET['admin_id']);
 			<!-- Bread crumb and right sidebar toggle -->
 			<!-- ============================================================== -->
 			<div class="page-breadcrumb">
-				<div class="row align-items-center">
-					<div class="col-5">
-						<h4 class="page-title"><?php echo isset($_SESSION['langArray']['manajemen_ubah_dokter']) ? htmlspecialchars($_SESSION['langArray']['manajemen_ubah_dokter']) : 'Manajemen Ubah Data Dokter'; ?></h4>
-						<div class="d-flex align-items-center">
-							<ol class="breadcrumb">
-								<li class="breadcrumb-item" aria-current="page"><a href="doctors.php">Dokter</a></li>
-								<li class="breadcrumb-item active" aria-current="page">Ubah Data Dokter</li>
-							</ol>
-						</div>
-					</div>
-				</div>
+				<h4 class="page-title"><?php echo isset($_SESSION['langArray']['manajemen_ubah_dokter']) ? htmlspecialchars($_SESSION['langArray']['manajemen_ubah_dokter']) : 'Manajemen Ubah Data Dokter'; ?></h4>
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a href="doctors.php"><?php echo isset($_SESSION['langArray']['dokter']) ? htmlspecialchars($_SESSION['langArray']['dokter']) : 'Dokter'; ?></a></li>
+					<li class="breadcrumb-item active" aria-current="page"><?php echo isset($_SESSION['langArray']['manajemen_ubah_dokter']) ? htmlspecialchars($_SESSION['langArray']['manajemen_ubah_dokter']) : 'Ubah Data Dokter'; ?></li>
+				</ol>
 			</div>
 			<!-- ============================================================== -->
 			<!-- End Bread crumb and right sidebar toggle -->

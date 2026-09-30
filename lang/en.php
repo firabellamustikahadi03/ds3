@@ -111,4 +111,9 @@ return [
     'data_tidak_ditemukan' => 'Data not found.',
     'derajat_kepercayaan' => 'Confidence level:',
     'tidak_ada_gejala_legacy' => 'No symptoms selected in this category (or this is legacy data from before Phase 1, which has no per-subscale breakdown).',
+    'pasien' => 'Patients',
+    'dokter' => 'Doctors',
+    'edit' => 'Edit',
+    'rekam_medis' => 'Medical Record',
+    'tambah_pasien' => 'Add Patient',
 ];

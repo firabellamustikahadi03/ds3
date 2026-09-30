@@ -13,17 +13,11 @@ $subskalaList = [
 ?>
 <div class="page-wrapper">
   <div class="page-breadcrumb">
-    <div class="row align-items-center">
-      <div class="col-5">
-        <h4 class="page-title"><?php echo isset($_SESSION['langArray']['diagnosa_dass21']) ? htmlspecialchars($_SESSION['langArray']['diagnosa_dass21']) : 'Diagnosa DASS-21'; ?></h4>
-        <div class="d-flex align-items-center">
-          <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="patients.php">Pasien</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Diagnosa</li>
-          </ol>
-        </div>
-      </div>
-    </div>
+    <h4 class="page-title"><?php echo isset($_SESSION['langArray']['diagnosa_dass21']) ? htmlspecialchars($_SESSION['langArray']['diagnosa_dass21']) : 'Diagnosa DASS-21'; ?></h4>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="patients.php"><?php echo isset($_SESSION['langArray']['pasien']) ? htmlspecialchars($_SESSION['langArray']['pasien']) : 'Pasien'; ?></a></li>
+      <li class="breadcrumb-item active" aria-current="page"><?php echo isset($_SESSION['langArray']['diagnosa']) ? htmlspecialchars($_SESSION['langArray']['diagnosa']) : 'Diagnosa'; ?></li>
+    </ol>
   </div>
 
   <div class="container-fluid">

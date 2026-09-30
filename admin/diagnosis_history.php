@@ -12,20 +12,7 @@ $data = $r->TampilSemuaDenganRingkasan();
     <!-- Bread crumb and right sidebar toggle -->
     <!-- ============================================================== -->
     <div class="page-breadcrumb">
-        <div class="row align-items-center">
-            <div class="col-5">
-                <h4 class="page-title"><?php echo isset($_SESSION['langArray']['riwayat_diagnosa']) ? htmlspecialchars($_SESSION['langArray']['riwayat_diagnosa']) : 'Riwayat Diagnosa'; ?></h4>
-                <div class="d-flex align-items-center">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item active" aria-current="page">Riwayat Diagnosa</li>
-                    </ol>
-                </div>
-            </div>
-            <div class="col-7">
-                <div class="text-right upgrade-btn">
-                </div>
-            </div>
-        </div>
+        <h4 class="page-title"><?php echo isset($_SESSION['langArray']['riwayat_diagnosa']) ? htmlspecialchars($_SESSION['langArray']['riwayat_diagnosa']) : 'Riwayat Diagnosa'; ?></h4>
     </div>
     <!-- ============================================================== -->
     <!-- End Bread crumb and right sidebar toggle -->

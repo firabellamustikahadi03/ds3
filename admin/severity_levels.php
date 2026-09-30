@@ -4,7 +4,11 @@ include "../controller/c_SeverityLevel.php";
 $sl = new SeverityLevel;
 $data = $sl->TampilSemua();
 
-$subscaleLabels = ['D' => 'Depresi', 'A' => 'Anxiety', 'S' => 'Stres'];
+$subscaleLabels = [
+    'D' => isset($_SESSION['langArray']['subskala_depresi']) ? $_SESSION['langArray']['subskala_depresi'] : 'Depresi',
+    'A' => isset($_SESSION['langArray']['subskala_anxiety']) ? $_SESSION['langArray']['subskala_anxiety'] : 'Anxiety',
+    'S' => isset($_SESSION['langArray']['subskala_stres']) ? $_SESSION['langArray']['subskala_stres'] : 'Stres',
+];
 ?>
 <div class="container-fluid">
   <div class="page-breadcrumb">

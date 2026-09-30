@@ -4,14 +4,18 @@ include "../controller/c_SeverityLevel.php";
 $sl = new SeverityLevel;
 $sl->TampilSatuData((int)($_GET['id'] ?? 0));
 
-$subscaleLabels = ['D' => 'Depresi', 'A' => 'Anxiety', 'S' => 'Stres'];
+$subscaleLabels = [
+    'D' => isset($_SESSION['langArray']['subskala_depresi']) ? $_SESSION['langArray']['subskala_depresi'] : 'Depresi',
+    'A' => isset($_SESSION['langArray']['subskala_anxiety']) ? $_SESSION['langArray']['subskala_anxiety'] : 'Anxiety',
+    'S' => isset($_SESSION['langArray']['subskala_stres']) ? $_SESSION['langArray']['subskala_stres'] : 'Stres',
+];
 ?>
 <div class="container-fluid">
   <div class="page-breadcrumb">
     <h4 class="page-title"><?php echo isset($_SESSION['langArray']['edit_tingkat_keparahan']) ? htmlspecialchars($_SESSION['langArray']['edit_tingkat_keparahan']) : 'Edit Tingkat Keparahan'; ?></h4>
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="severity_levels.php">Tingkat Keparahan</a></li>
-      <li class="breadcrumb-item active">Edit</li>
+      <li class="breadcrumb-item"><a href="severity_levels.php"><?php echo isset($_SESSION['langArray']['tingkat_keparahan']) ? htmlspecialchars($_SESSION['langArray']['tingkat_keparahan']) : 'Tingkat Keparahan'; ?></a></li>
+      <li class="breadcrumb-item active"><?php echo isset($_SESSION['langArray']['edit']) ? htmlspecialchars($_SESSION['langArray']['edit']) : 'Edit'; ?></li>
     </ol>
   </div>
 

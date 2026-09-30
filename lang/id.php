@@ -111,4 +111,9 @@ return [
     'data_tidak_ditemukan' => 'Data tidak ditemukan.',
     'derajat_kepercayaan' => 'Derajat kepercayaan:',
     'tidak_ada_gejala_legacy' => 'Tidak ada gejala dipilih di kategori ini (atau data lama sebelum Phase 1 yang tidak punya rincian per subskala).',
+    'pasien' => 'Pasien',
+    'dokter' => 'Dokter',
+    'edit' => 'Edit',
+    'rekam_medis' => 'Rekam Medis',
+    'tambah_pasien' => 'Tambah Pasien',
 ];

@@ -12,22 +12,12 @@ $data = $p->TampilRPasienDenganRingkasan((int)($_GET['patient_id'] ?? 0));
     <!-- Bread crumb and right sidebar toggle -->
     <!-- ============================================================== -->
     <div class="page-breadcrumb">
-        <div class="row align-items-center">
-            <div class="col-5">
-                <h4 class="page-title"><?php echo isset($_SESSION['langArray']['manajemen_rekam_medis']) ? htmlspecialchars($_SESSION['langArray']['manajemen_rekam_medis']) : 'Manajemen Rekam Medis'; ?></h4>
-                <div class="d-flex align-items-center">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="patients.php">Pasien</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Rekam Medis</li>
-                    </ol>
-                </div>
-            </div>
-            <div class="col-7">
-                <div class="text-right upgrade-btn">
-                    <a href="diagnosis.php?patient_id=<?php print $_GET['patient_id'] ?>" class="btn btn-danger text-white"><i class="mdi mdi-plus"></i> Diagnosa</a>
-                </div>
-            </div>
-        </div>
+        <h4 class="page-title"><?php echo isset($_SESSION['langArray']['manajemen_rekam_medis']) ? htmlspecialchars($_SESSION['langArray']['manajemen_rekam_medis']) : 'Manajemen Rekam Medis'; ?></h4>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="patients.php"><?php echo isset($_SESSION['langArray']['pasien']) ? htmlspecialchars($_SESSION['langArray']['pasien']) : 'Pasien'; ?></a></li>
+            <li class="breadcrumb-item active" aria-current="page"><?php echo isset($_SESSION['langArray']['rekam_medis']) ? htmlspecialchars($_SESSION['langArray']['rekam_medis']) : 'Rekam Medis'; ?></li>
+        </ol>
+        <a href="diagnosis.php?patient_id=<?php print $_GET['patient_id'] ?>" class="btn btn-danger text-white"><i class="mdi mdi-plus"></i> <?php echo isset($_SESSION['langArray']['diagnosa']) ? htmlspecialchars($_SESSION['langArray']['diagnosa']) : 'Diagnosa'; ?></a>
     </div>
     <!-- ============================================================== -->
     <!-- End Bread crumb and right sidebar toggle -->

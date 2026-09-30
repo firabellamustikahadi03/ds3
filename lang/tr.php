@@ -111,4 +111,9 @@ return [
     'data_tidak_ditemukan' => 'Veri bulunamadı.',
     'derajat_kepercayaan' => 'Güven derecesi:',
     'tidak_ada_gejala_legacy' => 'Bu kategoride seçilmiş belirti yok (veya bu, Phase 1 öncesinden kalma ve alt ölçek bazında ayrıntısı olmayan eski bir veri).',
+    'pasien' => 'Hastalar',
+    'dokter' => 'Doktorlar',
+    'edit' => 'Düzenle',
+    'rekam_medis' => 'Tıbbi Kayıt',
+    'tambah_pasien' => 'Hasta Ekle',
 ];

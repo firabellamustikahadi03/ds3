@@ -12,17 +12,11 @@ $p->TampilSatuData($_GET['patient_id']);
 			<!-- Bread crumb and right sidebar toggle -->
 			<!-- ============================================================== -->
 			<div class="page-breadcrumb">
-				<div class="row align-items-center">
-					<div class="col-5">
-						<h4 class="page-title"><?php echo isset($_SESSION['langArray']['manajemen_ubah_pasien']) ? htmlspecialchars($_SESSION['langArray']['manajemen_ubah_pasien']) : 'Manajemen Ubah Data Pasien'; ?></h4>
-						<div class="d-flex align-items-center">
-							<ol class="breadcrumb">
-								<li class="breadcrumb-item" aria-current="page"><a href="patients.php">Pasien</a></li>
-								<li class="breadcrumb-item active" aria-current="page">Ubah Data Pasien</li>
-							</ol>
-						</div>
-					</div>
-				</div>
+				<h4 class="page-title"><?php echo isset($_SESSION['langArray']['manajemen_ubah_pasien']) ? htmlspecialchars($_SESSION['langArray']['manajemen_ubah_pasien']) : 'Manajemen Ubah Data Pasien'; ?></h4>
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a href="patients.php"><?php echo isset($_SESSION['langArray']['pasien']) ? htmlspecialchars($_SESSION['langArray']['pasien']) : 'Pasien'; ?></a></li>
+					<li class="breadcrumb-item active" aria-current="page"><?php echo isset($_SESSION['langArray']['manajemen_ubah_pasien']) ? htmlspecialchars($_SESSION['langArray']['manajemen_ubah_pasien']) : 'Ubah Data Pasien'; ?></li>
+				</ol>
 			</div>
 			<!-- ============================================================== -->
 			<!-- End Bread crumb and right sidebar toggle -->
