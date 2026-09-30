@@ -1,0 +1,81 @@
+<?php include '_header.php';
+?>
+		<!-- ============================================================== -->
+		<!-- Page wrapper  -->
+		<!-- ============================================================== -->
+		<div class="page-wrapper">
+			<!-- ============================================================== -->
+			<!-- Bread crumb and right sidebar toggle -->
+			<!-- ============================================================== -->
+			<div class="page-breadcrumb">
+				<h4 class="page-title"><?php echo isset($_SESSION['langArray']['tambah_admin']) ? htmlspecialchars($_SESSION['langArray']['tambah_admin']) : 'Tambah Admin'; ?></h4>
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a href="admins.php"><?php echo isset($_SESSION['langArray']['data_admin']) ? htmlspecialchars($_SESSION['langArray']['data_admin']) : 'Data Admin'; ?></a></li>
+					<li class="breadcrumb-item active" aria-current="page"><?php echo isset($_SESSION['langArray']['tambah_admin']) ? htmlspecialchars($_SESSION['langArray']['tambah_admin']) : 'Tambah Admin'; ?></li>
+				</ol>
+			</div>
+			<!-- ============================================================== -->
+			<!-- End Bread crumb and right sidebar toggle -->
+			<!-- ============================================================== -->
+			<!-- ============================================================== -->
+			<!-- Container fluid  -->
+			<!-- ============================================================== -->
+			<div class="container-fluid">
+				<!-- ============================================================== -->
+				<!-- Start Page Content -->
+				<!-- ============================================================== -->
+				<div class="row">
+					<!-- Column -->
+					<div class="col-lg-8 col-xlg-9 col-md-7">
+						<div class="card">
+							<div class="card-body">
+								<form method="post" class="form-horizontal form-material" action="../process/add_doctor.php">
+									<div class="form-group">
+										<label class="col-md-12"><?php echo isset($_SESSION['langArray']['nama']) ? htmlspecialchars($_SESSION['langArray']['nama']) : 'Nama'; ?></label>
+										<div class="col-md-12">
+											<input type="text" class="form-control form-control-line" name="name" required="">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-12"><?php echo isset($_SESSION['langArray']['username']) ? htmlspecialchars($_SESSION['langArray']['username']) : 'Username'; ?></label>
+										<div class="col-md-12">
+											<input type="text" class="form-control form-control-line" name="username" required="">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-12"><?php echo isset($_SESSION['langArray']['password']) ? htmlspecialchars($_SESSION['langArray']['password']) : 'Password'; ?></label>
+										<div class="col-md-12">
+											<input type="text" class="form-control form-control-line" name="password" required="">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-12"><?php echo isset($_SESSION['langArray']['email']) ? htmlspecialchars($_SESSION['langArray']['email']) : 'Email'; ?></label>
+										<div class="col-md-12">
+											<input type="email" class="form-control form-control-line" name="email">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-12"><?php echo isset($_SESSION['langArray']['no_hp']) ? htmlspecialchars($_SESSION['langArray']['no_hp']) : 'No HP'; ?></label>
+										<div class="col-md-12">
+											<input type="number" class="form-control form-control-line" name="phone">
+										</div>
+									</div>
+
+									<input type="hidden" value="admin" name="role">
+									<div class="form-group">
+										<div class="col-sm-12">
+											<button class="btn btn-success" type="submit"><?php echo isset($_SESSION['langArray']['tambah_data']) ? htmlspecialchars($_SESSION['langArray']['tambah_data']) : 'Tambah Data'; ?></button>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+					<!-- Column -->
+				</div>
+			</div>
+		</div>
+		<!-- ============================================================== -->
+		<!-- End PAge Content -->
+		<!-- ============================================================== -->
+<?php include '_footer.php'; ?>

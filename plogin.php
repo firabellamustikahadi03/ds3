@@ -24,6 +24,7 @@ if ($cek > 0) {
 	if ($data['role']=="admin") {
 		$_SESSION['username'] = $username;
 		$_SESSION['role'] = "admin";
+		$_SESSION['admin_id'] = $data['id'];
 		header('location:admin/data.php'); //jika berhasil login, maka masuk ke file yang dituju
 	} elseif ($data['role']=="dokter") {
 		$_SESSION['username'] = $username;

@@ -135,4 +135,8 @@ return [
     'kembali_ke_daftar_pasien' => 'Kembali ke Daftar Pasien',
     'kembali_ke_riwayat_pasien' => 'Kembali ke Riwayat Pasien',
     'mulai_diagnosa' => 'Mulai Diagnosa',
+    'tambah_admin' => 'Tambah Admin',
+    'data_admin' => 'Data Admin',
+    'manajemen_ubah_admin' => 'Manajemen Ubah Data Admin',
+    'akun_anda' => 'Akun Anda',
 ];

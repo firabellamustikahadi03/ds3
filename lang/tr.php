@@ -135,4 +135,8 @@ return [
     'kembali_ke_daftar_pasien' => 'Hasta Listesine Dön',
     'kembali_ke_riwayat_pasien' => 'Hasta Geçmişine Dön',
     'mulai_diagnosa' => 'Teşhise Başla',
+    'tambah_admin' => 'Yönetici Ekle',
+    'data_admin' => 'Yönetici Verileri',
+    'manajemen_ubah_admin' => 'Yönetici Verilerini Düzenle',
+    'akun_anda' => 'Hesabınız',
 ];

@@ -36,6 +36,23 @@ class Admin
 		return $data;
 	}
 
+	function AdminSemua()
+	{
+		include '../connection/connection.php';
+		$query = mysqli_query($con, "SELECT * FROM admins where role = 'admin'");
+		$i = 0;
+		while($d = mysqli_fetch_array($query))
+		{
+			$data[$i]['admin_id'] = $d['id'];
+			$data[$i]['username'] = $d['username'];
+			$data[$i]['name'] = $d['name'];
+			$data[$i]['email'] = $d['email'];
+			$data[$i]['phone'] = $d['phone'];
+			$i++;
+		}
+		return $data;
+	}
+
 	function TambahDokter($name, $username, $password, $email, $phone, $role)
 	{
 		// Pastikan koneksi database aman
@@ -66,7 +83,13 @@ class Admin
 	function UbahDokter($admin_id, $name, $username, $password, $email, $phone)
 	{
 		include "../connection/connection.php";
-		$query = mysqli_query($con, "UPDATE admins set name='$name',username='$username',password='$password',email='$email',phone='phone' WHERE id='$admin_id'");
+		$admin_id = (int)$admin_id;
+		$name     = mysqli_real_escape_string($con, $name);
+		$username = mysqli_real_escape_string($con, $username);
+		$password = mysqli_real_escape_string($con, $password);
+		$email    = mysqli_real_escape_string($con, $email);
+		$phone    = mysqli_real_escape_string($con, $phone);
+		$query = mysqli_query($con, "UPDATE admins set name='$name',username='$username',password='$password',email='$email',phone='$phone' WHERE id='$admin_id'");
 	}
 
 	function HapusDokter($admin_id)

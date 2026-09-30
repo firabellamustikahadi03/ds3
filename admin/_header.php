@@ -93,6 +93,11 @@ function adminNavActive($page, $keyword) {
       <i class="mdi mdi-account-multiple-outline"></i>
       <?php echo isset($_SESSION['langArray']['data_user']) ? htmlspecialchars($_SESSION['langArray']['data_user']) : 'Data User'; ?>
     </a>
+    <a href="admins.php"
+       class="sidebar-link <?php echo adminNavActive($_curPage,'admin'); ?>">
+      <i class="mdi mdi-shield-account-outline"></i>
+      <?php echo isset($_SESSION['langArray']['data_admin']) ? htmlspecialchars($_SESSION['langArray']['data_admin']) : 'Data Admin'; ?>
+    </a>
     <a href="profile.php"
        class="sidebar-link <?php echo adminNavActive($_curPage,'profile'); ?>">
       <i class="mdi mdi-account-cog-outline"></i>

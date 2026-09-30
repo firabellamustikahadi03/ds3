@@ -135,4 +135,8 @@ return [
     'kembali_ke_daftar_pasien' => '返回患者列表',
     'kembali_ke_riwayat_pasien' => '返回患者病史',
     'mulai_diagnosa' => '开始诊断',
+    'tambah_admin' => '添加管理员',
+    'data_admin' => '管理员数据',
+    'manajemen_ubah_admin' => '编辑管理员数据',
+    'akun_anda' => '您的账户',
 ];
