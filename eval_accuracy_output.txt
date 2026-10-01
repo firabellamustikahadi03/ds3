@@ -1,0 +1,91 @@
+Scenario              Sub  Official          ds3 @>=1    ds3 @>=2    
+----------------------------------------------------------------------
+D-Normal              D    Normal            Moderate    (no symptoms)
+D-Normal              A    Normal            Moderate    (no symptoms)
+D-Normal              S    Normal            Moderate    (no symptoms)
+D-Mild                D    Mild              Moderate    (no symptoms)
+D-Mild                A    Normal            Moderate    (no symptoms)
+D-Mild                S    Normal            Moderate    (no symptoms)
+D-Moderate            D    Moderate          Moderate    Moderate    
+D-Moderate            A    Normal            Moderate    (no symptoms)
+D-Moderate            S    Normal            Moderate    (no symptoms)
+D-Severe              D    Severe            Moderate    Moderate    
+D-Severe              A    Normal            Moderate    (no symptoms)
+D-Severe              S    Normal            Moderate    (no symptoms)
+D-ExtremelySevere     D    ExtremelySevere   Moderate    Moderate    
+D-ExtremelySevere     A    Normal            Moderate    (no symptoms)
+D-ExtremelySevere     S    Normal            Moderate    (no symptoms)
+A-Normal              D    Normal            Moderate    (no symptoms)
+A-Normal              A    Normal            Moderate    (no symptoms)
+A-Normal              S    Normal            Moderate    (no symptoms)
+A-Mild                D    Normal            Moderate    (no symptoms)
+A-Mild                A    Mild              Moderate    (no symptoms)
+A-Mild                S    Normal            Moderate    (no symptoms)
+A-Moderate            D    Normal            Moderate    (no symptoms)
+A-Moderate            A    Moderate          Moderate    (no symptoms)
+A-Moderate            S    Normal            Moderate    (no symptoms)
+A-Severe              D    Normal            Moderate    (no symptoms)
+A-Severe              A    Severe            Moderate    Moderate    
+A-Severe              S    Normal            Moderate    (no symptoms)
+A-ExtremelySevere     D    Normal            Moderate    (no symptoms)
+A-ExtremelySevere     A    ExtremelySevere   Moderate    Moderate    
+A-ExtremelySevere     S    Normal            Moderate    (no symptoms)
+S-Normal              D    Normal            Moderate    (no symptoms)
+S-Normal              A    Normal            Moderate    (no symptoms)
+S-Normal              S    Normal            Moderate    (no symptoms)
+S-Mild                D    Normal            Moderate    (no symptoms)
+S-Mild                A    Normal            Moderate    (no symptoms)
+S-Mild                S    Mild              Moderate    Moderate    
+S-Moderate            D    Normal            Moderate    (no symptoms)
+S-Moderate            A    Normal            Moderate    (no symptoms)
+S-Moderate            S    Moderate          Moderate    Moderate    
+S-Severe              D    Normal            Moderate    (no symptoms)
+S-Severe              A    Normal            Moderate    (no symptoms)
+S-Severe              S    Severe            Moderate    Moderate    
+S-ExtremelySevere     D    Normal            Moderate    (no symptoms)
+S-ExtremelySevere     A    Normal            Moderate    (no symptoms)
+S-ExtremelySevere     S    ExtremelySevere   Moderate    Moderate    
+All-Normal            D    Normal            Moderate    (no symptoms)
+All-Normal            A    Normal            Moderate    (no symptoms)
+All-Normal            S    Normal            Moderate    (no symptoms)
+All-Mild              D    Mild              Moderate    (no symptoms)
+All-Mild              A    Mild              Moderate    (no symptoms)
+All-Mild              S    Mild              Moderate    Moderate    
+All-Moderate          D    Moderate          Moderate    Moderate    
+All-Moderate          A    Moderate          Moderate    (no symptoms)
+All-Moderate          S    Moderate          Moderate    Moderate    
+All-Severe            D    Severe            Moderate    Moderate    
+All-Severe            A    Severe            Moderate    Moderate    
+All-Severe            S    Severe            Moderate    Moderate    
+All-ExtremelySevere   D    ExtremelySevere   Moderate    Moderate    
+All-ExtremelySevere   A    ExtremelySevere   Moderate    Moderate    
+All-ExtremelySevere   S    ExtremelySevere   Moderate    Moderate    
+Depression-dominant   D    Severe            Moderate    Moderate    
+Depression-dominant   A    Mild              Moderate    (no symptoms)
+Depression-dominant   S    Normal            Moderate    (no symptoms)
+Anxiety-dominant      D    Mild              Moderate    (no symptoms)
+Anxiety-dominant      A    Severe            Moderate    Moderate    
+Anxiety-dominant      S    Moderate          Moderate    Moderate    
+Stress-dominant       D    Normal            Moderate    (no symptoms)
+Stress-dominant       A    Moderate          Moderate    (no symptoms)
+Stress-dominant       S    ExtremelySevere   Moderate    Moderate    
+
+======================================================================
+RINGKASAN
+======================================================================
+Baris dengan hasil resmi 'Normal' (tidak dibandingkan, dicatat terpisah): 38
+
+Threshold >= 1:
+  Cocok persis: 8 / 31 (25.8%)
+  Distribusi selisih tingkat (off-by-N):
+    Selisih 0 tingkat: 8 baris
+    Selisih 1 tingkat: 16 baris
+    Selisih 2 tingkat: 7 baris
+
+Threshold >= 2:
+  Cocok persis: 5 / 22 (22.7%)
+  Distribusi selisih tingkat (off-by-N):
+    Selisih 0 tingkat: 5 baris
+    Selisih 1 tingkat: 10 baris
+    Selisih 2 tingkat: 7 baris
+
