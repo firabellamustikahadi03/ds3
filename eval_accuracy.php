@@ -88,65 +88,104 @@ $scenarios = [
 $idOffset = ['D' => 0, 'A' => 7, 'S' => 14];
 $dg = new Diagnosa;
 
+// ── Why rotations? ───────────────────────────────────────────────────────
+// The official DASS-21 score only depends on the SUM of a subscale's item scores,
+// so it is identical wherever those scores sit. ds3, however, weights each symptom
+// differently (Ringan/Sedang/Berat/Sangat Berat). A fixed pattern such as [3,3,2,...]
+// would always put the high scores on the first items, silently confounding "how
+// severe is the scenario" with "which items happen to be first". Running every
+// scenario under all 7 cyclic rotations holds the official result constant and
+// lets only the item identity vary, so the spread across rotations measures that
+// effect directly instead of hiding it.
+function rotateScores(array $scores, int $k): array
+{
+    $n = count($scores);
+    $out = [];
+    for ($i = 0; $i < $n; $i++) $out[($i + $k) % $n] = $scores[$i];
+    ksort($out);
+    return array_values($out);
+}
+
+$ds3Rank   = ['Mild' => 1, 'Moderate' => 2, 'Severe' => 3, 'Extreme' => 4];
+$ROTATIONS = 7;
+
 $rows = [];
-$stats = [
-    1 => ['exact' => 0, 'comparable' => 0, 'offByN' => []],
-    2 => ['exact' => 0, 'comparable' => 0, 'offByN' => []],
-];
+$stats = [];
+foreach ([1, 2] as $t) {
+    $stats[$t] = ['exact' => 0, 'comparable' => 0, 'noSymptoms' => 0, 'signed' => []];
+}
 $normalExcludedCount = 0;
 
 foreach ($scenarios as $label => $subscaleScores) {
     foreach (['D', 'A', 'S'] as $sk) {
-        $scores = $subscaleScores[$sk];
-        $official = classifyOfficial($scores, $sk, $cutoffs);
+        $official = classifyOfficial($subscaleScores[$sk], $sk, $cutoffs);
         $isNormal = ($official === 'Normal');
         if ($isNormal) $normalExcludedCount++;
 
         $row = ['scenario' => $label, 'subscale' => $sk, 'official' => $official];
 
         foreach ([1, 2] as $threshold) {
-            $symptomIds = scenarioToSymptomIds($scores, $idOffset[$sk], $threshold);
-            $result = empty($symptomIds) ? null : $dg->hitungSubskala($sk, $symptomIds);
-            $ds3Level = $result ? $result['severity_level'] : null;
-            $row["ds3_t{$threshold}"] = $ds3Level ?? '(no symptoms)';
+            $tally = [];
+            $noSymptoms = 0;
 
-            if (!$isNormal && $ds3Level !== null) {
-                $stats[$threshold]['comparable']++;
-                $officialAsDs3Label = $ds3ToOfficialLabel[$ds3Level] ?? $ds3Level;
-                if ($officialAsDs3Label === $official) {
-                    $offBy = 0;
-                    $stats[$threshold]['exact']++;
-                } else {
-                    $ds3TierNumeric = array_search($ds3Level, ['Mild', 'Moderate', 'Severe', 'Extreme']) + 1;
-                    $offBy = abs($tierOrder[$official] - $ds3TierNumeric);
+            for ($k = 0; $k < $ROTATIONS; $k++) {
+                $scores = rotateScores($subscaleScores[$sk], $k);
+                $symptomIds = scenarioToSymptomIds($scores, $idOffset[$sk], $threshold);
+                $result = empty($symptomIds) ? null : $dg->hitungSubskala($sk, $symptomIds);
+
+                if ($result === null) { $noSymptoms++; continue; }
+                $level = $result['severity_level'];
+                $tally[$level] = ($tally[$level] ?? 0) + 1;
+
+                if (!$isNormal) {
+                    $stats[$threshold]['comparable']++;
+                    $signed = $ds3Rank[$level] - $tierOrder[$official];
+                    if ($signed === 0) $stats[$threshold]['exact']++;
+                    $stats[$threshold]['signed'][$signed] = ($stats[$threshold]['signed'][$signed] ?? 0) + 1;
                 }
-                $stats[$threshold]['offByN'][$offBy] = ($stats[$threshold]['offByN'][$offBy] ?? 0) + 1;
             }
+            if (!$isNormal) $stats[$threshold]['noSymptoms'] += $noSymptoms;
+
+            $parts = [];
+            foreach (['Mild', 'Moderate', 'Severe', 'Extreme'] as $lv) {
+                if (isset($tally[$lv])) $parts[] = substr($lv, 0, 3) . 'x' . $tally[$lv];
+            }
+            if ($noSymptoms) $parts[] = 'nolx' . $noSymptoms;
+            $row["t{$threshold}"] = implode(' ', $parts);
         }
         $rows[] = $row;
     }
 }
 
 // ── Report ───────────────────────────────────────────────────────────────
-echo str_pad('Scenario', 22) . str_pad('Sub', 5) . str_pad('Official', 18) . str_pad('ds3 @>=1', 12) . str_pad('ds3 @>=2', 12) . "\n";
-echo str_repeat('-', 70) . "\n";
+echo "Setiap sel = sebaran hasil ds3 di 7 rotasi posisi skor (Mil/Mod/Sev/Ext x jumlah; nolx = tidak ada gejala).\n\n";
+echo str_pad('Scenario', 22) . str_pad('Sub', 5) . str_pad('Official', 17) . str_pad('ds3 @>=1', 26) . 'ds3 @>=2' . "\n";
+echo str_repeat('-', 95) . "\n";
 foreach ($rows as $r) {
-    echo str_pad($r['scenario'], 22) . str_pad($r['subscale'], 5) . str_pad($r['official'], 18) . str_pad($r['ds3_t1'], 12) . str_pad($r['ds3_t2'], 12) . "\n";
+    echo str_pad($r['scenario'], 22) . str_pad($r['subscale'], 5) . str_pad($r['official'], 17)
+       . str_pad($r['t1'], 26) . $r['t2'] . "\n";
 }
 
-echo "\n" . str_repeat('=', 70) . "\n";
-echo "RINGKASAN\n";
-echo str_repeat('=', 70) . "\n";
-echo "Baris dengan hasil resmi 'Normal' (tidak dibandingkan, dicatat terpisah): $normalExcludedCount\n\n";
+echo "\n" . str_repeat('=', 95) . "\n";
+echo "RINGKASAN (7 rotasi x 23 skenario x 3 subskala)\n";
+echo str_repeat('=', 95) . "\n";
+echo "Subskala-skenario dengan hasil resmi 'Normal' (dikecualikan, ds3 tak punya kategori ini): $normalExcludedCount\n\n";
 foreach ([1, 2] as $threshold) {
     $s = $stats[$threshold];
     $pct = $s['comparable'] > 0 ? round(($s['exact'] / $s['comparable']) * 100, 1) : 0;
+    ksort($s['signed']);
+    $over = $under = 0;
+    foreach ($s['signed'] as $d => $c) { if ($d > 0) $over += $c; if ($d < 0) $under += $c; }
     echo "Threshold >= $threshold:\n";
-    echo "  Cocok persis: {$s['exact']} / {$s['comparable']} ({$pct}%)\n";
-    echo "  Distribusi selisih tingkat (off-by-N):\n";
-    ksort($s['offByN']);
-    foreach ($s['offByN'] as $n => $count) {
-        echo "    Selisih $n tingkat: $count baris\n";
+    echo "  Bisa dibandingkan : {$s['comparable']} pengamatan  (+ {$s['noSymptoms']} tanpa gejala sama sekali, tidak dihitung)\n";
+    echo "  Cocok persis      : {$s['exact']} ({$pct}%)\n";
+    if ($s['comparable'] > 0) {
+        echo "  ds3 LEBIH TINGGI dari resmi : $over (" . round($over / $s['comparable'] * 100, 1) . "%)\n";
+        echo "  ds3 LEBIH RENDAH dari resmi : $under (" . round($under / $s['comparable'] * 100, 1) . "%)\n";
+    }
+    echo "  Selisih bertanda (ds3 - resmi, + = ds3 lebih berat):\n";
+    foreach ($s['signed'] as $d => $c) {
+        echo "    " . str_pad(($d > 0 ? '+' : '') . $d, 4) . ": $c\n";
     }
     echo "\n";
 }

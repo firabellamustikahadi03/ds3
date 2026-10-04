@@ -1,91 +1,103 @@
-Scenario              Sub  Official          ds3 @>=1    ds3 @>=2    
-----------------------------------------------------------------------
-D-Normal              D    Normal            Severe      (no symptoms)
-D-Normal              A    Normal            Moderate    (no symptoms)
-D-Normal              S    Normal            Severe      (no symptoms)
-D-Mild                D    Mild              Severe      (no symptoms)
-D-Mild                A    Normal            Moderate    (no symptoms)
-D-Mild                S    Normal            Severe      (no symptoms)
-D-Moderate            D    Moderate          Extreme     Severe      
-D-Moderate            A    Normal            Moderate    (no symptoms)
-D-Moderate            S    Normal            Severe      (no symptoms)
-D-Severe              D    Severe            Extreme     Severe      
-D-Severe              A    Normal            Moderate    (no symptoms)
-D-Severe              S    Normal            Severe      (no symptoms)
-D-ExtremelySevere     D    ExtremelySevere   Extreme     Extreme     
-D-ExtremelySevere     A    Normal            Moderate    (no symptoms)
-D-ExtremelySevere     S    Normal            Severe      (no symptoms)
-A-Normal              D    Normal            Severe      (no symptoms)
-A-Normal              A    Normal            Moderate    (no symptoms)
-A-Normal              S    Normal            Severe      (no symptoms)
-A-Mild                D    Normal            Severe      (no symptoms)
-A-Mild                A    Mild              Moderate    (no symptoms)
-A-Mild                S    Normal            Severe      (no symptoms)
-A-Moderate            D    Normal            Severe      (no symptoms)
-A-Moderate            A    Moderate          Severe      (no symptoms)
-A-Moderate            S    Normal            Severe      (no symptoms)
-A-Severe              D    Normal            Severe      (no symptoms)
-A-Severe              A    Severe            Severe      Moderate    
-A-Severe              S    Normal            Severe      (no symptoms)
-A-ExtremelySevere     D    Normal            Severe      (no symptoms)
-A-ExtremelySevere     A    ExtremelySevere   Severe      Moderate    
-A-ExtremelySevere     S    Normal            Severe      (no symptoms)
-S-Normal              D    Normal            Severe      (no symptoms)
-S-Normal              A    Normal            Moderate    (no symptoms)
-S-Normal              S    Normal            Severe      (no symptoms)
-S-Mild                D    Normal            Severe      (no symptoms)
-S-Mild                A    Normal            Moderate    (no symptoms)
-S-Mild                S    Mild              Severe      Moderate    
-S-Moderate            D    Normal            Severe      (no symptoms)
-S-Moderate            A    Normal            Moderate    (no symptoms)
-S-Moderate            S    Moderate          Severe      Severe      
-S-Severe              D    Normal            Severe      (no symptoms)
-S-Severe              A    Normal            Moderate    (no symptoms)
-S-Severe              S    Severe            Severe      Severe      
-S-ExtremelySevere     D    Normal            Severe      (no symptoms)
-S-ExtremelySevere     A    Normal            Moderate    (no symptoms)
-S-ExtremelySevere     S    ExtremelySevere   Severe      Severe      
-All-Normal            D    Normal            Severe      (no symptoms)
-All-Normal            A    Normal            Moderate    (no symptoms)
-All-Normal            S    Normal            Severe      (no symptoms)
-All-Mild              D    Mild              Severe      (no symptoms)
-All-Mild              A    Mild              Moderate    (no symptoms)
-All-Mild              S    Mild              Severe      Moderate    
-All-Moderate          D    Moderate          Extreme     Severe      
-All-Moderate          A    Moderate          Severe      (no symptoms)
-All-Moderate          S    Moderate          Severe      Severe      
-All-Severe            D    Severe            Extreme     Severe      
-All-Severe            A    Severe            Severe      Moderate    
-All-Severe            S    Severe            Severe      Severe      
-All-ExtremelySevere   D    ExtremelySevere   Extreme     Extreme     
-All-ExtremelySevere   A    ExtremelySevere   Severe      Moderate    
-All-ExtremelySevere   S    ExtremelySevere   Severe      Severe      
-Depression-dominant   D    Severe            Extreme     Severe      
-Depression-dominant   A    Mild              Moderate    (no symptoms)
-Depression-dominant   S    Normal            Severe      (no symptoms)
-Anxiety-dominant      D    Mild              Severe      (no symptoms)
-Anxiety-dominant      A    Severe            Severe      Moderate    
-Anxiety-dominant      S    Moderate          Severe      Severe      
-Stress-dominant       D    Normal            Severe      (no symptoms)
-Stress-dominant       A    Moderate          Severe      (no symptoms)
-Stress-dominant       S    ExtremelySevere   Severe      Severe      
+Setiap sel = sebaran hasil ds3 di 7 rotasi posisi skor (Mil/Mod/Sev/Ext x jumlah; nolx = tidak ada gejala).
 
-======================================================================
-RINGKASAN
-======================================================================
-Baris dengan hasil resmi 'Normal' (tidak dibandingkan, dicatat terpisah): 38
+Scenario              Sub  Official         ds3 @>=1                  ds3 @>=2
+-----------------------------------------------------------------------------------------------
+D-Normal              D    Normal           Sevx6 Extx1               nolx7
+D-Normal              A    Normal           Modx4 Sevx3               nolx7
+D-Normal              S    Normal           Modx2 Sevx5               nolx7
+D-Mild                D    Mild             Sevx2 Extx5               nolx7
+D-Mild                A    Normal           Modx4 Sevx3               nolx7
+D-Mild                S    Normal           Modx2 Sevx5               nolx7
+D-Moderate            D    Moderate         Extx7                     Milx1 Modx1 Sevx5
+D-Moderate            A    Normal           Modx4 Sevx3               nolx7
+D-Moderate            S    Normal           Modx2 Sevx5               nolx7
+D-Severe              D    Severe           Extx7                     Sevx3 Extx4
+D-Severe              A    Normal           Modx4 Sevx3               nolx7
+D-Severe              S    Normal           Modx2 Sevx5               nolx7
+D-ExtremelySevere     D    ExtremelySevere  Extx7                     Extx7
+D-ExtremelySevere     A    Normal           Modx4 Sevx3               nolx7
+D-ExtremelySevere     S    Normal           Modx2 Sevx5               nolx7
+A-Normal              D    Normal           Sevx6 Extx1               nolx7
+A-Normal              A    Normal           Modx4 Sevx3               nolx7
+A-Normal              S    Normal           Modx2 Sevx5               nolx7
+A-Mild                D    Normal           Sevx6 Extx1               nolx7
+A-Mild                A    Mild             Modx2 Sevx5               nolx7
+A-Mild                S    Normal           Modx2 Sevx5               nolx7
+A-Moderate            D    Normal           Sevx6 Extx1               nolx7
+A-Moderate            A    Moderate         Sevx7                     nolx7
+A-Moderate            S    Normal           Modx2 Sevx5               nolx7
+A-Severe              D    Normal           Sevx6 Extx1               nolx7
+A-Severe              A    Severe           Sevx7                     Modx4 Sevx3
+A-Severe              S    Normal           Modx2 Sevx5               nolx7
+A-ExtremelySevere     D    Normal           Sevx6 Extx1               nolx7
+A-ExtremelySevere     A    ExtremelySevere  Sevx7                     Modx1 Sevx6
+A-ExtremelySevere     S    Normal           Modx2 Sevx5               nolx7
+S-Normal              D    Normal           Sevx6 Extx1               nolx7
+S-Normal              A    Normal           Modx4 Sevx3               nolx7
+S-Normal              S    Normal           Modx2 Sevx5               nolx7
+S-Mild                D    Normal           Sevx6 Extx1               nolx7
+S-Mild                A    Normal           Modx4 Sevx3               nolx7
+S-Mild                S    Mild             Sevx7                     Modx4 Sevx3
+S-Moderate            D    Normal           Sevx6 Extx1               nolx7
+S-Moderate            A    Normal           Modx4 Sevx3               nolx7
+S-Moderate            S    Moderate         Sevx7                     Modx2 Sevx5
+S-Severe              D    Normal           Sevx6 Extx1               nolx7
+S-Severe              A    Normal           Modx4 Sevx3               nolx7
+S-Severe              S    Severe           Sevx7                     Sevx7
+S-ExtremelySevere     D    Normal           Sevx6 Extx1               nolx7
+S-ExtremelySevere     A    Normal           Modx4 Sevx3               nolx7
+S-ExtremelySevere     S    ExtremelySevere  Sevx7                     Sevx7
+All-Normal            D    Normal           Sevx6 Extx1               nolx7
+All-Normal            A    Normal           Modx4 Sevx3               nolx7
+All-Normal            S    Normal           Modx2 Sevx5               nolx7
+All-Mild              D    Mild             Sevx2 Extx5               nolx7
+All-Mild              A    Mild             Modx2 Sevx5               nolx7
+All-Mild              S    Mild             Sevx7                     Modx4 Sevx3
+All-Moderate          D    Moderate         Extx7                     Milx1 Modx1 Sevx5
+All-Moderate          A    Moderate         Sevx7                     nolx7
+All-Moderate          S    Moderate         Sevx7                     Modx2 Sevx5
+All-Severe            D    Severe           Extx7                     Sevx3 Extx4
+All-Severe            A    Severe           Sevx7                     Modx4 Sevx3
+All-Severe            S    Severe           Sevx7                     Sevx7
+All-ExtremelySevere   D    ExtremelySevere  Extx7                     Extx7
+All-ExtremelySevere   A    ExtremelySevere  Sevx7                     Modx1 Sevx6
+All-ExtremelySevere   S    ExtremelySevere  Sevx7                     Sevx7
+Depression-dominant   D    Severe           Extx7                     Sevx3 Extx4
+Depression-dominant   A    Mild             Modx2 Sevx5               nolx7
+Depression-dominant   S    Normal           Modx2 Sevx5               nolx7
+Anxiety-dominant      D    Mild             Sevx2 Extx5               nolx7
+Anxiety-dominant      A    Severe           Sevx7                     Modx4 Sevx3
+Anxiety-dominant      S    Moderate         Sevx7                     Modx2 Sevx5
+Stress-dominant       D    Normal           Sevx6 Extx1               nolx7
+Stress-dominant       A    Moderate         Sevx7                     nolx7
+Stress-dominant       S    ExtremelySevere  Sevx7                     Sevx7
+
+===============================================================================================
+RINGKASAN (7 rotasi x 23 skenario x 3 subskala)
+===============================================================================================
+Subskala-skenario dengan hasil resmi 'Normal' (dikecualikan, ds3 tak punya kategori ini): 38
 
 Threshold >= 1:
-  Cocok persis: 7 / 31 (22.6%)
-  Distribusi selisih tingkat (off-by-N):
-    Selisih 0 tingkat: 7 baris
-    Selisih 1 tingkat: 17 baris
-    Selisih 2 tingkat: 7 baris
+  Bisa dibandingkan : 217 pengamatan  (+ 0 tanpa gejala sama sekali, tidak dihitung)
+  Cocok persis      : 49 (22.6%)
+  ds3 LEBIH TINGGI dari resmi : 133 (61.3%)
+  ds3 LEBIH RENDAH dari resmi : 35 (16.1%)
+  Selisih bertanda (ds3 - resmi, + = ds3 lebih berat):
+    -1  : 35
+    0   : 49
+    +1  : 69
+    +2  : 49
+    +3  : 15
 
 Threshold >= 2:
-  Cocok persis: 7 / 22 (31.8%)
-  Distribusi selisih tingkat (off-by-N):
-    Selisih 0 tingkat: 7 baris
-    Selisih 1 tingkat: 13 baris
-    Selisih 2 tingkat: 2 baris
+  Bisa dibandingkan : 154 pengamatan  (+ 63 tanpa gejala sama sekali, tidak dihitung)
+  Cocok persis      : 54 (35.1%)
+  ds3 LEBIH TINGGI dari resmi : 51 (33.1%)
+  ds3 LEBIH RENDAH dari resmi : 49 (31.8%)
+  Selisih bertanda (ds3 - resmi, + = ds3 lebih berat):
+    -2  : 2
+    -1  : 47
+    0   : 54
+    +1  : 45
+    +2  : 6
 
