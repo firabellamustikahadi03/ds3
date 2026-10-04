@@ -31,9 +31,9 @@ foreach ($data as $row) {
               <th style="color:#fff;" width="5%">#</th>
               <th style="color:#fff;"><?php echo isset($_SESSION['langArray']['th_kode']) ? htmlspecialchars($_SESSION['langArray']['th_kode']) : 'Kode'; ?></th>
               <th style="color:#fff;"><?php echo isset($_SESSION['langArray']['th_nama_gejala']) ? htmlspecialchars($_SESSION['langArray']['th_nama_gejala']) : 'Nama Gejala'; ?></th>
-              <th style="color:#fff;" width="12%">Mild-Moderate</th>
-              <th style="color:#fff;" width="12%">Moderate-Severe</th>
-              <th style="color:#fff;" width="12%">Severe-Extreme</th>
+              <th style="color:#fff;" width="12%">Min. Moderate</th>
+              <th style="color:#fff;" width="12%">Min. Severe</th>
+              <th style="color:#fff;" width="12%">Extreme</th>
               <th style="color:#fff;" width="8%">Theta</th>
               <th style="color:#fff;" width="8%"><?php echo isset($_SESSION['langArray']['status']) ? htmlspecialchars($_SESSION['langArray']['status']) : 'Status'; ?></th>
               <th style="color:#fff;" width="8%"><?php echo isset($_SESSION['langArray']['aksi']) ? htmlspecialchars($_SESSION['langArray']['aksi']) : 'Aksi'; ?></th>
@@ -45,9 +45,9 @@ foreach ($data as $row) {
               <td><?php echo $i + 1; ?></td>
               <td><?php echo htmlspecialchars($row['symptom_code']); ?></td>
               <td><?php echo htmlspecialchars($row['name']); ?></td>
-              <td><?php echo number_format((float)$row['m_mild_moderate'], 2); ?></td>
-              <td><?php echo number_format((float)$row['m_moderate_severe'], 2); ?></td>
-              <td><?php echo number_format((float)$row['m_severe_extreme'], 2); ?></td>
+              <td><?php echo number_format((float)$row['m_min_moderate'], 2); ?></td>
+              <td><?php echo number_format((float)$row['m_min_severe'], 2); ?></td>
+              <td><?php echo number_format((float)$row['m_extreme'], 2); ?></td>
               <td><?php echo number_format((float)$row['m_theta'], 2); ?></td>
               <td>
                 <?php if ((int)$row['is_active'] === 1): ?>

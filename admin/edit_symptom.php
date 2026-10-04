@@ -49,16 +49,16 @@ $s->TampilSatuData((int)($_GET['id'] ?? 0));
         <p class="text-muted-mod" style="font-size:.85rem;">Total keempat nilai harus persis 1.00.</p>
         <div class="row mb-2">
           <div class="col-md-3">
-            <label class="form-label">Mild&ndash;Moderate</label>
-            <input type="number" step="0.01" min="0" max="1" class="form-control mass-input" name="m_mild_moderate" value="<?php echo htmlspecialchars((string)($s->m_mild_moderate ?? '0.00')); ?>" required>
+            <label class="form-label">Minimal Moderate</label>
+            <input type="number" step="0.01" min="0" max="1" class="form-control mass-input" name="m_min_moderate" value="<?php echo htmlspecialchars((string)($s->m_min_moderate ?? '0.00')); ?>" required>
           </div>
           <div class="col-md-3">
-            <label class="form-label">Moderate&ndash;Severe</label>
-            <input type="number" step="0.01" min="0" max="1" class="form-control mass-input" name="m_moderate_severe" value="<?php echo htmlspecialchars((string)($s->m_moderate_severe ?? '0.00')); ?>" required>
+            <label class="form-label">Minimal Severe</label>
+            <input type="number" step="0.01" min="0" max="1" class="form-control mass-input" name="m_min_severe" value="<?php echo htmlspecialchars((string)($s->m_min_severe ?? '0.00')); ?>" required>
           </div>
           <div class="col-md-3">
-            <label class="form-label">Severe&ndash;Extreme</label>
-            <input type="number" step="0.01" min="0" max="1" class="form-control mass-input" name="m_severe_extreme" value="<?php echo htmlspecialchars((string)($s->m_severe_extreme ?? '0.00')); ?>" required>
+            <label class="form-label">Extreme</label>
+            <input type="number" step="0.01" min="0" max="1" class="form-control mass-input" name="m_extreme" value="<?php echo htmlspecialchars((string)($s->m_extreme ?? '0.00')); ?>" required>
           </div>
           <div class="col-md-3">
             <label class="form-label">Theta (ketidakpastian)</label>

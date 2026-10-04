@@ -47,9 +47,9 @@ foreach ($data as $row) {
             <tr>
               <th style="color:#fff;"><?php echo isset($_SESSION['langArray']['th_kode']) ? htmlspecialchars($_SESSION['langArray']['th_kode']) : 'Kode'; ?></th>
               <th style="color:#fff;"><?php echo isset($_SESSION['langArray']['th_nama_gejala']) ? htmlspecialchars($_SESSION['langArray']['th_nama_gejala']) : 'Nama Gejala'; ?></th>
-              <th style="color:#fff;">Mild-Mod</th>
-              <th style="color:#fff;">Mod-Sev</th>
-              <th style="color:#fff;">Sev-Ext</th>
+              <th style="color:#fff;">Min.Mod</th>
+              <th style="color:#fff;">Min.Sev</th>
+              <th style="color:#fff;">Extreme</th>
               <th style="color:#fff;">Theta</th>
             </tr>
           </thead>
@@ -58,9 +58,9 @@ foreach ($data as $row) {
             <tr>
               <td><?php echo htmlspecialchars($row['symptom_code']); ?></td>
               <td><?php echo htmlspecialchars($row['name']); ?></td>
-              <td><?php echo number_format((float)$row['m_mild_moderate'], 2); ?></td>
-              <td><?php echo number_format((float)$row['m_moderate_severe'], 2); ?></td>
-              <td><?php echo number_format((float)$row['m_severe_extreme'], 2); ?></td>
+              <td><?php echo number_format((float)$row['m_min_moderate'], 2); ?></td>
+              <td><?php echo number_format((float)$row['m_min_severe'], 2); ?></td>
+              <td><?php echo number_format((float)$row['m_extreme'], 2); ?></td>
               <td><?php echo number_format((float)$row['m_theta'], 2); ?></td>
             </tr>
             <?php endforeach; ?>

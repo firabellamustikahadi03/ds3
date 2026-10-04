@@ -71,30 +71,15 @@ if ($r3 === null) {
     $failures++;
 }
 
-// Test 4: a single gejala's own evidence, never combined with anything else,
-// forces a multi-element top focal set -> hitungSubskala() must take the
-// pignistic() branch, not the singleton shortcut. Test 1's 3-gejala
-// combination happens to land on a singleton and never exercises that branch,
-// so this test exists specifically to cover it.
+// Test 4: hitungSubskala()'s result must match the belief ladder computed directly
+// from the same symptom's evidence. This proves the decision rule in the engine is
+// really the belief function and not something that merely happens to agree.
 $d01Id = fetchIdByKode($con, 'G-D01');
-$rowRes = mysqli_query($con, "SELECT m_mild_moderate, m_moderate_severe, m_severe_extreme, m_theta FROM ds_symptoms WHERE id = " . (int)$d01Id);
+$rowRes = mysqli_query($con, "SELECT m_min_moderate, m_min_severe, m_extreme, m_theta FROM ds_symptoms WHERE id = " . (int)$d01Id);
 $massRow = mysqli_fetch_assoc($rowRes);
-$evidence = $dg->buildEvidence($massRow['m_mild_moderate'], $massRow['m_moderate_severe'], $massRow['m_severe_extreme'], $massRow['m_theta']);
+$evidence = $dg->buildEvidence($massRow['m_min_moderate'], $massRow['m_min_severe'], $massRow['m_extreme'], $massRow['m_theta']);
 
-// For the current seed data, G-D01 is m_ho=0.35, m_oa=0.30, m_aca=0.20, m_theta=0.15.
-// m_ho dominates, so the top focal set after buildEvidence() is {1,2} (mass 0.35) —
-// two elements, not a singleton — which is exactly the case the singleton shortcut
-// in hitungSubskala() cannot handle, forcing it into the pignistic() branch.
-$checkTop = $evidence;
-arsort($checkTop);
-$topKey = array_key_first($checkTop);
-$topElems = explode(',', $topKey);
-if (count($topElems) > 1) {
-    echo "PASS: G-D01's own evidence has a multi-element top focal set ('$topKey'), so hitungSubskala() must use the pignistic() branch\n";
-} else {
-    echo "FAIL: G-D01's evidence unexpectedly has a singleton top focal set ('$topKey') — this test no longer exercises the pignistic branch; pick a different gejala\n";
-    $failures++;
-}
+assertClose(array_sum($evidence), 1.0, "G-D01's evidence sums to 1", $failures);
 
 $r4 = $dg->hitungSubskala('D', [$d01Id]);
 if ($r4 === null) {
@@ -105,37 +90,78 @@ if ($r4 === null) {
     if (in_array($r4['severity_level'], $validLevels)) {
         echo "PASS: hitungSubskala('D', [G-D01]) returned a valid level ({$r4['severity_level']})\n";
     } else {
-        echo "FAIL: hitungSubskala('D', [G-D01]) returned invalid level_kode {$r4['severity_level']}\n";
+        echo "FAIL: hitungSubskala('D', [G-D01]) returned invalid level {$r4['severity_level']}\n";
         $failures++;
     }
     if ($r4['confidence_value'] >= 0 && $r4['confidence_value'] <= 1) {
-        echo "PASS: hitungSubskala('D', [G-D01]) nilai is within [0,1] ({$r4['confidence_value']})\n";
+        echo "PASS: hitungSubskala('D', [G-D01]) confidence is within [0,1] ({$r4['confidence_value']})\n";
     } else {
-        echo "FAIL: hitungSubskala('D', [G-D01]) nilai out of range: {$r4['confidence_value']}\n";
+        echo "FAIL: hitungSubskala('D', [G-D01]) confidence out of range: {$r4['confidence_value']}\n";
         $failures++;
     }
     if (!empty($r4['recommendation'])) {
-        echo "PASS: hitungSubskala('D', [G-D01]) returned non-empty kett\n";
+        echo "PASS: hitungSubskala('D', [G-D01]) returned non-empty recommendation\n";
     } else {
-        echo "FAIL: hitungSubskala('D', [G-D01]) kett is empty\n";
+        echo "FAIL: hitungSubskala('D', [G-D01]) recommendation is empty\n";
         $failures++;
     }
 
-    // Cross-check: hitungSubskala()'s nilai/level_kode must match calling
-    // pignistic() directly on this exact evidence. This proves the pignistic
-    // branch didn't just avoid crashing — it produced the right numbers.
-    $pig = $dg->pignistic($evidence);
-    arsort($pig);
-    $expectedLevelInt = array_key_first($pig);
-    $expectedNilai    = $pig[$expectedLevelInt];
+    $bel = $dg->beliefLadder($evidence);
+    [$expectedLevelInt, $expectedConfidence] = $dg->selectLevel($bel);
     $levelMap = [1 => 'Mild', 2 => 'Moderate', 3 => 'Severe', 4 => 'Extreme'];
-    assertClose($r4['confidence_value'], $expectedNilai, 'hitungSubskala(D, [G-D01]) nilai matches direct pignistic() computation', $failures);
+    assertClose($r4['confidence_value'], $expectedConfidence, 'hitungSubskala(D, [G-D01]) confidence matches direct beliefLadder/selectLevel computation', $failures);
     if ($r4['severity_level'] === $levelMap[$expectedLevelInt]) {
-        echo "PASS: hitungSubskala('D', [G-D01]) level_kode matches direct pignistic() computation ({$r4['severity_level']})\n";
+        echo "PASS: hitungSubskala('D', [G-D01]) level matches direct belief-ladder computation ({$r4['severity_level']})\n";
     } else {
-        echo "FAIL: hitungSubskala('D', [G-D01]) level_kode {$r4['severity_level']} does not match expected {$levelMap[$expectedLevelInt]}\n";
+        echo "FAIL: hitungSubskala('D', [G-D01]) level {$r4['severity_level']} does not match expected {$levelMap[$expectedLevelInt]}\n";
         $failures++;
     }
+}
+
+// Test 5: MONOTONICITY - the whole point of Phase 6. Adding symptoms must never
+// lower the resulting severity level. Symptoms are added lightest-first so the
+// sequence also demonstrates escalation rather than a flat line.
+$sequence = ['G-D04', 'G-D02', 'G-D01', 'G-D03', 'G-D05', 'G-D06', 'G-D07'];
+$levelRank = ['Mild' => 1, 'Moderate' => 2, 'Severe' => 3, 'Extreme' => 4];
+$accumulated = [];
+$previousRank = 0;
+$previousLabel = '-';
+$monotonic = true;
+$observed = [];
+
+foreach ($sequence as $code) {
+    $accumulated[] = fetchIdByKode($con, $code);
+    $res = $dg->hitungSubskala('D', $accumulated);
+    if ($res === null) {
+        echo "FAIL: monotonicity sequence returned null at " . count($accumulated) . " symptom(s)\n";
+        $failures++;
+        $monotonic = false;
+        break;
+    }
+    $rank = $levelRank[$res['severity_level']];
+    $observed[] = count($accumulated) . '=' . $res['severity_level'];
+    if ($rank < $previousRank) {
+        echo "FAIL: level DROPPED from $previousLabel to {$res['severity_level']} when going to " . count($accumulated) . " symptoms\n";
+        $failures++;
+        $monotonic = false;
+    }
+    $previousRank  = $rank;
+    $previousLabel = $res['severity_level'];
+}
+
+if ($monotonic) {
+    echo "PASS: severity never decreases as symptoms accumulate (" . implode(', ', $observed) . ")\n";
+}
+
+// Test 6: the model must be able to reach more than one level. If every input
+// produced the same answer the engine would be useless - this is exactly the
+// Phase 5 bug (everything collapsed to "Moderate") in regression-test form.
+$distinctLevels = array_unique(array_map(fn($o) => explode('=', $o)[1], $observed));
+if (count($distinctLevels) >= 2) {
+    echo "PASS: engine produces more than one severity level across the sequence (" . implode('/', $distinctLevels) . ")\n";
+} else {
+    echo "FAIL: engine collapsed every input to a single level (" . implode('/', $distinctLevels) . ")\n";
+    $failures++;
 }
 
 echo "\n" . ($failures === 0 ? "ALL TESTS PASSED" : "$failures TEST(S) FAILED") . "\n";

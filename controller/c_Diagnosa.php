@@ -2,7 +2,16 @@
 /**
  * Dempster-Shafer engine for the DASS-21 model.
  * Frame of discernment per subscale: 1=Mild, 2=Moderate, 3=Severe, 4=Extreme.
- * Focal sets are represented as comma-joined, numerically sorted strings, e.g. "1,2".
+ * Focal sets are represented as comma-joined, numerically sorted strings.
+ *
+ * Focal sets are NESTED, with "at least X" semantics:
+ *   "1,2,3,4" = Theta  - symptom present, level not indicated
+ *   "2,3,4"            - at least Moderate
+ *   "3,4"              - at least Severe
+ *   "4"                - Extreme
+ * Because each set is a subset of the one above it, every pairwise intersection is
+ * non-empty, so conflict mass is structurally always zero and Dempster normalisation
+ * never divides by a shrinking (1 - K).
  */
 class Diagnosa
 {
@@ -52,15 +61,16 @@ class Diagnosa
 
     /**
      * Build the initial mass function (evidence) for one DASS-21 symptom row.
-     * Zero-mass entries are omitted.
+     * Maps each column to its nested "at least X" focal set. Zero-mass entries
+     * are omitted.
      */
-    function buildEvidence($m_mild_moderate, $m_moderate_severe, $m_severe_extreme, $m_theta)
+    function buildEvidence($m_min_moderate, $m_min_severe, $m_extreme, $m_theta)
     {
         $evidence = [];
-        if ($m_mild_moderate > 0)   $evidence['1,2']     = (float)$m_mild_moderate;
-        if ($m_moderate_severe > 0) $evidence['2,3']     = (float)$m_moderate_severe;
-        if ($m_severe_extreme > 0)  $evidence['3,4']     = (float)$m_severe_extreme;
-        if ($m_theta > 0)           $evidence['1,2,3,4'] = (float)$m_theta;
+        if ($m_min_moderate > 0) $evidence['2,3,4']   = (float)$m_min_moderate;
+        if ($m_min_severe > 0)   $evidence['3,4']     = (float)$m_min_severe;
+        if ($m_extreme > 0)      $evidence['4']       = (float)$m_extreme;
+        if ($m_theta > 0)        $evidence['1,2,3,4'] = (float)$m_theta;
         return $evidence;
     }
 
@@ -80,6 +90,42 @@ class Diagnosa
             }
         }
         return $pig;
+    }
+
+    /**
+     * Belief over the ordinal "at least X" ladder.
+     *
+     * This is the standard DS belief function Bel(A) = sum of m(B) for every B subset
+     * of A, evaluated at A = {X, ..., Extreme}. A focal set is a subset of "at least X"
+     * exactly when all of its elements are >= X, i.e. when its smallest element is >= X.
+     *
+     * @return array [1 => Bel(>=Mild), 2 => Bel(>=Moderate), 3 => Bel(>=Severe), 4 => Bel(Extreme)]
+     */
+    function beliefLadder($combined)
+    {
+        $belief = [1 => 0.0, 2 => 0.0, 3 => 0.0, 4 => 0.0];
+        foreach ($combined as $setStr => $mass) {
+            $minElement = min(array_map('intval', explode(',', $setStr)));
+            for ($level = 1; $level <= $minElement; $level++) {
+                $belief[$level] += $mass;
+            }
+        }
+        return $belief;
+    }
+
+    /**
+     * Pick the highest severity level whose belief still clears the threshold.
+     * Bel(>=Mild) is always 1.0 because every focal set's elements are all >= Mild,
+     * so a result always exists and the loop cannot fall through empty-handed.
+     *
+     * @return array [levelInt, belief at that level]
+     */
+    function selectLevel($belief, $threshold = 0.50)
+    {
+        for ($level = 4; $level >= 1; $level--) {
+            if ($belief[$level] >= $threshold) return [$level, $belief[$level]];
+        }
+        return [1, $belief[1]];
     }
 
     /**
@@ -125,14 +171,14 @@ class Diagnosa
 
         $inList = implode(',', array_map('intval', $symptomIds));
         $subscaleEsc = mysqli_real_escape_string($con, $subscale);
-        $sql = "SELECT m_mild_moderate, m_moderate_severe, m_severe_extreme, m_theta FROM ds_symptoms
+        $sql = "SELECT m_min_moderate, m_min_severe, m_extreme, m_theta FROM ds_symptoms
                 WHERE id IN ($inList) AND subscale = '$subscaleEsc' AND is_active = 1";
         $result = mysqli_query($con, $sql);
         if (!$result || mysqli_num_rows($result) === 0) return null;
 
         $combined = null;
         while ($row = mysqli_fetch_assoc($result)) {
-            $evidence = $this->buildEvidence($row['m_mild_moderate'], $row['m_moderate_severe'], $row['m_severe_extreme'], $row['m_theta']);
+            $evidence = $this->buildEvidence($row['m_min_moderate'], $row['m_min_severe'], $row['m_extreme'], $row['m_theta']);
             if ($combined === null) {
                 $combined = $evidence;
             } else {
@@ -142,20 +188,12 @@ class Diagnosa
 
         if (empty($combined)) return null;
 
-        arsort($combined);
-        $topKey   = array_key_first($combined);
-        $topMass  = $combined[$topKey];
-        $topElems = explode(',', $topKey);
-
-        if (count($topElems) === 1) {
-            $levelCodeInt = (int)$topElems[0];
-            $confidenceValue = $topMass;
-        } else {
-            $pig = $this->pignistic($combined);
-            arsort($pig);
-            $levelCodeInt = array_key_first($pig);
-            $confidenceValue = $pig[$levelCodeInt];
-        }
+        // Decision rule: read the belief function over the ordinal ladder and take the
+        // highest level that still clears 50%. The pignistic transform is NOT used here
+        // - with nested focal sets it is systematically biased upward, because "Severe"
+        // draws a share from three focal sets while "Mild" draws only from Theta.
+        $belief = $this->beliefLadder($combined);
+        [$levelCodeInt, $confidenceValue] = $this->selectLevel($belief);
 
         $levelMap = [1 => 'Mild', 2 => 'Moderate', 3 => 'Severe', 4 => 'Extreme'];
         $severityLevel = $levelMap[$levelCodeInt];

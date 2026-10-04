@@ -7,9 +7,9 @@ if (!isset($_SESSION['username'])) {
 
 include '../controller/c_Symptom.php';
 
-$m1 = (float)($_POST['m_mild_moderate'] ?? 0);
-$m2 = (float)($_POST['m_moderate_severe'] ?? 0);
-$m3 = (float)($_POST['m_severe_extreme'] ?? 0);
+$m1 = (float)($_POST['m_min_moderate'] ?? 0);
+$m2 = (float)($_POST['m_min_severe'] ?? 0);
+$m3 = (float)($_POST['m_extreme'] ?? 0);
 $m4 = (float)($_POST['m_theta'] ?? 0);
 $total = round($m1 + $m2 + $m3 + $m4, 2);
 
