@@ -77,15 +77,16 @@ deskripsi faset tiap subskala DASS. Kolom paling kanan untuk diisi pakar.
 
 ## 4. Aturan penentuan hasil (mohon ditanggapi)
 
-Hasil per subskala adalah tingkat **tertinggi** yang tingkat keyakinannya masih
-mencapai **50%**. Contoh perilaku yang dihasilkan pada subskala Depresi:
+Sistem mewajibkan **minimal 2 gejala** dicentang (kebijakan antarmuka). Hasil per
+subskala adalah tingkat **tertinggi** yang tingkat keyakinannya masih mencapai **50%**.
+Contoh perilaku yang dihasilkan sistem:
 
-| Gejala dicentang | Hasil |
-|---|---|
-| 1 gejala ringan | Mild |
-| 2 gejala (ringan + sedang) | Moderate |
-| 3 gejala (ditambah satu Berat) | Severe |
-| 7 gejala (semua) | Extreme |
+| Subskala | Gejala dicentang | Hasil |
+|---|---|---|
+| Anxiety | 2 gejala ringan (A01 + A03) | Mild |
+| Depresi | 2 gejala (D04 ringan + D02 sedang) | Moderate |
+| Depresi | 3 gejala (ditambah D01 berat) | Severe |
+| Depresi | 7 gejala (semua) | Extreme |
 
 Pertanyaan: apakah ambang 50% dan pola eskalasi di atas masuk akal secara klinis?
 
