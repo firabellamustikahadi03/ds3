@@ -1,83 +1,83 @@
 Setiap sel = sebaran hasil ds3 di 7 rotasi posisi skor (Mil/Mod/Sev/Ext x jumlah; nolx = tidak ada gejala).
 
-Scenario              Sub  Official         ds3 @>=1                  ds3 @>=2
+Scenario              Sub  Official         ds3 [skor item>=1]          ds3 [skor item>=2]
 -----------------------------------------------------------------------------------------------
-D-Normal              D    Normal           Sevx6 Extx1               nolx7
-D-Normal              A    Normal           Modx4 Sevx3               nolx7
-D-Normal              S    Normal           Modx2 Sevx5               nolx7
-D-Mild                D    Mild             Sevx2 Extx5               nolx7
-D-Mild                A    Normal           Modx4 Sevx3               nolx7
-D-Mild                S    Normal           Modx2 Sevx5               nolx7
-D-Moderate            D    Moderate         Extx7                     Milx1 Modx1 Sevx5
-D-Moderate            A    Normal           Modx4 Sevx3               nolx7
-D-Moderate            S    Normal           Modx2 Sevx5               nolx7
-D-Severe              D    Severe           Extx7                     Sevx3 Extx4
-D-Severe              A    Normal           Modx4 Sevx3               nolx7
-D-Severe              S    Normal           Modx2 Sevx5               nolx7
-D-ExtremelySevere     D    ExtremelySevere  Extx7                     Extx7
-D-ExtremelySevere     A    Normal           Modx4 Sevx3               nolx7
-D-ExtremelySevere     S    Normal           Modx2 Sevx5               nolx7
-A-Normal              D    Normal           Sevx6 Extx1               nolx7
-A-Normal              A    Normal           Modx4 Sevx3               nolx7
-A-Normal              S    Normal           Modx2 Sevx5               nolx7
-A-Mild                D    Normal           Sevx6 Extx1               nolx7
-A-Mild                A    Mild             Modx2 Sevx5               nolx7
-A-Mild                S    Normal           Modx2 Sevx5               nolx7
-A-Moderate            D    Normal           Sevx6 Extx1               nolx7
-A-Moderate            A    Moderate         Sevx7                     nolx7
-A-Moderate            S    Normal           Modx2 Sevx5               nolx7
-A-Severe              D    Normal           Sevx6 Extx1               nolx7
-A-Severe              A    Severe           Sevx7                     Modx4 Sevx3
-A-Severe              S    Normal           Modx2 Sevx5               nolx7
-A-ExtremelySevere     D    Normal           Sevx6 Extx1               nolx7
-A-ExtremelySevere     A    ExtremelySevere  Sevx7                     Modx1 Sevx6
-A-ExtremelySevere     S    Normal           Modx2 Sevx5               nolx7
-S-Normal              D    Normal           Sevx6 Extx1               nolx7
-S-Normal              A    Normal           Modx4 Sevx3               nolx7
-S-Normal              S    Normal           Modx2 Sevx5               nolx7
-S-Mild                D    Normal           Sevx6 Extx1               nolx7
-S-Mild                A    Normal           Modx4 Sevx3               nolx7
-S-Mild                S    Mild             Sevx7                     Modx4 Sevx3
-S-Moderate            D    Normal           Sevx6 Extx1               nolx7
-S-Moderate            A    Normal           Modx4 Sevx3               nolx7
-S-Moderate            S    Moderate         Sevx7                     Modx2 Sevx5
-S-Severe              D    Normal           Sevx6 Extx1               nolx7
-S-Severe              A    Normal           Modx4 Sevx3               nolx7
-S-Severe              S    Severe           Sevx7                     Sevx7
-S-ExtremelySevere     D    Normal           Sevx6 Extx1               nolx7
-S-ExtremelySevere     A    Normal           Modx4 Sevx3               nolx7
-S-ExtremelySevere     S    ExtremelySevere  Sevx7                     Sevx7
-All-Normal            D    Normal           Sevx6 Extx1               nolx7
-All-Normal            A    Normal           Modx4 Sevx3               nolx7
-All-Normal            S    Normal           Modx2 Sevx5               nolx7
-All-Mild              D    Mild             Sevx2 Extx5               nolx7
-All-Mild              A    Mild             Modx2 Sevx5               nolx7
-All-Mild              S    Mild             Sevx7                     Modx4 Sevx3
-All-Moderate          D    Moderate         Extx7                     Milx1 Modx1 Sevx5
-All-Moderate          A    Moderate         Sevx7                     nolx7
-All-Moderate          S    Moderate         Sevx7                     Modx2 Sevx5
-All-Severe            D    Severe           Extx7                     Sevx3 Extx4
-All-Severe            A    Severe           Sevx7                     Modx4 Sevx3
-All-Severe            S    Severe           Sevx7                     Sevx7
-All-ExtremelySevere   D    ExtremelySevere  Extx7                     Extx7
-All-ExtremelySevere   A    ExtremelySevere  Sevx7                     Modx1 Sevx6
-All-ExtremelySevere   S    ExtremelySevere  Sevx7                     Sevx7
-Depression-dominant   D    Severe           Extx7                     Sevx3 Extx4
-Depression-dominant   A    Mild             Modx2 Sevx5               nolx7
-Depression-dominant   S    Normal           Modx2 Sevx5               nolx7
-Anxiety-dominant      D    Mild             Sevx2 Extx5               nolx7
-Anxiety-dominant      A    Severe           Sevx7                     Modx4 Sevx3
-Anxiety-dominant      S    Moderate         Sevx7                     Modx2 Sevx5
-Stress-dominant       D    Normal           Sevx6 Extx1               nolx7
-Stress-dominant       A    Moderate         Sevx7                     nolx7
-Stress-dominant       S    ExtremelySevere  Sevx7                     Sevx7
+D-Normal              D    Normal           Sevx6 Extx1                 nolx7
+D-Normal              A    Normal           Modx4 Sevx3                 nolx7
+D-Normal              S    Normal           Modx2 Sevx5                 nolx7
+D-Mild                D    Mild             Sevx2 Extx5                 nolx7
+D-Mild                A    Normal           Modx4 Sevx3                 nolx7
+D-Mild                S    Normal           Modx2 Sevx5                 nolx7
+D-Moderate            D    Moderate         Extx7                       Milx1 Modx1 Sevx5
+D-Moderate            A    Normal           Modx4 Sevx3                 nolx7
+D-Moderate            S    Normal           Modx2 Sevx5                 nolx7
+D-Severe              D    Severe           Extx7                       Sevx3 Extx4
+D-Severe              A    Normal           Modx4 Sevx3                 nolx7
+D-Severe              S    Normal           Modx2 Sevx5                 nolx7
+D-ExtremelySevere     D    ExtremelySevere  Extx7                       Extx7
+D-ExtremelySevere     A    Normal           Modx4 Sevx3                 nolx7
+D-ExtremelySevere     S    Normal           Modx2 Sevx5                 nolx7
+A-Normal              D    Normal           Sevx6 Extx1                 nolx7
+A-Normal              A    Normal           Modx4 Sevx3                 nolx7
+A-Normal              S    Normal           Modx2 Sevx5                 nolx7
+A-Mild                D    Normal           Sevx6 Extx1                 nolx7
+A-Mild                A    Mild             Modx2 Sevx5                 nolx7
+A-Mild                S    Normal           Modx2 Sevx5                 nolx7
+A-Moderate            D    Normal           Sevx6 Extx1                 nolx7
+A-Moderate            A    Moderate         Sevx7                       nolx7
+A-Moderate            S    Normal           Modx2 Sevx5                 nolx7
+A-Severe              D    Normal           Sevx6 Extx1                 nolx7
+A-Severe              A    Severe           Sevx7                       Modx4 Sevx3
+A-Severe              S    Normal           Modx2 Sevx5                 nolx7
+A-ExtremelySevere     D    Normal           Sevx6 Extx1                 nolx7
+A-ExtremelySevere     A    ExtremelySevere  Sevx7                       Modx1 Sevx6
+A-ExtremelySevere     S    Normal           Modx2 Sevx5                 nolx7
+S-Normal              D    Normal           Sevx6 Extx1                 nolx7
+S-Normal              A    Normal           Modx4 Sevx3                 nolx7
+S-Normal              S    Normal           Modx2 Sevx5                 nolx7
+S-Mild                D    Normal           Sevx6 Extx1                 nolx7
+S-Mild                A    Normal           Modx4 Sevx3                 nolx7
+S-Mild                S    Mild             Sevx7                       Modx4 Sevx3
+S-Moderate            D    Normal           Sevx6 Extx1                 nolx7
+S-Moderate            A    Normal           Modx4 Sevx3                 nolx7
+S-Moderate            S    Moderate         Sevx7                       Modx2 Sevx5
+S-Severe              D    Normal           Sevx6 Extx1                 nolx7
+S-Severe              A    Normal           Modx4 Sevx3                 nolx7
+S-Severe              S    Severe           Sevx7                       Sevx7
+S-ExtremelySevere     D    Normal           Sevx6 Extx1                 nolx7
+S-ExtremelySevere     A    Normal           Modx4 Sevx3                 nolx7
+S-ExtremelySevere     S    ExtremelySevere  Sevx7                       Sevx7
+All-Normal            D    Normal           Sevx6 Extx1                 nolx7
+All-Normal            A    Normal           Modx4 Sevx3                 nolx7
+All-Normal            S    Normal           Modx2 Sevx5                 nolx7
+All-Mild              D    Mild             Sevx2 Extx5                 nolx7
+All-Mild              A    Mild             Modx2 Sevx5                 nolx7
+All-Mild              S    Mild             Sevx7                       Modx4 Sevx3
+All-Moderate          D    Moderate         Extx7                       Milx1 Modx1 Sevx5
+All-Moderate          A    Moderate         Sevx7                       nolx7
+All-Moderate          S    Moderate         Sevx7                       Modx2 Sevx5
+All-Severe            D    Severe           Extx7                       Sevx3 Extx4
+All-Severe            A    Severe           Sevx7                       Modx4 Sevx3
+All-Severe            S    Severe           Sevx7                       Sevx7
+All-ExtremelySevere   D    ExtremelySevere  Extx7                       Extx7
+All-ExtremelySevere   A    ExtremelySevere  Sevx7                       Modx1 Sevx6
+All-ExtremelySevere   S    ExtremelySevere  Sevx7                       Sevx7
+Depression-dominant   D    Severe           Extx7                       Sevx3 Extx4
+Depression-dominant   A    Mild             Modx2 Sevx5                 nolx7
+Depression-dominant   S    Normal           Modx2 Sevx5                 nolx7
+Anxiety-dominant      D    Mild             Sevx2 Extx5                 nolx7
+Anxiety-dominant      A    Severe           Sevx7                       Modx4 Sevx3
+Anxiety-dominant      S    Moderate         Sevx7                       Modx2 Sevx5
+Stress-dominant       D    Normal           Sevx6 Extx1                 nolx7
+Stress-dominant       A    Moderate         Sevx7                       nolx7
+Stress-dominant       S    ExtremelySevere  Sevx7                       Sevx7
 
 ===============================================================================================
 RINGKASAN (7 rotasi x 23 skenario x 3 subskala)
 ===============================================================================================
 Subskala-skenario dengan hasil resmi 'Normal' (dikecualikan, ds3 tak punya kategori ini): 38
 
-Threshold >= 1:
+Aturan konversi: item dicentang jika skor jawaban (0-3) >= 1:
   Bisa dibandingkan : 217 pengamatan  (+ 0 tanpa gejala sama sekali, tidak dihitung)
   Cocok persis      : 49 (22.6%)
   ds3 LEBIH TINGGI dari resmi : 133 (61.3%)
@@ -89,7 +89,7 @@ Threshold >= 1:
     +2  : 49
     +3  : 15
 
-Threshold >= 2:
+Aturan konversi: item dicentang jika skor jawaban (0-3) >= 2:
   Bisa dibandingkan : 154 pengamatan  (+ 63 tanpa gejala sama sekali, tidak dihitung)
   Cocok persis      : 54 (35.1%)
   ds3 LEBIH TINGGI dari resmi : 51 (33.1%)

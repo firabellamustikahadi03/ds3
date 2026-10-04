@@ -159,11 +159,11 @@ foreach ($scenarios as $label => $subscaleScores) {
 
 // ── Report ───────────────────────────────────────────────────────────────
 echo "Setiap sel = sebaran hasil ds3 di 7 rotasi posisi skor (Mil/Mod/Sev/Ext x jumlah; nolx = tidak ada gejala).\n\n";
-echo str_pad('Scenario', 22) . str_pad('Sub', 5) . str_pad('Official', 17) . str_pad('ds3 @>=1', 26) . 'ds3 @>=2' . "\n";
+echo str_pad('Scenario', 22) . str_pad('Sub', 5) . str_pad('Official', 17) . str_pad('ds3 [skor item>=1]', 28) . 'ds3 [skor item>=2]' . "\n";
 echo str_repeat('-', 95) . "\n";
 foreach ($rows as $r) {
     echo str_pad($r['scenario'], 22) . str_pad($r['subscale'], 5) . str_pad($r['official'], 17)
-       . str_pad($r['t1'], 26) . $r['t2'] . "\n";
+       . str_pad($r['t1'], 28) . $r['t2'] . "\n";
 }
 
 echo "\n" . str_repeat('=', 95) . "\n";
@@ -176,7 +176,7 @@ foreach ([1, 2] as $threshold) {
     ksort($s['signed']);
     $over = $under = 0;
     foreach ($s['signed'] as $d => $c) { if ($d > 0) $over += $c; if ($d < 0) $under += $c; }
-    echo "Threshold >= $threshold:\n";
+    echo "Aturan konversi: item dicentang jika skor jawaban (0-3) >= $threshold:\n";
     echo "  Bisa dibandingkan : {$s['comparable']} pengamatan  (+ {$s['noSymptoms']} tanpa gejala sama sekali, tidak dihitung)\n";
     echo "  Cocok persis      : {$s['exact']} ({$pct}%)\n";
     if ($s['comparable'] > 0) {
