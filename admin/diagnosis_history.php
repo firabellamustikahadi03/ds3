@@ -39,10 +39,10 @@ while ($row = mysqli_fetch_assoc($doctorsResult)) $doctors[] = $row;
                                   <tr>
                                     <th style="color: white;" width="3%">ID</th>
                                     <th style="color: white;" width="12%"><?php echo isset($_SESSION['langArray']['th_tanggal_waktu']) ? htmlspecialchars($_SESSION['langArray']['th_tanggal_waktu']) : 'Tanggal dan Waktu'; ?></th>
-                                    <th style="color: white;" width="10%"><?php echo isset($_SESSION['langArray']['nama']) ? htmlspecialchars($_SESSION['langArray']['nama']) : 'Nama'; ?></th>
+                                    <th style="color: white;" width="9%"><?php echo isset($_SESSION['langArray']['nama']) ? htmlspecialchars($_SESSION['langArray']['nama']) : 'Nama'; ?></th>
                                     <th style="color: white;" width="6%"><?php echo isset($_SESSION['langArray']['usia']) ? htmlspecialchars($_SESSION['langArray']['usia']) : 'Usia'; ?></th>
                                     <th style="color: white;"><?php echo isset($_SESSION['langArray']['th_hasil_das']) ? htmlspecialchars($_SESSION['langArray']['th_hasil_das']) : 'Hasil (Depresi / Anxiety / Stres)'; ?></th>
-                                    <th style="color: white;" width="16%"><?php echo isset($_SESSION['langArray']['aksi']) ? htmlspecialchars($_SESSION['langArray']['aksi']) : 'Aksi'; ?></th>
+                                    <th style="color: white;" width="27%"><?php echo isset($_SESSION['langArray']['aksi']) ? htmlspecialchars($_SESSION['langArray']['aksi']) : 'Aksi'; ?></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -80,7 +80,7 @@ while ($row = mysqli_fetch_assoc($doctorsResult)) $doctors[] = $row;
                                                     <option value="<?php echo (int)$doc['id']; ?>"><?php echo htmlspecialchars($doc['name']); ?></option>
                                                   <?php endforeach; ?>
                                                 </select>
-                                                <button type="submit" class="btn btn-success btn-xs text-white"><?php echo isset($_SESSION['langArray']['kirim_ke_dokter']) ? htmlspecialchars($_SESSION['langArray']['kirim_ke_dokter']) : 'Kirim ke Dokter'; ?></button>
+                                                <button type="submit" class="btn btn-success btn-xs text-white text-nowrap"><?php echo isset($_SESSION['langArray']['kirim_ke_dokter']) ? htmlspecialchars($_SESSION['langArray']['kirim_ke_dokter']) : 'Kirim ke Dokter'; ?></button>
                                               </form>
                                             <?php endif; ?>
                                         </td>
