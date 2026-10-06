@@ -139,4 +139,11 @@ return [
     'data_admin' => 'Admin Data',
     'manajemen_ubah_admin' => 'Edit Admin Data',
     'akun_anda' => 'Your Account',
+    'nama_pasien' => 'Patient Name',
+    'tanggal_lahir' => 'Date of Birth',
+    'lihat_diagnosa_pasien' => 'View Patient Diagnoses',
+    'hapus_pasien' => 'Delete Patient',
+    'konfirmasi_hapus_pasien' => 'Are you sure you want to delete this patient from the list?',
+    'hapus_rekam_medis' => 'Delete Medical Record',
+    'konfirmasi_hapus_rekam' => 'Are you sure you want to delete this medical record from the list?',
 ];

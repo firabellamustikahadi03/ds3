@@ -29,6 +29,9 @@ class Rekam
 	{
 		include '../connection/connection.php';
 		$patient_id = (int)$patient_id;
+		$_validLangs = ['id', 'en', 'tr', 'zh'];
+		$_lang = (isset($_SESSION['lang']) && in_array($_SESSION['lang'], $_validLangs)) ? $_SESSION['lang'] : 'id';
+		$_nameCol = 'name_' . $_lang;
 		$query = mysqli_query($con, "SELECT * FROM diagnosis_history WHERE patient_id = $patient_id ORDER BY id DESC");
 		$i = 0;
 		while ($d = mysqli_fetch_array($query)) {
@@ -41,9 +44,11 @@ class Rekam
 			$data[$i]['confidence_percentage'] = $d['confidence_percentage'];
 			$data[$i]['origin']                = $d['origin'];
 
-			$detailQuery = mysqli_query($con, "SELECT subscale, severity_label FROM diagnosis_details
-			                                    WHERE diagnosis_id = " . (int)$d['id'] . " AND source = 'riwayat'
-			                                    ORDER BY FIELD(subscale, 'D','A','S')");
+			$detailQuery = mysqli_query($con, "SELECT dd.subscale, COALESCE(sl.$_nameCol, dd.severity_label) AS severity_label
+			                                    FROM diagnosis_details dd
+			                                    LEFT JOIN ds_severity_levels sl ON sl.subscale = dd.subscale COLLATE utf8mb4_unicode_ci AND sl.severity_level = dd.severity_level COLLATE utf8mb4_unicode_ci
+			                                    WHERE dd.diagnosis_id = " . (int)$d['id'] . " AND dd.source = 'riwayat'
+			                                    ORDER BY FIELD(dd.subscale, 'D','A','S')");
 			$parts = [];
 			while ($det = mysqli_fetch_assoc($detailQuery)) {
 				$parts[] = $det['subscale'] . ': ' . $det['severity_label'];

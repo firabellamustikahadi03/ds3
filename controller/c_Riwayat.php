@@ -29,6 +29,9 @@ class Riwayat
 	function TampilSemuaDenganRingkasan()
 	{
 		include "../connection/connection.php";
+		$_validLangs = ['id', 'en', 'tr', 'zh'];
+		$_lang = (isset($_SESSION['lang']) && in_array($_SESSION['lang'], $_validLangs)) ? $_SESSION['lang'] : 'id';
+		$_nameCol = 'name_' . $_lang;
 		$query = mysqli_query($con, "SELECT d.*, doc.name AS sent_to_doctor_name
 		                              FROM diagnoses d
 		                              LEFT JOIN admins doc ON doc.id = d.sent_to_doctor_id
@@ -46,10 +49,11 @@ class Riwayat
 			$data[$i]['sent_to_doctor_id']      = $d['sent_to_doctor_id'];
 			$data[$i]['sent_to_doctor_name']    = $d['sent_to_doctor_name'];
 
-			$detailQuery = mysqli_query($con, "SELECT subscale, severity_label, confidence_percentage
-			                                    FROM diagnosis_details
-			                                    WHERE diagnosis_id = " . (int)$d['id'] . " AND source = 'diagnosa'
-			                                    ORDER BY FIELD(subscale, 'D','A','S')");
+			$detailQuery = mysqli_query($con, "SELECT dd.subscale, COALESCE(sl.$_nameCol, dd.severity_label) AS severity_label
+			                                    FROM diagnosis_details dd
+			                                    LEFT JOIN ds_severity_levels sl ON sl.subscale = dd.subscale COLLATE utf8mb4_unicode_ci AND sl.severity_level = dd.severity_level COLLATE utf8mb4_unicode_ci
+			                                    WHERE dd.diagnosis_id = " . (int)$d['id'] . " AND dd.source = 'diagnosa'
+			                                    ORDER BY FIELD(dd.subscale, 'D','A','S')");
 			$parts = [];
 			while ($det = mysqli_fetch_assoc($detailQuery)) {
 				$parts[] = $det['subscale'] . ': ' . $det['severity_label'];

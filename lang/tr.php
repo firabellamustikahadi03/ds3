@@ -139,4 +139,11 @@ return [
     'data_admin' => 'Yönetici Verileri',
     'manajemen_ubah_admin' => 'Yönetici Verilerini Düzenle',
     'akun_anda' => 'Hesabınız',
+    'nama_pasien' => 'Hasta Adı',
+    'tanggal_lahir' => 'Doğum Tarihi',
+    'lihat_diagnosa_pasien' => 'Hasta Tanılarını Görüntüle',
+    'hapus_pasien' => 'Hastayı Sil',
+    'konfirmasi_hapus_pasien' => 'Bu hastayı listeden silmek istediğinizden emin misiniz?',
+    'hapus_rekam_medis' => 'Tıbbi Kaydı Sil',
+    'konfirmasi_hapus_rekam' => 'Bu tıbbi kaydı listeden silmek istediğinizden emin misiniz?',
 ];

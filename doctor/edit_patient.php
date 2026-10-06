@@ -36,13 +36,13 @@ $p->TampilSatuData($_GET['patient_id']);
 								<form method="post" class="form-horizontal form-material" action="../process/edit_patient.php">
 									<div class="form-group">
 										<input type="hidden" value="<?php print $_GET['patient_id'] ?>" name="patient_id" />
-										<label class="col-md-12">Nama Pasien</label>
+										<label class="col-md-12"><?php echo htmlspecialchars($_SESSION['langArray']['nama_pasien'] ?? 'Nama Pasien'); ?></label>
 										<div class="col-md-12">
 											<input type="text" value="<?php print $p->name; ?>" class="form-control form-control-line" name="name" required>
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-md-12">Tanggal Lahir</label>
+										<label class="col-md-12"><?php echo htmlspecialchars($_SESSION['langArray']['tanggal_lahir'] ?? 'Tanggal Lahir'); ?></label>
 										<div class="col-md-12">
 											<input type="date" class="form-control form-control-line" value="<?php print $p->date_of_birth; ?>" name="date_of_birth" required>
 											<!-- <p style="color: red">*Format Bulan/Tanggal/Tahun</p> -->

@@ -72,7 +72,7 @@ $data = $p->TampilRPasienDenganRingkasan((int)($_GET['patient_id'] ?? 0));
                                             </td>
                                             <td>
                                                 <a href="diagnosis_detail.php?id=<?php print $r['id']; ?>" class="btn btn-primary btn-xs text-white" title="Detail"><i class="mdi mdi-eye-outline"></i></a>
-                                                <a onclick="if (! confirm('Apakah anda yakin akan menghapus riwayat rekam medis dari daftar ?')) { return false; }" href="../process/delete_record.php?id=<?php print $r['id']; ?>&patient_id=<?php print $_GET['patient_id']; ?>" class="btn btn-danger btn-simple btn-xs text-white" title="Hapus Rekam Medis"><i class="fa fa-times"></i></a>
+                                                <a onclick="if (! confirm(<?php echo htmlspecialchars(json_encode($_SESSION['langArray']['konfirmasi_hapus_rekam'] ?? 'Apakah anda yakin akan menghapus riwayat rekam medis dari daftar ?'), ENT_QUOTES); ?>)) { return false; }" href="../process/delete_record.php?id=<?php print $r['id']; ?>&patient_id=<?php print $_GET['patient_id']; ?>" class="btn btn-danger btn-simple btn-xs text-white" title="<?php echo htmlspecialchars($_SESSION['langArray']['hapus_rekam_medis'] ?? 'Hapus Rekam Medis'); ?>"><i class="fa fa-times"></i></a>
                                             </td>
                                         </tr>
                                     <?php }} ?>

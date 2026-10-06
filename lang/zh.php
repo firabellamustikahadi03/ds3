@@ -139,4 +139,11 @@ return [
     'data_admin' => '管理员数据',
     'manajemen_ubah_admin' => '编辑管理员数据',
     'akun_anda' => '您的账户',
+    'nama_pasien' => '患者姓名',
+    'tanggal_lahir' => '出生日期',
+    'lihat_diagnosa_pasien' => '查看患者诊断',
+    'hapus_pasien' => '删除患者',
+    'konfirmasi_hapus_pasien' => '您确定要从列表中删除该患者吗？',
+    'hapus_rekam_medis' => '删除病历',
+    'konfirmasi_hapus_rekam' => '您确定要从列表中删除该病历吗？',
 ];

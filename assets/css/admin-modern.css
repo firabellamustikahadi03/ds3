@@ -497,4 +497,6 @@ textarea.form-control { min-height: 100px; }
 @media (max-width: 575px) {
   .page-breadcrumb { padding: .75rem 1rem; }
   .page-title { font-size: .95rem; }
+  .topbar-right { min-width: 0; }
+  .topbar-user-btn { max-width: 9.5rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 }

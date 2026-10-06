@@ -33,8 +33,8 @@ $p = new Pasien;
                                 <thead style="background-color: #336699; color: #ffffff;">
                                   <tr>
                                     <th style="color: white;" width="5%">ID</th>
-                                    <th style="color: white;">Nama Pasien</th>
-                                    <th style="color: white;">Tanggal Lahir</th>
+                                    <th style="color: white;"><?php echo htmlspecialchars($_SESSION['langArray']['nama_pasien'] ?? 'Nama Pasien'); ?></th>
+                                    <th style="color: white;"><?php echo htmlspecialchars($_SESSION['langArray']['tanggal_lahir'] ?? 'Tanggal Lahir'); ?></th>
                                     <th style="color: white;"><?php echo isset($_SESSION['langArray']['aksi']) ? htmlspecialchars($_SESSION['langArray']['aksi']) : 'Aksi'; ?></th>
                                 </tr>
                             </thead>
@@ -62,11 +62,11 @@ $p = new Pasien;
                                         <td>
                                             <a href="diagnosis.php?patient_id=<?php print $d['patient_id']; ?>" class="btn btn-danger btn-simple btn-xs text-white" title="Diagnosa Pasien"><i class="mdi mdi-stethoscope"></i></a>
 
-                                            <a href="patient_history.php?patient_id=<?php print $d['patient_id']; ?>" class="btn btn-info btn-simple btn-xs text-white" title="Lihat Diagnosa Pasien"><i class="mdi mdi-eye"></i></a>
+                                            <a href="patient_history.php?patient_id=<?php print $d['patient_id']; ?>" class="btn btn-info btn-simple btn-xs text-white" title="<?php echo htmlspecialchars($_SESSION['langArray']['lihat_diagnosa_pasien'] ?? 'Lihat Diagnosa Pasien'); ?>"><i class="mdi mdi-eye"></i></a>
 
                                             <a href="edit_patient.php?patient_id=<?php print $d['patient_id']; ?>" class="btn btn-info btn-simple btn-xs text-white" title="Edit Data Pasien"><i class="mdi mdi-lead-pencil"></i></a>
 
-                                            <a onclick="if (! confirm('Apakah anda yakin akan menghapus pasien dari daftar ?')) { return false; }" href="../process/delete_patient.php?patient_id=<?php print $d['patient_id']; ?>" class="btn btn-danger btn-simple btn-xs text-white" title="Hapus Pasien"><i class="fa fa-times"></i></a>
+                                            <a onclick="if (! confirm(<?php echo htmlspecialchars(json_encode($_SESSION['langArray']['konfirmasi_hapus_pasien'] ?? 'Apakah anda yakin akan menghapus pasien dari daftar ?'), ENT_QUOTES); ?>)) { return false; }" href="../process/delete_patient.php?patient_id=<?php print $d['patient_id']; ?>" class="btn btn-danger btn-simple btn-xs text-white" title="<?php echo htmlspecialchars($_SESSION['langArray']['hapus_pasien'] ?? 'Hapus Pasien'); ?>"><i class="fa fa-times"></i></a>
                                         </td>
                                     </tr>
                                 <?php }} ?>
