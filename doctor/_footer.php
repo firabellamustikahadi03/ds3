@@ -16,11 +16,12 @@
 <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
 
+<?php include __DIR__ . '/../datatables_lang.php'; ?>
 <script>
 $(function () {
-  if ($('#example3').length)            { $('#example3').DataTable({ ordering: false }); }
-  if ($('#bootstrap-data-table').length){ $('#bootstrap-data-table').DataTable({ ordering: false }); }
-  if ($('#example23').length)           { $('#example23').DataTable({ ordering: false }); }
+  if ($('#example3').length)            { $('#example3').DataTable({ ordering: false, language: DT_LANG }); }
+  if ($('#bootstrap-data-table').length){ $('#bootstrap-data-table').DataTable({ ordering: false, language: DT_LANG }); }
+  if ($('#example23').length)           { $('#example23').DataTable({ ordering: false, language: DT_LANG }); }
 });
 
 var sidebarToggle  = document.getElementById('sidebarToggle');
